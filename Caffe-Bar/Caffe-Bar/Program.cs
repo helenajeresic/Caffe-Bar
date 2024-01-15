@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Caffe_Bar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Caffe_Bar
+namespace CaffeBar
 {
     internal static class Program
     {
@@ -16,7 +17,7 @@ namespace Caffe_Bar
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new KonobarForm());
         }
     }
 }
