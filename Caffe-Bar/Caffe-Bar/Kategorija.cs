@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caffe_Bar
+namespace CaffeBar
 {
     internal class Kategorija
     {
