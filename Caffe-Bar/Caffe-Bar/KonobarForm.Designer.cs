@@ -30,15 +30,17 @@
         {
             this.tabKonobar = new System.Windows.Forms.TabControl();
             this.tabIzdajRacun = new System.Windows.Forms.TabPage();
+            this.textRacuna = new System.Windows.Forms.RichTextBox();
+            this.textBoxTrazi = new System.Windows.Forms.TextBox();
+            this.dataGridViewPica = new System.Windows.Forms.DataGridView();
+            this.buttonPrikazPica = new System.Windows.Forms.Button();
             this.tabSkladiste = new System.Windows.Forms.TabPage();
             this.tabŠank = new System.Windows.Forms.TabPage();
             this.tabNarudžba = new System.Windows.Forms.TabPage();
             this.gumbOdjavaKonobara = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabKonobar.SuspendLayout();
             this.tabIzdajRacun.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPica)).BeginInit();
             this.SuspendLayout();
             // 
             // tabKonobar
@@ -53,24 +55,68 @@
             this.tabKonobar.Multiline = true;
             this.tabKonobar.Name = "tabKonobar";
             this.tabKonobar.SelectedIndex = 0;
-            this.tabKonobar.Size = new System.Drawing.Size(976, 592);
+            this.tabKonobar.Size = new System.Drawing.Size(1226, 654);
             this.tabKonobar.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabKonobar.TabIndex = 4;
             // 
             // tabIzdajRacun
             // 
-            this.tabIzdajRacun.Controls.Add(this.dataGridView1);
-            this.tabIzdajRacun.Controls.Add(this.button1);
+            this.tabIzdajRacun.Controls.Add(this.textRacuna);
+            this.tabIzdajRacun.Controls.Add(this.textBoxTrazi);
+            this.tabIzdajRacun.Controls.Add(this.dataGridViewPica);
+            this.tabIzdajRacun.Controls.Add(this.buttonPrikazPica);
             this.tabIzdajRacun.ForeColor = System.Drawing.SystemColors.ControlText;
             this.tabIzdajRacun.Location = new System.Drawing.Point(4, 54);
             this.tabIzdajRacun.Margin = new System.Windows.Forms.Padding(5);
             this.tabIzdajRacun.Name = "tabIzdajRacun";
             this.tabIzdajRacun.Padding = new System.Windows.Forms.Padding(5);
-            this.tabIzdajRacun.Size = new System.Drawing.Size(968, 534);
+            this.tabIzdajRacun.Size = new System.Drawing.Size(1218, 596);
             this.tabIzdajRacun.TabIndex = 0;
             this.tabIzdajRacun.Text = "Izdaj račun";
             this.tabIzdajRacun.UseVisualStyleBackColor = true;
-            this.tabIzdajRacun.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // textRacuna
+            // 
+            this.textRacuna.Location = new System.Drawing.Point(646, 93);
+            this.textRacuna.Name = "textRacuna";
+            this.textRacuna.Size = new System.Drawing.Size(416, 412);
+            this.textRacuna.TabIndex = 3;
+            this.textRacuna.Text = "";
+            // 
+            // textBoxTrazi
+            // 
+            this.textBoxTrazi.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBoxTrazi.Location = new System.Drawing.Point(162, 29);
+            this.textBoxTrazi.MinimumSize = new System.Drawing.Size(150, 50);
+            this.textBoxTrazi.Name = "textBoxTrazi";
+            this.textBoxTrazi.Size = new System.Drawing.Size(150, 35);
+            this.textBoxTrazi.TabIndex = 2;
+            this.textBoxTrazi.TextChanged += new System.EventHandler(this.textBoxTrazi_TextChanged);
+            // 
+            // dataGridViewPica
+            // 
+            this.dataGridViewPica.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridViewPica.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridViewPica.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+            this.dataGridViewPica.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataGridViewPica.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewPica.GridColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dataGridViewPica.Location = new System.Drawing.Point(22, 93);
+            this.dataGridViewPica.Name = "dataGridViewPica";
+            this.dataGridViewPica.Size = new System.Drawing.Size(579, 412);
+            this.dataGridViewPica.TabIndex = 1;
+            this.dataGridViewPica.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPica_CellClick);
+            this.dataGridViewPica.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewPica_CellFormatting);
+            // 
+            // buttonPrikazPica
+            // 
+            this.buttonPrikazPica.Location = new System.Drawing.Point(22, 23);
+            this.buttonPrikazPica.Name = "buttonPrikazPica";
+            this.buttonPrikazPica.Size = new System.Drawing.Size(124, 51);
+            this.buttonPrikazPica.TabIndex = 0;
+            this.buttonPrikazPica.Text = "Prikaži pića";
+            this.buttonPrikazPica.UseVisualStyleBackColor = true;
+            this.buttonPrikazPica.Click += new System.EventHandler(this.buttonPrikaziPica_Click);
             // 
             // tabSkladiste
             // 
@@ -115,40 +161,23 @@
             this.gumbOdjavaKonobara.Text = "Odjava";
             this.gumbOdjavaKonobara.UseVisualStyleBackColor = true;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(22, 23);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(124, 51);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(313, 65);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(578, 389);
-            this.dataGridView1.TabIndex = 1;
-            // 
             // KonobarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1000, 617);
+            this.ClientSize = new System.Drawing.Size(1250, 647);
             this.Controls.Add(this.gumbOdjavaKonobara);
             this.Controls.Add(this.tabKonobar);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "KonobarForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "KonobarForm";
             this.tabKonobar.ResumeLayout(false);
             this.tabIzdajRacun.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.tabIzdajRacun.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPica)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -161,7 +190,9 @@
         private System.Windows.Forms.TabPage tabŠank;
         private System.Windows.Forms.TabPage tabNarudžba;
         public System.Windows.Forms.TabPage tabIzdajRacun;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataGridView dataGridViewPica;
+        private System.Windows.Forms.Button buttonPrikazPica;
+        private System.Windows.Forms.TextBox textBoxTrazi;
+        private System.Windows.Forms.RichTextBox textRacuna;
     }
 }

@@ -14,6 +14,6 @@ namespace CaffeBar
         public int id_kategorija_pica { get; set; }
         public decimal kolicina_kafic { get; set; }
         public decimal kolicina_skladista {  get; set; }
-        public decimal najmanja_kolicina { get; set; }
+        public string najmanja_kolicina { get; set; }
     }
 }
