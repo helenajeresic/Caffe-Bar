@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CaffeBar
+namespace Caffe-Bar
 {
     internal static class Program
     {

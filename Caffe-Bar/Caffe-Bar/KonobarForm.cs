@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CaffeBar
+namespace Caffe-Bar
 {
     public partial class KonobarForm : Form
     {
@@ -24,11 +24,27 @@ namespace CaffeBar
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonPrikaziPica_Click(object sender, EventArgs e)
         {
             SqlConnection veza = new SqlConnection(connectionString);
             veza.Open();
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Pica", veza);
+            string upit = "SELECT * FROM Pica";
+            SqlCommand naredba = new SqlCommand(upit, veza);
+            List<Pice> pica = new List<Pice>();
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            dataGridView1.DataSource = dt;
+            veza.Close();
+        }
+
+        private void textBoxTrazi_TextChanged(object sender, EventArgs e)
+        {
+            SqlConnection veza = new SqlConnection(connectionString);
+            veza.Open();
+            string upit = "SELECT naziv_pica AS 'Naziv pića'," +
+                          "cijena_pica AS 'Cijena pića' FROM Pica " +
+                          "WHERE naziv_pica LIKE '%" + textBoxTrazi.Text + "%'";
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
             dataGridView1.DataSource = dt;
