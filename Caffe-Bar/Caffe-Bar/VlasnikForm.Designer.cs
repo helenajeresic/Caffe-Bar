@@ -65,7 +65,7 @@
             this.tabZaposliKonobara.Margin = new System.Windows.Forms.Padding(5);
             this.tabZaposliKonobara.Name = "tabZaposliKonobara";
             this.tabZaposliKonobara.Padding = new System.Windows.Forms.Padding(5);
-            this.tabZaposliKonobara.Size = new System.Drawing.Size(1068, 537);
+            this.tabZaposliKonobara.Size = new System.Drawing.Size(1206, 559);
             this.tabZaposliKonobara.TabIndex = 0;
             this.tabZaposliKonobara.Text = "Zaposli konobara";
             // 
@@ -75,7 +75,7 @@
             this.tabOtpustiKonobara.Margin = new System.Windows.Forms.Padding(5);
             this.tabOtpustiKonobara.Name = "tabOtpustiKonobara";
             this.tabOtpustiKonobara.Padding = new System.Windows.Forms.Padding(5);
-            this.tabOtpustiKonobara.Size = new System.Drawing.Size(1068, 537);
+            this.tabOtpustiKonobara.Size = new System.Drawing.Size(1206, 559);
             this.tabOtpustiKonobara.TabIndex = 1;
             this.tabOtpustiKonobara.Text = "Otpusti konobara";
             this.tabOtpustiKonobara.UseVisualStyleBackColor = true;
@@ -86,7 +86,7 @@
             this.tabUnosPića.Margin = new System.Windows.Forms.Padding(5);
             this.tabUnosPića.Name = "tabUnosPića";
             this.tabUnosPića.Padding = new System.Windows.Forms.Padding(5);
-            this.tabUnosPića.Size = new System.Drawing.Size(1068, 537);
+            this.tabUnosPića.Size = new System.Drawing.Size(1206, 559);
             this.tabUnosPića.TabIndex = 2;
             this.tabUnosPića.Text = "Unos pića";
             this.tabUnosPića.UseVisualStyleBackColor = true;
@@ -97,7 +97,7 @@
             this.tabModifikacijaPića.Margin = new System.Windows.Forms.Padding(5);
             this.tabModifikacijaPića.Name = "tabModifikacijaPića";
             this.tabModifikacijaPića.Padding = new System.Windows.Forms.Padding(5);
-            this.tabModifikacijaPića.Size = new System.Drawing.Size(1068, 537);
+            this.tabModifikacijaPića.Size = new System.Drawing.Size(1206, 559);
             this.tabModifikacijaPića.TabIndex = 3;
             this.tabModifikacijaPića.Text = "Modifikacija pića";
             this.tabModifikacijaPića.UseVisualStyleBackColor = true;
@@ -106,7 +106,7 @@
             // 
             this.tabAkcije.Location = new System.Drawing.Point(4, 54);
             this.tabAkcije.Name = "tabAkcije";
-            this.tabAkcije.Size = new System.Drawing.Size(1068, 537);
+            this.tabAkcije.Size = new System.Drawing.Size(1206, 559);
             this.tabAkcije.TabIndex = 4;
             this.tabAkcije.Text = "Akcije";
             this.tabAkcije.UseVisualStyleBackColor = true;
@@ -135,7 +135,6 @@
             this.ClientSize = new System.Drawing.Size(1238, 630);
             this.Controls.Add(this.gumbOdjavaVlasnika);
             this.Controls.Add(this.tabKonobar);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "VlasnikForm";
             this.tabKonobar.ResumeLayout(false);
             this.ResumeLayout(false);

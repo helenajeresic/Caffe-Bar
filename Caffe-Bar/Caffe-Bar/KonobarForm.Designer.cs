@@ -127,6 +127,7 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(313, 65);
             this.dataGridView1.Name = "dataGridView1";
@@ -140,13 +141,11 @@
             this.ClientSize = new System.Drawing.Size(1000, 617);
             this.Controls.Add(this.gumbOdjavaKonobara);
             this.Controls.Add(this.tabKonobar);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "KonobarForm";
             this.Text = "KonobarForm";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tabKonobar.ResumeLayout(false);
             this.tabIzdajRacun.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
