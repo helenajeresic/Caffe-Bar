@@ -8,5 +8,7 @@ namespace Caffe_Bar
 {
     internal class Kategorija
     {
+        public int id_kategorija_pica {  get; set; }
+        public string naziv_kategorije { get; set; }
     }
 }
