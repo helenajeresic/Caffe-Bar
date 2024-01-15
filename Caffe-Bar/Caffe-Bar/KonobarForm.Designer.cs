@@ -34,7 +34,11 @@
             this.tabŠank = new System.Windows.Forms.TabPage();
             this.tabNarudžba = new System.Windows.Forms.TabPage();
             this.gumbOdjavaKonobara = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabKonobar.SuspendLayout();
+            this.tabIzdajRacun.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabKonobar
@@ -55,6 +59,8 @@
             // 
             // tabIzdajRacun
             // 
+            this.tabIzdajRacun.Controls.Add(this.dataGridView1);
+            this.tabIzdajRacun.Controls.Add(this.button1);
             this.tabIzdajRacun.ForeColor = System.Drawing.SystemColors.ControlText;
             this.tabIzdajRacun.Location = new System.Drawing.Point(4, 54);
             this.tabIzdajRacun.Margin = new System.Windows.Forms.Padding(5);
@@ -109,6 +115,25 @@
             this.gumbOdjavaKonobara.Text = "Odjava";
             this.gumbOdjavaKonobara.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(22, 23);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(124, 51);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(313, 65);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(578, 389);
+            this.dataGridView1.TabIndex = 1;
+            // 
             // KonobarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -116,14 +141,14 @@
             this.ClientSize = new System.Drawing.Size(1000, 617);
             this.Controls.Add(this.gumbOdjavaKonobara);
             this.Controls.Add(this.tabKonobar);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "KonobarForm";
             this.Text = "KonobarForm";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tabKonobar.ResumeLayout(false);
+            this.tabIzdajRacun.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -136,5 +161,7 @@
         private System.Windows.Forms.TabPage tabŠank;
         private System.Windows.Forms.TabPage tabNarudžba;
         public System.Windows.Forms.TabPage tabIzdajRacun;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button button1;
     }
 }

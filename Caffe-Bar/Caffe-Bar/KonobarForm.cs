@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace CaffeBar
 {
     public partial class KonobarForm : Form
     {
+        string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
         public KonobarForm()
         {
             InitializeComponent();
@@ -20,6 +22,17 @@ namespace CaffeBar
         private void tabPage1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SqlConnection veza = new SqlConnection(connectionString);
+            veza.Open();
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Pica", veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            dataGridView1.DataSource = dt;
+            veza.Close();
         }
     }
 }
