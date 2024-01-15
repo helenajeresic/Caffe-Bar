@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Caffe_Bar
+namespace CaffeBar
 {
     public partial class PrijavaForm : Form
     {

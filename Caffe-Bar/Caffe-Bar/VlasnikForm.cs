@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 
-namespace Caffe_Bar
+namespace CaffeBar
 {
     public partial class VlasnikForm : Form
     {
