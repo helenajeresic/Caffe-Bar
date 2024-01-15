@@ -376,6 +376,8 @@
             // 
             // dataGridViewKolicinePica
             // 
+            this.dataGridViewKolicinePica.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridViewKolicinePica.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridViewKolicinePica.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewKolicinePica.Location = new System.Drawing.Point(278, 58);
             this.dataGridViewKolicinePica.Name = "dataGridViewKolicinePica";
