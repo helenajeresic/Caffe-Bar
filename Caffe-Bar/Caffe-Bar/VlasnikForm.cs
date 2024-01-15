@@ -156,11 +156,13 @@ namespace CaffeBar
 
             veza.Open();
             var datum = monthCalendar2.SelectionStart;
-            string upit = "SELECT naziv_pica AS 'Naziv pica', kolicina AS 'Ukupna količina' FROM Pica " +
+            string upit = "SELECT naziv_pica AS 'Naziv pica', SUM(kolicina) AS 'Ukupna količina' FROM Pica " +
                 "JOIN RacunStavke " +
                 "ON RacunStavke.id_pica = Pica.id_pica " +
                 "WHERE CONVERT(date, vrijeme) = '"
-                + datum.ToString("yyyy-MM-dd") + "'";
+                + datum.ToString("yyyy-MM-dd") + "' " +
+                "GROUP BY naziv_pica " +
+                "ORDER BY SUM(kolicina) DESC";
             SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
