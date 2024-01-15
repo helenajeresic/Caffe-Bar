@@ -1,4 +1,4 @@
-﻿namespace Caffe_Bar
+﻿namespace CaffeBar
 {
     partial class PrijavaForm
     {
