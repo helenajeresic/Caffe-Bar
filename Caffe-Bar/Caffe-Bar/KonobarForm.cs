@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caffe_Bar;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -43,7 +44,7 @@ namespace CaffeBar
                         najmanja_kolicina = čitač.GetString(6)
                     });
                 }
-                pica.Sort((x,y) => x.naziv_pica.CompareTo(y.naziv_pica));
+                pica.Sort((x, y) => x.naziv_pica.CompareTo(y.naziv_pica));
                 dataGridViewPica.DataSource = pica;
 
                 dataGridViewPica.Columns[0].Visible = false;
@@ -66,7 +67,7 @@ namespace CaffeBar
             SqlCommand naredba = new SqlCommand();
             naredba.CommandText = upit;
             naredba.Connection = veza;
-            if(textBoxTrazi.Text.Length > 0)
+            if (textBoxTrazi.Text.Length > 0)
             {
                 naredba.CommandText += " WHERE naziv_pica LIKE @unos";
                 naredba.Parameters.AddWithValue("@unos", "%" + textBoxTrazi.Text + "%");
@@ -113,6 +114,53 @@ namespace CaffeBar
                     }
                 }
             }
+        }
+
+        private List<Pice> narucenaPica = new List<Pice>();
+
+        private void dataGridViewPica_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (sender is DataGridView d && e.RowIndex >= 0)
+            {
+                int indeksRetka = e.RowIndex;
+
+                int idPica = (int)d.Rows[indeksRetka].Cells[0].Value;
+                string nazivPica = d.Rows[indeksRetka].Cells[1].Value.ToString();
+                decimal cijenaPica = (decimal)d.Rows[indeksRetka].Cells[2].Value;
+
+                string label = nazivPica + " " + Math.Round(cijenaPica, 2);
+                int kolicina = GetQuantityFromUser(label);
+
+                if (kolicina > 0)
+                {
+                    Pice narucenoPice = new Pice()
+                    {
+                        id_pica = idPica,
+                        naziv_pica = nazivPica,
+                        cijena_pica = cijenaPica,
+                        kolicina_kafic = kolicina
+                        // You might want to copy other properties as needed
+                    };
+
+                    narucenaPica.Add(narucenoPice);
+                    string piceInfo = $"{nazivPica} - {cijenaPica:C} x {kolicina}";
+                    MessageBox.Show(piceInfo, "Dodano u narudžbu");
+                    textRacuna.Text += label + " \n";
+                }
+            }
+        }
+
+        public int GetQuantityFromUser(string label)
+        {
+            UnosKolicine unosKolicine = new UnosKolicine();
+            unosKolicine.updateLabel(label);
+            if (unosKolicine.ShowDialog() == DialogResult.OK)
+            {
+                int quantity = unosKolicine.Quantity;
+                return quantity;
+            }
+            else
+            { return 0; }
         }
     }
 }

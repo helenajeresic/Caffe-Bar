@@ -55,7 +55,7 @@
             this.tabKonobar.Multiline = true;
             this.tabKonobar.Name = "tabKonobar";
             this.tabKonobar.SelectedIndex = 0;
-            this.tabKonobar.Size = new System.Drawing.Size(976, 592);
+            this.tabKonobar.Size = new System.Drawing.Size(1226, 654);
             this.tabKonobar.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabKonobar.TabIndex = 4;
             // 
@@ -70,7 +70,7 @@
             this.tabIzdajRacun.Margin = new System.Windows.Forms.Padding(5);
             this.tabIzdajRacun.Name = "tabIzdajRacun";
             this.tabIzdajRacun.Padding = new System.Windows.Forms.Padding(5);
-            this.tabIzdajRacun.Size = new System.Drawing.Size(968, 534);
+            this.tabIzdajRacun.Size = new System.Drawing.Size(1218, 596);
             this.tabIzdajRacun.TabIndex = 0;
             this.tabIzdajRacun.Text = "Izdaj račun";
             this.tabIzdajRacun.UseVisualStyleBackColor = true;
@@ -79,7 +79,7 @@
             // 
             this.textRacuna.Location = new System.Drawing.Point(646, 93);
             this.textRacuna.Name = "textRacuna";
-            this.textRacuna.Size = new System.Drawing.Size(293, 412);
+            this.textRacuna.Size = new System.Drawing.Size(416, 412);
             this.textRacuna.TabIndex = 3;
             this.textRacuna.Text = "";
             // 
@@ -105,6 +105,7 @@
             this.dataGridViewPica.Name = "dataGridViewPica";
             this.dataGridViewPica.Size = new System.Drawing.Size(579, 412);
             this.dataGridViewPica.TabIndex = 1;
+            this.dataGridViewPica.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPica_CellClick);
             this.dataGridViewPica.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewPica_CellFormatting);
             // 
             // buttonPrikazPica
@@ -164,13 +165,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1000, 617);
+            this.ClientSize = new System.Drawing.Size(1250, 647);
             this.Controls.Add(this.gumbOdjavaKonobara);
             this.Controls.Add(this.tabKonobar);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "KonobarForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "KonobarForm";
             this.tabKonobar.ResumeLayout(false);
             this.tabIzdajRacun.ResumeLayout(false);
