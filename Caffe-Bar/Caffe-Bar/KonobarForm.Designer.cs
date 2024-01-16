@@ -55,7 +55,7 @@
             this.tabKonobar.Multiline = true;
             this.tabKonobar.Name = "tabKonobar";
             this.tabKonobar.SelectedIndex = 0;
-            this.tabKonobar.Size = new System.Drawing.Size(1226, 654);
+            this.tabKonobar.Size = new System.Drawing.Size(1215, 654);
             this.tabKonobar.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabKonobar.TabIndex = 4;
             // 
@@ -70,16 +70,16 @@
             this.tabIzdajRacun.Margin = new System.Windows.Forms.Padding(5);
             this.tabIzdajRacun.Name = "tabIzdajRacun";
             this.tabIzdajRacun.Padding = new System.Windows.Forms.Padding(5);
-            this.tabIzdajRacun.Size = new System.Drawing.Size(1218, 596);
+            this.tabIzdajRacun.Size = new System.Drawing.Size(1207, 596);
             this.tabIzdajRacun.TabIndex = 0;
             this.tabIzdajRacun.Text = "Izdaj račun";
             this.tabIzdajRacun.UseVisualStyleBackColor = true;
             // 
             // textRacuna
             // 
-            this.textRacuna.Location = new System.Drawing.Point(646, 93);
+            this.textRacuna.Location = new System.Drawing.Point(487, 93);
             this.textRacuna.Name = "textRacuna";
-            this.textRacuna.Size = new System.Drawing.Size(416, 412);
+            this.textRacuna.Size = new System.Drawing.Size(524, 475);
             this.textRacuna.TabIndex = 3;
             this.textRacuna.Text = "";
             // 
@@ -103,7 +103,7 @@
             this.dataGridViewPica.GridColor = System.Drawing.SystemColors.ActiveCaption;
             this.dataGridViewPica.Location = new System.Drawing.Point(22, 93);
             this.dataGridViewPica.Name = "dataGridViewPica";
-            this.dataGridViewPica.Size = new System.Drawing.Size(579, 412);
+            this.dataGridViewPica.Size = new System.Drawing.Size(434, 411);
             this.dataGridViewPica.TabIndex = 1;
             this.dataGridViewPica.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPica_CellClick);
             this.dataGridViewPica.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewPica_CellFormatting);
@@ -124,7 +124,7 @@
             this.tabSkladiste.Margin = new System.Windows.Forms.Padding(5);
             this.tabSkladiste.Name = "tabSkladiste";
             this.tabSkladiste.Padding = new System.Windows.Forms.Padding(5);
-            this.tabSkladiste.Size = new System.Drawing.Size(968, 534);
+            this.tabSkladiste.Size = new System.Drawing.Size(1218, 596);
             this.tabSkladiste.TabIndex = 1;
             this.tabSkladiste.Text = "Skladište";
             this.tabSkladiste.UseVisualStyleBackColor = true;
@@ -135,7 +135,7 @@
             this.tabŠank.Margin = new System.Windows.Forms.Padding(5);
             this.tabŠank.Name = "tabŠank";
             this.tabŠank.Padding = new System.Windows.Forms.Padding(5);
-            this.tabŠank.Size = new System.Drawing.Size(968, 534);
+            this.tabŠank.Size = new System.Drawing.Size(1218, 596);
             this.tabŠank.TabIndex = 2;
             this.tabŠank.Text = "Šank";
             this.tabŠank.UseVisualStyleBackColor = true;
@@ -146,7 +146,7 @@
             this.tabNarudžba.Margin = new System.Windows.Forms.Padding(5);
             this.tabNarudžba.Name = "tabNarudžba";
             this.tabNarudžba.Padding = new System.Windows.Forms.Padding(5);
-            this.tabNarudžba.Size = new System.Drawing.Size(968, 534);
+            this.tabNarudžba.Size = new System.Drawing.Size(1218, 596);
             this.tabNarudžba.TabIndex = 3;
             this.tabNarudžba.Text = "Narudžba";
             this.tabNarudžba.UseVisualStyleBackColor = true;
@@ -154,7 +154,7 @@
             // gumbOdjavaKonobara
             // 
             this.gumbOdjavaKonobara.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.gumbOdjavaKonobara.Location = new System.Drawing.Point(847, 12);
+            this.gumbOdjavaKonobara.Location = new System.Drawing.Point(1096, 12);
             this.gumbOdjavaKonobara.Name = "gumbOdjavaKonobara";
             this.gumbOdjavaKonobara.Size = new System.Drawing.Size(131, 48);
             this.gumbOdjavaKonobara.TabIndex = 5;

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace CaffeBar
     public partial class KonobarForm : Form
     {
         public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
+        private List<Pice> narucenaPica = new List<Pice>();
         public KonobarForm()
         {
             InitializeComponent();
@@ -52,6 +54,13 @@ namespace CaffeBar
                 dataGridViewPica.Columns[4].Visible = false;
                 dataGridViewPica.Columns[5].Visible = false;
                 dataGridViewPica.Columns[6].Visible = false;
+                foreach (DataGridViewColumn column in dataGridViewPica.Columns)
+                {
+                    if (column.Visible)
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    }
+                }
 
                 dataGridViewPica.Columns[1].HeaderText = "Naziv pića";
                 dataGridViewPica.Columns[2].HeaderText = "Cijena pića";
@@ -83,6 +92,13 @@ namespace CaffeBar
             dataGridViewPica.Columns[4].Visible = false;
             dataGridViewPica.Columns[5].Visible = false;
             dataGridViewPica.Columns[6].Visible = false;
+            foreach (DataGridViewColumn column in dataGridViewPica.Columns)
+            {
+                if (column.Visible)
+                {
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+            }
 
             dataGridViewPica.Columns[1].HeaderText = "Naziv pića";
             dataGridViewPica.Columns[2].HeaderText = "Cijena pića";
@@ -116,10 +132,12 @@ namespace CaffeBar
             }
         }
 
-        private List<Pice> narucenaPica = new List<Pice>();
-
         private void dataGridViewPica_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (narucenaPica.Count == 0)
+            {
+                initializeBill();
+            }
             if (sender is DataGridView d && e.RowIndex >= 0)
             {
                 int indeksRetka = e.RowIndex;
@@ -127,8 +145,12 @@ namespace CaffeBar
                 int idPica = (int)d.Rows[indeksRetka].Cells[0].Value;
                 string nazivPica = d.Rows[indeksRetka].Cells[1].Value.ToString();
                 decimal cijenaPica = (decimal)d.Rows[indeksRetka].Cells[2].Value;
+                int kategorijaPica = (int)d.Rows[indeksRetka].Cells[3].Value;
+                decimal kolicinaKafic = (decimal)d.Rows[indeksRetka].Cells[4].Value;
+                decimal kolicinaSkladiste = (decimal)d.Rows[indeksRetka].Cells[5].Value;
+                string najmanjaKolicina = d.Rows[indeksRetka].Cells[6].Value.ToString();
 
-                string label = nazivPica + " " + Math.Round(cijenaPica, 2);
+                string label = nazivPica + "\t\t" + Math.Round(cijenaPica, 2);
                 int kolicina = GetQuantityFromUser(label);
 
                 if (kolicina > 0)
@@ -138,16 +160,33 @@ namespace CaffeBar
                         id_pica = idPica,
                         naziv_pica = nazivPica,
                         cijena_pica = cijenaPica,
-                        kolicina_kafic = kolicina
-                        // You might want to copy other properties as needed
+                        id_kategorija_pica = kategorijaPica,
+                        kolicina_kafic = kolicinaKafic,
+                        kolicina_skladista = kolicinaSkladiste,
+                        najmanja_kolicina = najmanjaKolicina
                     };
-
                     narucenaPica.Add(narucenoPice);
-                    string piceInfo = $"{nazivPica} - {cijenaPica:C} x {kolicina}";
+
+                    decimal ukupnaCijena = Math.Round(cijenaPica * kolicina,2);
+                    string piceInfo = $"{nazivPica,-20}{Math.Round(cijenaPica, 2),-10} x {kolicina,-5} = {ukupnaCijena,-5}";
                     MessageBox.Show(piceInfo, "Dodano u narudžbu");
-                    textRacuna.Text += label + " \n";
+                    textRacuna.Text += piceInfo + "\n\n";
                 }
             }
+        }
+
+        private void initializeBill()
+        {
+            textRacuna.Font = new Font(FontFamily.GenericMonospace, textRacuna.Font.Size);
+
+            textRacuna.SelectionAlignment = HorizontalAlignment.Center;
+            textRacuna.AppendText("\n");
+            textRacuna.AppendText("Caffe-Bar Naziv \n\n");
+            textRacuna.AppendText("Bijenička cesta 30\n");
+            textRacuna.AppendText("10000 Zagreb\n");
+            textRacuna.AppendText("--------------------------------------\n\n");
+            textRacuna.SelectionAlignment = HorizontalAlignment.Left;
+            textRacuna.AppendText($"{"Naziv",-20}{"Cijena",-10}{"Količina",-5}  {"Ukupno",-5}\n\n");  
         }
 
         public int GetQuantityFromUser(string label)
@@ -160,7 +199,14 @@ namespace CaffeBar
                 return quantity;
             }
             else
-            { return 0; }
+            {
+                MessageBox.Show("Ne dodajemo proizvod!", "Upozorenje");
+                if (narucenaPica.Count == 0)
+                {
+                    textRacuna.Clear();
+                }
+                return 0;
+            }
         }
     }
 }
