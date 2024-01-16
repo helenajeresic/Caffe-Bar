@@ -14,7 +14,6 @@ namespace Caffe_Bar
 
         private void gumbOdustani_Click(object sender, EventArgs e)
         {
-            Quantity = 0;
             Close();
         }
 
