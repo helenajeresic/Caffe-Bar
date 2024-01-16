@@ -11,6 +11,7 @@ namespace CaffeBar
     public partial class KonobarForm : Form
     {
         public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
+        private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica = new Dictionary<Pice, decimal>();
         public int id_ulogirani;
         public string ime_ulogirani;
@@ -19,7 +20,7 @@ namespace CaffeBar
         public KonobarForm(int id_konobar, string ime_konobar, string prezime_konobar, string username_konobar)
         {
             InitializeComponent();
-
+            naredba = new SqlCommand();
             id_ulogirani = id_konobar;
             ime_ulogirani = ime_konobar;
             prezime_ulogirani = prezime_konobar;
@@ -28,12 +29,12 @@ namespace CaffeBar
             dataGridViewPica.CellFormatting += dataGridViewPica_CellFormatting;
         }
 
-        private void buttonPrikaziPica_Click(object sender, EventArgs e)
+        private List<Pice> GetPicaFromDatabase(string upit)
         {
             SqlConnection veza = new SqlConnection(connectionString);
             veza.Open();
-            string upit = "SELECT * FROM Pica";
-            SqlCommand naredba = new SqlCommand(upit, veza);
+            naredba = new SqlCommand(upit, veza);
+            naredba.Parameters.AddWithValue("@unos", "%" + textBoxTrazi.Text + "%");
             List<Pice> pica = new List<Pice>();
 
             using (SqlDataReader čitač = naredba.ExecuteReader())
@@ -52,51 +53,26 @@ namespace CaffeBar
                     });
                 }
                 pica.Sort((x, y) => x.naziv_pica.CompareTo(y.naziv_pica));
-                dataGridViewPica.DataSource = pica;
-
-                dataGridViewPica.Columns[0].Visible = false;
-                dataGridViewPica.Columns[3].Visible = false;
-                dataGridViewPica.Columns[4].Visible = false;
-                dataGridViewPica.Columns[5].Visible = false;
-                dataGridViewPica.Columns[6].Visible = false;
-                foreach (DataGridViewColumn column in dataGridViewPica.Columns)
-                {
-                    if (column.Visible)
-                    {
-                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    }
-                }
-
-                dataGridViewPica.Columns[1].HeaderText = "Naziv pića";
-                dataGridViewPica.Columns[2].HeaderText = "Cijena pića";
             }
             veza.Close();
+
+            return pica;
         }
 
-        public void textBoxTrazi_TextChanged(object sender, EventArgs e)
+        private void primjeniPopustNaPica(List<Pice> pica, decimal popust)
         {
-            SqlConnection veza = new SqlConnection(connectionString);
-            veza.Open();
-            string upit = "SELECT * FROM Pica";
-            SqlCommand naredba = new SqlCommand();
-            naredba.CommandText = upit;
-            naredba.Connection = veza;
-            if (textBoxTrazi.Text.Length > 0)
-            {
-                naredba.CommandText += " WHERE naziv_pica LIKE @unos";
-                naredba.Parameters.AddWithValue("@unos", "%" + textBoxTrazi.Text + "%");
-            }
-            SqlDataAdapter adapter = new SqlDataAdapter(naredba);
-            DataTable dt = new DataTable();
-            dt.Clear();
-            adapter.Fill(dt);
-            dataGridViewPica.DataSource = dt;
+            pica.ForEach(x => x.cijena_pica -= popust * x.cijena_pica);
+        }
 
+        private void prikaziPicaDataGridView(List<Pice> pica)
+        {
+            dataGridViewPica.DataSource = pica;
             dataGridViewPica.Columns[0].Visible = false;
             dataGridViewPica.Columns[3].Visible = false;
             dataGridViewPica.Columns[4].Visible = false;
             dataGridViewPica.Columns[5].Visible = false;
             dataGridViewPica.Columns[6].Visible = false;
+
             foreach (DataGridViewColumn column in dataGridViewPica.Columns)
             {
                 if (column.Visible)
@@ -107,8 +83,31 @@ namespace CaffeBar
 
             dataGridViewPica.Columns[1].HeaderText = "Naziv pića";
             dataGridViewPica.Columns[2].HeaderText = "Cijena pića";
+        }
 
-            veza.Close();
+        private void buttonPrikaziPica_Click(object sender, EventArgs e)
+        {
+            List<Pice> pica = GetPicaFromDatabase("SELECT * FROM Pica");
+
+            if(provjeraAkcije() != 0)
+            {
+                decimal popust = provjeraAkcije() / 100;
+                primjeniPopustNaPica(pica, popust);
+                labelAkcijaUTijeku.Text = "U tijeku je akcija - " + provjeraAkcije().ToString() + "%";
+            }
+            prikaziPicaDataGridView(pica);
+        }
+
+        private void textBoxTrazi_TextChanged(object sender, EventArgs e)
+        {
+            List<Pice> pica = GetPicaFromDatabase("SELECT * FROM Pica");
+
+            
+            if (textBoxTrazi.Text.Length > 0)
+            {
+                pica = GetPicaFromDatabase("SELECT * FROM Pica WHERE naziv_pica LIKE @unos");
+            }
+            prikaziPicaDataGridView(pica);
         }
 
         private void dataGridViewPica_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -304,6 +303,25 @@ namespace CaffeBar
         {
             textRacuna.Clear() ;
             narucenaPica.Clear();
+        }
+
+        private decimal provjeraAkcije()
+        {
+            decimal akcija = 0;
+
+            SqlConnection veza = new SqlConnection(connectionString);
+            veza.Open();
+            string upit = "SELECT * FROM Akcija WHERE GETDATE() BETWEEN [od] AND [do];";
+            SqlCommand naredba = new SqlCommand(upit, veza);
+            using (SqlDataReader čitač = naredba.ExecuteReader())
+            {
+                if (čitač.Read())
+                {
+                    akcija = čitač.GetDecimal(4);
+                }
+            }
+            veza.Close();
+            return akcija;
         }
     }
 }

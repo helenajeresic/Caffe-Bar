@@ -30,6 +30,7 @@
         {
             this.tabKonobar = new System.Windows.Forms.TabControl();
             this.tabIzdajRacun = new System.Windows.Forms.TabPage();
+            this.buttonOcistiRacun = new System.Windows.Forms.Button();
             this.buttonKonobarskiPopust = new System.Windows.Forms.Button();
             this.gumbIzdajRacun = new System.Windows.Forms.Button();
             this.textRacuna = new System.Windows.Forms.RichTextBox();
@@ -40,7 +41,7 @@
             this.tabŠank = new System.Windows.Forms.TabPage();
             this.tabNarudžba = new System.Windows.Forms.TabPage();
             this.gumbOdjavaKonobara = new System.Windows.Forms.Button();
-            this.buttonOcistiRacun = new System.Windows.Forms.Button();
+            this.labelAkcijaUTijeku = new System.Windows.Forms.Label();
             this.tabKonobar.SuspendLayout();
             this.tabIzdajRacun.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPica)).BeginInit();
@@ -64,6 +65,7 @@
             // 
             // tabIzdajRacun
             // 
+            this.tabIzdajRacun.Controls.Add(this.labelAkcijaUTijeku);
             this.tabIzdajRacun.Controls.Add(this.buttonOcistiRacun);
             this.tabIzdajRacun.Controls.Add(this.buttonKonobarskiPopust);
             this.tabIzdajRacun.Controls.Add(this.gumbIzdajRacun);
@@ -80,6 +82,17 @@
             this.tabIzdajRacun.TabIndex = 0;
             this.tabIzdajRacun.Text = "Izdaj račun";
             this.tabIzdajRacun.UseVisualStyleBackColor = true;
+            // 
+            // buttonOcistiRacun
+            // 
+            this.buttonOcistiRacun.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.buttonOcistiRacun.Location = new System.Drawing.Point(1030, 387);
+            this.buttonOcistiRacun.Name = "buttonOcistiRacun";
+            this.buttonOcistiRacun.Size = new System.Drawing.Size(155, 48);
+            this.buttonOcistiRacun.TabIndex = 8;
+            this.buttonOcistiRacun.Text = "Očisti račun";
+            this.buttonOcistiRacun.UseVisualStyleBackColor = true;
+            this.buttonOcistiRacun.Click += new System.EventHandler(this.buttonOcistiRacun_Click);
             // 
             // buttonKonobarskiPopust
             // 
@@ -189,16 +202,14 @@
             this.gumbOdjavaKonobara.Text = "Odjava";
             this.gumbOdjavaKonobara.UseVisualStyleBackColor = true;
             // 
-            // buttonOcistiRacun
+            // labelAkcijaUTijeku
             // 
-            this.buttonOcistiRacun.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.buttonOcistiRacun.Location = new System.Drawing.Point(1030, 387);
-            this.buttonOcistiRacun.Name = "buttonOcistiRacun";
-            this.buttonOcistiRacun.Size = new System.Drawing.Size(155, 48);
-            this.buttonOcistiRacun.TabIndex = 8;
-            this.buttonOcistiRacun.Text = "Očisti račun";
-            this.buttonOcistiRacun.UseVisualStyleBackColor = true;
-            this.buttonOcistiRacun.Click += new System.EventHandler(this.buttonOcistiRacun_Click);
+            this.labelAkcijaUTijeku.AutoSize = true;
+            this.labelAkcijaUTijeku.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.labelAkcijaUTijeku.Location = new System.Drawing.Point(483, 29);
+            this.labelAkcijaUTijeku.Name = "labelAkcijaUTijeku";
+            this.labelAkcijaUTijeku.Size = new System.Drawing.Size(0, 26);
+            this.labelAkcijaUTijeku.TabIndex = 9;
             // 
             // KonobarForm
             // 
@@ -236,5 +247,6 @@
         private System.Windows.Forms.Button buttonKonobarskiPopust;
         private System.Windows.Forms.Button gumbIzdajRacun;
         private System.Windows.Forms.Button buttonOcistiRacun;
+        private System.Windows.Forms.Label labelAkcijaUTijeku;
     }
 }
