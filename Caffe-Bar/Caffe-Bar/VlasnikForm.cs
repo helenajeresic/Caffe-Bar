@@ -14,12 +14,12 @@ namespace CaffeBar
 {
     public partial class VlasnikForm : Form
     {
-        static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\\\\wsl.localhost\\Ubuntu-18.04\\home\\doriblas\\Caffe-Bar\\Caffe-Bar\\Caffe-Bar\\baza.mdf;Integrated Security=True";
+        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
 
         public VlasnikForm()
         {
             InitializeComponent();
-
+            
             //inicijalno popunjavanje dropdowna kod statistike sa svim picima u kaficu
             SqlConnection veza = new SqlConnection(connectionString);
             veza.Open();
@@ -39,6 +39,7 @@ namespace CaffeBar
             {
                 odabirPica.Items.Add(pica);
             }
+            
 
         }
 
@@ -169,6 +170,7 @@ namespace CaffeBar
             dataGridViewKolicinePica.DataSource = dt;
 
             veza.Close();
+        }
 
         private void btnOtpusti_Click(object sender, EventArgs e)
         {
