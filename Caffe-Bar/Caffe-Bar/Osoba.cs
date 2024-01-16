@@ -8,7 +8,6 @@ namespace CaffeBar
 {
     internal class Osoba
     {
-        public int id_osobe {  get; set; }
         public string ime { get; set; }
         public string prezime { get; set; }
         public int uloga { get; set; }

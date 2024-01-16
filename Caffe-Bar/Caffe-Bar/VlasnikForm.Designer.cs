@@ -41,18 +41,35 @@
             this.txtKorisnickoIme = new System.Windows.Forms.TextBox();
             this.labelUsernameKonobar = new System.Windows.Forms.Label();
             this.tabOtpustiKonobara = new System.Windows.Forms.TabPage();
+            this.groupBoxOtpusti = new System.Windows.Forms.GroupBox();
+            this.btnOtpusti = new System.Windows.Forms.Button();
+            this.txtOtpustiKonobara = new System.Windows.Forms.TextBox();
+            this.labelOtpustiKonobara = new System.Windows.Forms.Label();
+            this.dataGridViewKonobari = new System.Windows.Forms.DataGridView();
+            this.btnPrikaziKonobare = new System.Windows.Forms.Button();
             this.tabUnosPića = new System.Windows.Forms.TabPage();
+            this.groupBoxNovoPice = new System.Windows.Forms.GroupBox();
+            this.btnUnosPica = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtUpozorenje = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtKategorija = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtCijenaPica = new System.Windows.Forms.TextBox();
+            this.labelNazivPica = new System.Windows.Forms.Label();
+            this.txtNazivPica = new System.Windows.Forms.TextBox();
             this.tabModifikacijaPića = new System.Windows.Forms.TabPage();
             this.tabAkcije = new System.Windows.Forms.TabPage();
             this.tabStatistika = new System.Windows.Forms.TabPage();
             this.gumbOdjavaVlasnika = new System.Windows.Forms.Button();
-            this.btnPrikaziKonobare = new System.Windows.Forms.Button();
-            this.dataGridViewKonobari = new System.Windows.Forms.DataGridView();
             this.tabKonobar.SuspendLayout();
             this.tabZaposliKonobara.SuspendLayout();
             this.gBoxDodajKonobara.SuspendLayout();
             this.tabOtpustiKonobara.SuspendLayout();
+            this.groupBoxOtpusti.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKonobari)).BeginInit();
+            this.tabUnosPića.SuspendLayout();
+            this.groupBoxNovoPice.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabKonobar
@@ -180,6 +197,7 @@
             // 
             // tabOtpustiKonobara
             // 
+            this.tabOtpustiKonobara.Controls.Add(this.groupBoxOtpusti);
             this.tabOtpustiKonobara.Controls.Add(this.dataGridViewKonobari);
             this.tabOtpustiKonobara.Controls.Add(this.btnPrikaziKonobare);
             this.tabOtpustiKonobara.Location = new System.Drawing.Point(4, 54);
@@ -191,8 +209,67 @@
             this.tabOtpustiKonobara.Text = "Otpusti konobara";
             this.tabOtpustiKonobara.UseVisualStyleBackColor = true;
             // 
+            // groupBoxOtpusti
+            // 
+            this.groupBoxOtpusti.Controls.Add(this.btnOtpusti);
+            this.groupBoxOtpusti.Controls.Add(this.txtOtpustiKonobara);
+            this.groupBoxOtpusti.Controls.Add(this.labelOtpustiKonobara);
+            this.groupBoxOtpusti.Location = new System.Drawing.Point(606, 115);
+            this.groupBoxOtpusti.Name = "groupBoxOtpusti";
+            this.groupBoxOtpusti.Size = new System.Drawing.Size(522, 224);
+            this.groupBoxOtpusti.TabIndex = 2;
+            this.groupBoxOtpusti.TabStop = false;
+            this.groupBoxOtpusti.Text = "Otpusti konobara";
+            // 
+            // btnOtpusti
+            // 
+            this.btnOtpusti.Location = new System.Drawing.Point(379, 129);
+            this.btnOtpusti.Name = "btnOtpusti";
+            this.btnOtpusti.Size = new System.Drawing.Size(117, 35);
+            this.btnOtpusti.TabIndex = 8;
+            this.btnOtpusti.Text = "OK";
+            this.btnOtpusti.UseVisualStyleBackColor = true;
+            this.btnOtpusti.Click += new System.EventHandler(this.btnOtpusti_Click);
+            // 
+            // txtOtpustiKonobara
+            // 
+            this.txtOtpustiKonobara.Location = new System.Drawing.Point(212, 75);
+            this.txtOtpustiKonobara.Name = "txtOtpustiKonobara";
+            this.txtOtpustiKonobara.Size = new System.Drawing.Size(284, 34);
+            this.txtOtpustiKonobara.TabIndex = 7;
+            // 
+            // labelOtpustiKonobara
+            // 
+            this.labelOtpustiKonobara.AutoSize = true;
+            this.labelOtpustiKonobara.Location = new System.Drawing.Point(21, 75);
+            this.labelOtpustiKonobara.Name = "labelOtpustiKonobara";
+            this.labelOtpustiKonobara.Size = new System.Drawing.Size(172, 29);
+            this.labelOtpustiKonobara.TabIndex = 6;
+            this.labelOtpustiKonobara.Text = "Korisničko ime";
+            // 
+            // dataGridViewKonobari
+            // 
+            this.dataGridViewKonobari.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewKonobari.Location = new System.Drawing.Point(37, 115);
+            this.dataGridViewKonobari.Name = "dataGridViewKonobari";
+            this.dataGridViewKonobari.RowHeadersWidth = 51;
+            this.dataGridViewKonobari.RowTemplate.Height = 24;
+            this.dataGridViewKonobari.Size = new System.Drawing.Size(522, 375);
+            this.dataGridViewKonobari.TabIndex = 1;
+            // 
+            // btnPrikaziKonobare
+            // 
+            this.btnPrikaziKonobare.Location = new System.Drawing.Point(159, 69);
+            this.btnPrikaziKonobare.Name = "btnPrikaziKonobare";
+            this.btnPrikaziKonobare.Size = new System.Drawing.Size(266, 40);
+            this.btnPrikaziKonobare.TabIndex = 0;
+            this.btnPrikaziKonobare.Text = "Prikaži konobare";
+            this.btnPrikaziKonobare.UseVisualStyleBackColor = true;
+            this.btnPrikaziKonobare.Click += new System.EventHandler(this.btnPrikaziKonobare_Click);
+            // 
             // tabUnosPića
             // 
+            this.tabUnosPića.Controls.Add(this.groupBoxNovoPice);
             this.tabUnosPića.Location = new System.Drawing.Point(4, 54);
             this.tabUnosPića.Margin = new System.Windows.Forms.Padding(5);
             this.tabUnosPića.Name = "tabUnosPića";
@@ -201,6 +278,98 @@
             this.tabUnosPića.TabIndex = 2;
             this.tabUnosPića.Text = "Unos pića";
             this.tabUnosPića.UseVisualStyleBackColor = true;
+            // 
+            // groupBoxNovoPice
+            // 
+            this.groupBoxNovoPice.Controls.Add(this.btnUnosPica);
+            this.groupBoxNovoPice.Controls.Add(this.label1);
+            this.groupBoxNovoPice.Controls.Add(this.txtUpozorenje);
+            this.groupBoxNovoPice.Controls.Add(this.label3);
+            this.groupBoxNovoPice.Controls.Add(this.txtKategorija);
+            this.groupBoxNovoPice.Controls.Add(this.label2);
+            this.groupBoxNovoPice.Controls.Add(this.txtCijenaPica);
+            this.groupBoxNovoPice.Controls.Add(this.labelNazivPica);
+            this.groupBoxNovoPice.Controls.Add(this.txtNazivPica);
+            this.groupBoxNovoPice.Location = new System.Drawing.Point(108, 51);
+            this.groupBoxNovoPice.Name = "groupBoxNovoPice";
+            this.groupBoxNovoPice.Size = new System.Drawing.Size(792, 434);
+            this.groupBoxNovoPice.TabIndex = 0;
+            this.groupBoxNovoPice.TabStop = false;
+            this.groupBoxNovoPice.Text = "Unesi novo piće";
+            // 
+            // btnUnosPica
+            // 
+            this.btnUnosPica.Location = new System.Drawing.Point(604, 312);
+            this.btnUnosPica.Name = "btnUnosPica";
+            this.btnUnosPica.Size = new System.Drawing.Size(75, 34);
+            this.btnUnosPica.TabIndex = 10;
+            this.btnUnosPica.Text = "OK";
+            this.btnUnosPica.UseVisualStyleBackColor = true;
+            this.btnUnosPica.Click += new System.EventHandler(this.btnUnosPica_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 261);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(383, 29);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Najmanja količina prije upozorenja";
+            // 
+            // txtUpozorenje
+            // 
+            this.txtUpozorenje.Location = new System.Drawing.Point(395, 256);
+            this.txtUpozorenje.Name = "txtUpozorenje";
+            this.txtUpozorenje.Size = new System.Drawing.Size(284, 34);
+            this.txtUpozorenje.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(266, 210);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(123, 29);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Kategorija";
+            // 
+            // txtKategorija
+            // 
+            this.txtKategorija.Location = new System.Drawing.Point(395, 205);
+            this.txtKategorija.Name = "txtKategorija";
+            this.txtKategorija.Size = new System.Drawing.Size(284, 34);
+            this.txtKategorija.TabIndex = 7;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(307, 151);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(82, 29);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Cijena";
+            // 
+            // txtCijenaPica
+            // 
+            this.txtCijenaPica.Location = new System.Drawing.Point(395, 146);
+            this.txtCijenaPica.Name = "txtCijenaPica";
+            this.txtCijenaPica.Size = new System.Drawing.Size(284, 34);
+            this.txtCijenaPica.TabIndex = 5;
+            // 
+            // labelNazivPica
+            // 
+            this.labelNazivPica.AutoSize = true;
+            this.labelNazivPica.Location = new System.Drawing.Point(317, 92);
+            this.labelNazivPica.Name = "labelNazivPica";
+            this.labelNazivPica.Size = new System.Drawing.Size(72, 29);
+            this.labelNazivPica.TabIndex = 2;
+            this.labelNazivPica.Text = "Naziv";
+            // 
+            // txtNazivPica
+            // 
+            this.txtNazivPica.Location = new System.Drawing.Point(395, 87);
+            this.txtNazivPica.Name = "txtNazivPica";
+            this.txtNazivPica.Size = new System.Drawing.Size(284, 34);
+            this.txtNazivPica.TabIndex = 3;
             // 
             // tabModifikacijaPića
             // 
@@ -241,26 +410,6 @@
             this.gumbOdjavaVlasnika.Text = "Odjava";
             this.gumbOdjavaVlasnika.UseVisualStyleBackColor = true;
             // 
-            // btnPrikaziKonobare
-            // 
-            this.btnPrikaziKonobare.Location = new System.Drawing.Point(159, 69);
-            this.btnPrikaziKonobare.Name = "btnPrikaziKonobare";
-            this.btnPrikaziKonobare.Size = new System.Drawing.Size(266, 40);
-            this.btnPrikaziKonobare.TabIndex = 0;
-            this.btnPrikaziKonobare.Text = "Prikaži konobare";
-            this.btnPrikaziKonobare.UseVisualStyleBackColor = true;
-            this.btnPrikaziKonobare.Click += new System.EventHandler(this.btnPrikaziKonobare_Click);
-            // 
-            // dataGridViewKonobari
-            // 
-            this.dataGridViewKonobari.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewKonobari.Location = new System.Drawing.Point(37, 115);
-            this.dataGridViewKonobari.Name = "dataGridViewKonobari";
-            this.dataGridViewKonobari.RowHeadersWidth = 51;
-            this.dataGridViewKonobari.RowTemplate.Height = 24;
-            this.dataGridViewKonobari.Size = new System.Drawing.Size(522, 375);
-            this.dataGridViewKonobari.TabIndex = 1;
-            // 
             // VlasnikForm
             // 
             this.ClientSize = new System.Drawing.Size(1238, 630);
@@ -272,7 +421,12 @@
             this.gBoxDodajKonobara.ResumeLayout(false);
             this.gBoxDodajKonobara.PerformLayout();
             this.tabOtpustiKonobara.ResumeLayout(false);
+            this.groupBoxOtpusti.ResumeLayout(false);
+            this.groupBoxOtpusti.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKonobari)).EndInit();
+            this.tabUnosPića.ResumeLayout(false);
+            this.groupBoxNovoPice.ResumeLayout(false);
+            this.groupBoxNovoPice.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -299,5 +453,19 @@
         private System.Windows.Forms.GroupBox gBoxDodajKonobara;
         private System.Windows.Forms.DataGridView dataGridViewKonobari;
         private System.Windows.Forms.Button btnPrikaziKonobare;
+        private System.Windows.Forms.GroupBox groupBoxOtpusti;
+        private System.Windows.Forms.Button btnOtpusti;
+        private System.Windows.Forms.TextBox txtOtpustiKonobara;
+        private System.Windows.Forms.Label labelOtpustiKonobara;
+        private System.Windows.Forms.GroupBox groupBoxNovoPice;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtCijenaPica;
+        private System.Windows.Forms.Label labelNazivPica;
+        private System.Windows.Forms.TextBox txtNazivPica;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtUpozorenje;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtKategorija;
+        private System.Windows.Forms.Button btnUnosPica;
     }
 }
