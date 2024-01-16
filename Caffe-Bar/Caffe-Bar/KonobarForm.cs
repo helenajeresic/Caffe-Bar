@@ -1,14 +1,9 @@
-﻿using Caffe_Bar;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CaffeBar
@@ -16,7 +11,7 @@ namespace CaffeBar
     public partial class KonobarForm : Form
     {
         public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
-        private List<Pice> narucenaPica = new List<Pice>();
+        public Dictionary<Pice, decimal> narucenaPica = new Dictionary<Pice, decimal>();
         public KonobarForm()
         {
             InitializeComponent();
@@ -132,7 +127,7 @@ namespace CaffeBar
             }
         }
 
-        private void dataGridViewPica_CellClick(object sender, DataGridViewCellEventArgs e)
+        public void dataGridViewPica_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (narucenaPica.Count == 0)
             {
@@ -150,63 +145,155 @@ namespace CaffeBar
                 decimal kolicinaSkladiste = (decimal)d.Rows[indeksRetka].Cells[5].Value;
                 string najmanjaKolicina = d.Rows[indeksRetka].Cells[6].Value.ToString();
 
-                string label = nazivPica + "  " + Math.Round(cijenaPica, 2);
-                int kolicina = GetQuantityFromUser(label);
+                string label = nazivPica;
+                decimal kolicina = dohvatiUnesenuKolicinu(label, idPica);
 
                 if (kolicina > 0)
                 {
-                    Pice narucenoPice = new Pice()
+                    if(narucenaPica.Any(item => item.Key.naziv_pica == label))
                     {
-                        id_pica = idPica,
-                        naziv_pica = nazivPica,
-                        cijena_pica = cijenaPica,
-                        id_kategorija_pica = kategorijaPica,
-                        kolicina_kafic = kolicinaKafic,
-                        kolicina_skladista = kolicinaSkladiste,
-                        najmanja_kolicina = najmanjaKolicina
-                    };
-                    narucenaPica.Add(narucenoPice);
+                        Pice existingItem = narucenaPica.Keys.FirstOrDefault(item => item.naziv_pica == label);
+                        narucenaPica[existingItem] += kolicina;
+                        decimal ukupna_cijena = Math.Round(existingItem.cijena_pica * kolicina, 2);
+                        string info = $"{existingItem.naziv_pica,-20}{Math.Round(existingItem.cijena_pica, 2),-10} x {kolicina,-5} = {ukupna_cijena,-5}";
+                        MessageBox.Show("Dodano na račun: " + info, "Obavijest");
+                        textRacuna.AppendText(info + "\n\n");
+                    }
+                    else
+                    {
+                        Pice narucenoPice = new Pice()
+                        {
+                            id_pica = idPica,
+                            naziv_pica = nazivPica,
+                            cijena_pica = cijenaPica,
+                            id_kategorija_pica = kategorijaPica,
+                            kolicina_kafic = kolicinaKafic,
+                            kolicina_skladista = kolicinaSkladiste,
+                            najmanja_kolicina = najmanjaKolicina
+                        };
+                        narucenaPica[narucenoPice] = kolicina;
 
-                    decimal ukupnaCijena = Math.Round(cijenaPica * kolicina,2);
-                    string piceInfo = $"{nazivPica,-20}{Math.Round(cijenaPica, 2),-10} x {kolicina,-5} = {ukupnaCijena,-5}";
-                    MessageBox.Show(piceInfo, "Dodano u narudžbu");
-                    textRacuna.Text += piceInfo + "\n\n";
+                        decimal ukupnaCijena = Math.Round(cijenaPica * kolicina, 2);
+                        string piceInfo = $"{nazivPica,-20}{Math.Round(cijenaPica, 2),-10} x {kolicina,-5} = {ukupnaCijena,-5}";
+                        MessageBox.Show("Dodano na račun: " + piceInfo, "Obavijest");
+                        textRacuna.AppendText(piceInfo + "\n\n");
+                    }
+
                 }
             }
         }
 
         private void initializeBill()
         {
-            textRacuna.Font = new Font(FontFamily.GenericMonospace, textRacuna.Font.Size);
-
+            textRacuna.SelectionStart = 0;
+            textRacuna.SelectionLength = 0; 
             textRacuna.SelectionAlignment = HorizontalAlignment.Center;
+
             textRacuna.AppendText("\n");
             textRacuna.AppendText("Caffe-Bar Naziv \n\n");
             textRacuna.AppendText("Bijenička cesta 30\n");
             textRacuna.AppendText("10000 Zagreb\n");
             textRacuna.AppendText("--------------------------------------\n\n");
             textRacuna.SelectionAlignment = HorizontalAlignment.Left;
-            textRacuna.AppendText($"{"Naziv",-20}{"Cijena",-10}{"Količina",-5}  {"Ukupno",-5}\n\n");  
+            textRacuna.AppendText($"{"Naziv",-20}{"Cijena",-10}{"Količina",-5}  {"Ukupno",-5}\n\n");
+            textRacuna.Font = new Font(FontFamily.GenericMonospace, textRacuna.Font.Size);
+
+            textRacuna.SelectionStart = textRacuna.Text.Length;
+            textRacuna.ScrollToCaret();
         }
 
-        public int GetQuantityFromUser(string label)
+        public decimal dohvatiUnesenuKolicinu(string label, int idPica)
         {
             UnosKolicine unosKolicine = new UnosKolicine();
-            unosKolicine.updateLabel(label);
-            if (unosKolicine.ShowDialog() == DialogResult.OK)
+            if (narucenaPica.Any(item => item.Key.naziv_pica == label))
             {
-                int quantity = unosKolicine.Quantity;
-                return quantity;
+                unosKolicine.urediLabel(label);
+                Pice existingItem = narucenaPica.Keys.FirstOrDefault(item => item.naziv_pica == label);
+                decimal existingQuantity = narucenaPica[existingItem];
+                unosKolicine.setDostupnaKolicina(dohvatiDostupnuKolicinu(idPica) - existingQuantity);
+                if (unosKolicine.ShowDialog() == DialogResult.OK)
+                {
+                    return unosKolicine.Kolicina;
+                }
+                else
+                {
+                    MessageBox.Show("Ne dodajemo proizvod na račun!", "Upozorenje");
+                    if (narucenaPica.Count == 0)
+                    {
+                        textRacuna.Clear();
+                    }
+                    return 0;
+                }
             }
             else
             {
-                MessageBox.Show("Ne dodajemo proizvod!", "Upozorenje");
-                if (narucenaPica.Count == 0)
+                unosKolicine.setDostupnaKolicina(dohvatiDostupnuKolicinu(idPica));
+                unosKolicine.urediLabel(label);
+                if (unosKolicine.ShowDialog() == DialogResult.OK)
                 {
-                    textRacuna.Clear();
+                    return unosKolicine.Kolicina;
                 }
-                return 0;
+                else
+                {
+                    MessageBox.Show("Ne dodajemo proizvod na račun!", "Upozorenje");
+                    if (narucenaPica.Count == 0)
+                    {
+                        textRacuna.Clear();
+                    }
+                    return 0;
+                }
             }
+        }
+
+        public void gumbIzdajRacun_Click(object sender, EventArgs e)
+        {
+            IzdajRacun izdajRacun = new IzdajRacun();
+            izdajRacun.calculateTotal(narucenaPica);
+            izdajRacun.updateFinalniRacun(textRacuna.Rtf);
+
+            if (izdajRacun.ShowDialog() == DialogResult.OK)
+            {
+                //skini s baze kolicine 
+                // zapisi racun stavke
+                // zapisi konobar popust
+                MessageBox.Show("Račun uspješno evidentiran!", "Obavijest");
+                textRacuna.Clear();
+                narucenaPica.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Račun nije evidentiran!", "Obavijest");
+            }
+
+        }
+
+        public decimal dohvatiDostupnuKolicinu(int idPica)
+        {
+            decimal dostupnaKolicina = 0;
+
+            SqlConnection veza = new SqlConnection(connectionString);
+            veza.Open();
+            string upit = "SELECT kolicina_kafic FROM Pica WHERE id_pica = @idPica";
+            SqlCommand naredba = new SqlCommand(upit, veza);
+
+            naredba.Parameters.AddWithValue("@IdPica", idPica);
+
+            using (SqlDataReader čitač = naredba.ExecuteReader())
+            {
+                if (čitač.Read())
+                {
+                    dostupnaKolicina = čitač.GetDecimal(0);
+                }
+            }
+            veza.Close();
+
+            return dostupnaKolicina;
+        }
+
+        private void buttonOcistiRacun_Click(object sender, EventArgs e)
+        {
+            textRacuna.Clear() ;
+            narucenaPica.Clear();
         }
     }
 }

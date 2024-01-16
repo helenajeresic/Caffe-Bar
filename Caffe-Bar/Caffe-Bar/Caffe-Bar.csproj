@@ -73,6 +73,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="IzdajRacun.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IzdajRacun.Designer.cs">
+      <DependentUpon>IzdajRacun.cs</DependentUpon>
+    </Compile>
     <Compile Include="Kategorija.cs" />
     <Compile Include="KonobarForm.cs">
       <SubType>Form</SubType>
@@ -103,6 +109,9 @@
     <Compile Include="VlasnikForm.Designer.cs">
       <DependentUpon>VlasnikForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="IzdajRacun.resx">
+      <DependentUpon>IzdajRacun.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="KonobarForm.resx">
       <DependentUpon>KonobarForm.cs</DependentUpon>
     </EmbeddedResource>
