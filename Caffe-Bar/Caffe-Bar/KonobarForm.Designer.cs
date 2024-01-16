@@ -30,6 +30,7 @@
         {
             this.tabKonobar = new System.Windows.Forms.TabControl();
             this.tabIzdajRacun = new System.Windows.Forms.TabPage();
+            this.labelAkcijaUTijeku = new System.Windows.Forms.Label();
             this.buttonOcistiRacun = new System.Windows.Forms.Button();
             this.buttonKonobarskiPopust = new System.Windows.Forms.Button();
             this.gumbIzdajRacun = new System.Windows.Forms.Button();
@@ -41,7 +42,6 @@
             this.tabŠank = new System.Windows.Forms.TabPage();
             this.tabNarudžba = new System.Windows.Forms.TabPage();
             this.gumbOdjavaKonobara = new System.Windows.Forms.Button();
-            this.labelAkcijaUTijeku = new System.Windows.Forms.Label();
             this.tabKonobar.SuspendLayout();
             this.tabIzdajRacun.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPica)).BeginInit();
@@ -82,6 +82,15 @@
             this.tabIzdajRacun.TabIndex = 0;
             this.tabIzdajRacun.Text = "Izdaj račun";
             this.tabIzdajRacun.UseVisualStyleBackColor = true;
+            // 
+            // labelAkcijaUTijeku
+            // 
+            this.labelAkcijaUTijeku.AutoSize = true;
+            this.labelAkcijaUTijeku.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.labelAkcijaUTijeku.Location = new System.Drawing.Point(483, 29);
+            this.labelAkcijaUTijeku.Name = "labelAkcijaUTijeku";
+            this.labelAkcijaUTijeku.Size = new System.Drawing.Size(0, 24);
+            this.labelAkcijaUTijeku.TabIndex = 9;
             // 
             // buttonOcistiRacun
             // 
@@ -201,15 +210,7 @@
             this.gumbOdjavaKonobara.TabIndex = 5;
             this.gumbOdjavaKonobara.Text = "Odjava";
             this.gumbOdjavaKonobara.UseVisualStyleBackColor = true;
-            // 
-            // labelAkcijaUTijeku
-            // 
-            this.labelAkcijaUTijeku.AutoSize = true;
-            this.labelAkcijaUTijeku.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.labelAkcijaUTijeku.Location = new System.Drawing.Point(483, 29);
-            this.labelAkcijaUTijeku.Name = "labelAkcijaUTijeku";
-            this.labelAkcijaUTijeku.Size = new System.Drawing.Size(0, 26);
-            this.labelAkcijaUTijeku.TabIndex = 9;
+            this.gumbOdjavaKonobara.Click += new System.EventHandler(this.gumbOdjavaKonobara_Click);
             // 
             // KonobarForm
             // 
