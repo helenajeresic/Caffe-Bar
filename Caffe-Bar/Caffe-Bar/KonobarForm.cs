@@ -13,11 +13,11 @@ namespace CaffeBar
         public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
         private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica = new Dictionary<Pice, decimal>();
-        public string id_ulogirani;
+        public int id_ulogirani;
         public string ime_ulogirani;
         public string prezime_ulogirani;
         public string username_ulogirani;
-        public KonobarForm(string id_konobar, string ime_konobar, string prezime_konobar, string username_konobar)
+        public KonobarForm(int id_konobar, string ime_konobar, string prezime_konobar, string username_konobar)
         {
             InitializeComponent();
             naredba = new SqlCommand();
@@ -25,6 +25,7 @@ namespace CaffeBar
             ime_ulogirani = ime_konobar;
             prezime_ulogirani = prezime_konobar;
             username_ulogirani = username_konobar; 
+
             dataGridViewPica.CellFormatting += dataGridViewPica_CellFormatting;
         }
 
