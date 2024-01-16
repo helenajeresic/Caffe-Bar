@@ -47,28 +47,28 @@
             this.tabModifikacijaPića = new System.Windows.Forms.TabPage();
             this.tabAkcije = new System.Windows.Forms.TabPage();
             this.tabStatistika = new System.Windows.Forms.TabPage();
-            this.odabirPica = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.gumbOdjavaVlasnika = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
-            this.buttonPrikaziStatistiku = new System.Windows.Forms.Button();
-            this.labelPrikaziKolicinu = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.monthCalendar2 = new System.Windows.Forms.MonthCalendar();
-            this.dataGridViewKolicinePica = new System.Windows.Forms.DataGridView();
+            this.groupBoxKolicina2 = new System.Windows.Forms.GroupBox();
             this.buttonPrikaziStatistiku1 = new System.Windows.Forms.Button();
+            this.dataGridViewKolicinePica = new System.Windows.Forms.DataGridView();
+            this.monthCalendar2 = new System.Windows.Forms.MonthCalendar();
+            this.labelOdaberiDatum2 = new System.Windows.Forms.Label();
+            this.groupBoxKolicina1 = new System.Windows.Forms.GroupBox();
+            this.labelOdaberiPice = new System.Windows.Forms.Label();
+            this.labelPrikaziKolicinu = new System.Windows.Forms.Label();
+            this.odabirPica = new System.Windows.Forms.ComboBox();
+            this.buttonPrikaziStatistiku = new System.Windows.Forms.Button();
+            this.labelOdaberiDatum = new System.Windows.Forms.Label();
+            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
+            this.gumbOdjavaVlasnika = new System.Windows.Forms.Button();
             this.tabKonobar.SuspendLayout();
             this.tabZaposliKonobara.SuspendLayout();
             this.gBoxDodajKonobara.SuspendLayout();
             this.tabOtpustiKonobara.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKonobari)).BeginInit();
             this.tabStatistika.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.groupBoxKolicina2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKolicinePica)).BeginInit();
+            this.groupBoxKolicina1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabKonobar
@@ -261,118 +261,36 @@
             // tabStatistika
             // 
             this.tabStatistika.BackColor = System.Drawing.Color.White;
-            this.tabStatistika.Controls.Add(this.groupBox2);
-            this.tabStatistika.Controls.Add(this.groupBox1);
+            this.tabStatistika.Controls.Add(this.groupBoxKolicina2);
+            this.tabStatistika.Controls.Add(this.groupBoxKolicina1);
             this.tabStatistika.Location = new System.Drawing.Point(4, 54);
             this.tabStatistika.Name = "tabStatistika";
             this.tabStatistika.Size = new System.Drawing.Size(1206, 559);
             this.tabStatistika.TabIndex = 5;
             this.tabStatistika.Text = "Statistika";
             // 
-            // odabirPica
+            // groupBoxKolicina2
             // 
-            this.odabirPica.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.odabirPica.FormattingEnabled = true;
-            this.odabirPica.Location = new System.Drawing.Point(171, 40);
-            this.odabirPica.Name = "odabirPica";
-            this.odabirPica.Size = new System.Drawing.Size(224, 37);
-            this.odabirPica.TabIndex = 1;
+            this.groupBoxKolicina2.Controls.Add(this.buttonPrikaziStatistiku1);
+            this.groupBoxKolicina2.Controls.Add(this.dataGridViewKolicinePica);
+            this.groupBoxKolicina2.Controls.Add(this.monthCalendar2);
+            this.groupBoxKolicina2.Controls.Add(this.labelOdaberiDatum2);
+            this.groupBoxKolicina2.Location = new System.Drawing.Point(460, 31);
+            this.groupBoxKolicina2.Name = "groupBoxKolicina2";
+            this.groupBoxKolicina2.Size = new System.Drawing.Size(734, 444);
+            this.groupBoxKolicina2.TabIndex = 7;
+            this.groupBoxKolicina2.TabStop = false;
+            this.groupBoxKolicina2.Text = "Količina svih pića u danu";
             // 
-            // label1
+            // buttonPrikaziStatistiku1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 48);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(159, 29);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Odaberi piće:";
-            // 
-            // gumbOdjavaVlasnika
-            // 
-            this.gumbOdjavaVlasnika.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.gumbOdjavaVlasnika.Location = new System.Drawing.Point(1071, 12);
-            this.gumbOdjavaVlasnika.Name = "gumbOdjavaVlasnika";
-            this.gumbOdjavaVlasnika.Size = new System.Drawing.Size(131, 48);
-            this.gumbOdjavaVlasnika.TabIndex = 6;
-            this.gumbOdjavaVlasnika.Text = "Odjava";
-            this.gumbOdjavaVlasnika.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 89);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(179, 29);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Odaberi datum:";
-            // 
-            // monthCalendar1
-            // 
-            this.monthCalendar1.Location = new System.Drawing.Point(185, 89);
-            this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 3;
-            // 
-            // buttonPrikaziStatistiku
-            // 
-            this.buttonPrikaziStatistiku.Location = new System.Drawing.Point(94, 312);
-            this.buttonPrikaziStatistiku.Name = "buttonPrikaziStatistiku";
-            this.buttonPrikaziStatistiku.Size = new System.Drawing.Size(204, 43);
-            this.buttonPrikaziStatistiku.TabIndex = 4;
-            this.buttonPrikaziStatistiku.Text = "Prikaži statistiku";
-            this.buttonPrikaziStatistiku.UseVisualStyleBackColor = true;
-            this.buttonPrikaziStatistiku.Click += new System.EventHandler(this.buttonPrikaziStatistiku_Click);
-            // 
-            // labelPrikaziKolicinu
-            // 
-            this.labelPrikaziKolicinu.AutoSize = true;
-            this.labelPrikaziKolicinu.Location = new System.Drawing.Point(39, 378);
-            this.labelPrikaziKolicinu.Name = "labelPrikaziKolicinu";
-            this.labelPrikaziKolicinu.Size = new System.Drawing.Size(304, 29);
-            this.labelPrikaziKolicinu.TabIndex = 5;
-            this.labelPrikaziKolicinu.Text = "Ovdje se prikazuje statitika.";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.labelPrikaziKolicinu);
-            this.groupBox1.Controls.Add(this.odabirPica);
-            this.groupBox1.Controls.Add(this.buttonPrikaziStatistiku);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.monthCalendar1);
-            this.groupBox1.Location = new System.Drawing.Point(20, 31);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(431, 445);
-            this.groupBox1.TabIndex = 6;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Količina određenog pića u danu";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.buttonPrikaziStatistiku1);
-            this.groupBox2.Controls.Add(this.dataGridViewKolicinePica);
-            this.groupBox2.Controls.Add(this.monthCalendar2);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(460, 31);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(734, 444);
-            this.groupBox2.TabIndex = 7;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Količina svih pića u danu";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 40);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(179, 29);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Odaberi datum:";
-            // 
-            // monthCalendar2
-            // 
-            this.monthCalendar2.Location = new System.Drawing.Point(20, 78);
-            this.monthCalendar2.Name = "monthCalendar2";
-            this.monthCalendar2.TabIndex = 4;
+            this.buttonPrikaziStatistiku1.Location = new System.Drawing.Point(34, 312);
+            this.buttonPrikaziStatistiku1.Name = "buttonPrikaziStatistiku1";
+            this.buttonPrikaziStatistiku1.Size = new System.Drawing.Size(204, 43);
+            this.buttonPrikaziStatistiku1.TabIndex = 6;
+            this.buttonPrikaziStatistiku1.Text = "Prikaži statistiku";
+            this.buttonPrikaziStatistiku1.UseVisualStyleBackColor = true;
+            this.buttonPrikaziStatistiku1.Click += new System.EventHandler(this.buttonPrikaziStatistiku1_Click);
             // 
             // dataGridViewKolicinePica
             // 
@@ -386,15 +304,97 @@
             this.dataGridViewKolicinePica.Size = new System.Drawing.Size(447, 254);
             this.dataGridViewKolicinePica.TabIndex = 5;
             // 
-            // buttonPrikaziStatistiku1
+            // monthCalendar2
             // 
-            this.buttonPrikaziStatistiku1.Location = new System.Drawing.Point(34, 312);
-            this.buttonPrikaziStatistiku1.Name = "buttonPrikaziStatistiku1";
-            this.buttonPrikaziStatistiku1.Size = new System.Drawing.Size(204, 43);
-            this.buttonPrikaziStatistiku1.TabIndex = 6;
-            this.buttonPrikaziStatistiku1.Text = "Prikaži statistiku";
-            this.buttonPrikaziStatistiku1.UseVisualStyleBackColor = true;
-            this.buttonPrikaziStatistiku1.Click += new System.EventHandler(this.buttonPrikaziStatistiku1_Click);
+            this.monthCalendar2.Location = new System.Drawing.Point(20, 78);
+            this.monthCalendar2.Name = "monthCalendar2";
+            this.monthCalendar2.TabIndex = 4;
+            // 
+            // labelOdaberiDatum2
+            // 
+            this.labelOdaberiDatum2.AutoSize = true;
+            this.labelOdaberiDatum2.Location = new System.Drawing.Point(15, 40);
+            this.labelOdaberiDatum2.Name = "labelOdaberiDatum2";
+            this.labelOdaberiDatum2.Size = new System.Drawing.Size(179, 29);
+            this.labelOdaberiDatum2.TabIndex = 3;
+            this.labelOdaberiDatum2.Text = "Odaberi datum:";
+            // 
+            // groupBoxKolicina1
+            // 
+            this.groupBoxKolicina1.Controls.Add(this.labelOdaberiPice);
+            this.groupBoxKolicina1.Controls.Add(this.labelPrikaziKolicinu);
+            this.groupBoxKolicina1.Controls.Add(this.odabirPica);
+            this.groupBoxKolicina1.Controls.Add(this.buttonPrikaziStatistiku);
+            this.groupBoxKolicina1.Controls.Add(this.labelOdaberiDatum);
+            this.groupBoxKolicina1.Controls.Add(this.monthCalendar1);
+            this.groupBoxKolicina1.Location = new System.Drawing.Point(20, 31);
+            this.groupBoxKolicina1.Name = "groupBoxKolicina1";
+            this.groupBoxKolicina1.Size = new System.Drawing.Size(431, 445);
+            this.groupBoxKolicina1.TabIndex = 6;
+            this.groupBoxKolicina1.TabStop = false;
+            this.groupBoxKolicina1.Text = "Količina određenog pića u danu";
+            // 
+            // labelOdaberiPice
+            // 
+            this.labelOdaberiPice.AutoSize = true;
+            this.labelOdaberiPice.Location = new System.Drawing.Point(6, 48);
+            this.labelOdaberiPice.Name = "labelOdaberiPice";
+            this.labelOdaberiPice.Size = new System.Drawing.Size(159, 29);
+            this.labelOdaberiPice.TabIndex = 0;
+            this.labelOdaberiPice.Text = "Odaberi piće:";
+            // 
+            // labelPrikaziKolicinu
+            // 
+            this.labelPrikaziKolicinu.AutoSize = true;
+            this.labelPrikaziKolicinu.Location = new System.Drawing.Point(39, 378);
+            this.labelPrikaziKolicinu.Name = "labelPrikaziKolicinu";
+            this.labelPrikaziKolicinu.Size = new System.Drawing.Size(304, 29);
+            this.labelPrikaziKolicinu.TabIndex = 5;
+            this.labelPrikaziKolicinu.Text = "Ovdje se prikazuje statitika.";
+            // 
+            // odabirPica
+            // 
+            this.odabirPica.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.odabirPica.FormattingEnabled = true;
+            this.odabirPica.Location = new System.Drawing.Point(171, 40);
+            this.odabirPica.Name = "odabirPica";
+            this.odabirPica.Size = new System.Drawing.Size(224, 37);
+            this.odabirPica.TabIndex = 1;
+            // 
+            // buttonPrikaziStatistiku
+            // 
+            this.buttonPrikaziStatistiku.Location = new System.Drawing.Point(94, 312);
+            this.buttonPrikaziStatistiku.Name = "buttonPrikaziStatistiku";
+            this.buttonPrikaziStatistiku.Size = new System.Drawing.Size(204, 43);
+            this.buttonPrikaziStatistiku.TabIndex = 4;
+            this.buttonPrikaziStatistiku.Text = "Prikaži statistiku";
+            this.buttonPrikaziStatistiku.UseVisualStyleBackColor = true;
+            this.buttonPrikaziStatistiku.Click += new System.EventHandler(this.buttonPrikaziStatistiku_Click);
+            // 
+            // labelOdaberiDatum
+            // 
+            this.labelOdaberiDatum.AutoSize = true;
+            this.labelOdaberiDatum.Location = new System.Drawing.Point(6, 89);
+            this.labelOdaberiDatum.Name = "labelOdaberiDatum";
+            this.labelOdaberiDatum.Size = new System.Drawing.Size(179, 29);
+            this.labelOdaberiDatum.TabIndex = 2;
+            this.labelOdaberiDatum.Text = "Odaberi datum:";
+            // 
+            // monthCalendar1
+            // 
+            this.monthCalendar1.Location = new System.Drawing.Point(185, 89);
+            this.monthCalendar1.Name = "monthCalendar1";
+            this.monthCalendar1.TabIndex = 3;
+            // 
+            // gumbOdjavaVlasnika
+            // 
+            this.gumbOdjavaVlasnika.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.gumbOdjavaVlasnika.Location = new System.Drawing.Point(1071, 12);
+            this.gumbOdjavaVlasnika.Name = "gumbOdjavaVlasnika";
+            this.gumbOdjavaVlasnika.Size = new System.Drawing.Size(131, 48);
+            this.gumbOdjavaVlasnika.TabIndex = 6;
+            this.gumbOdjavaVlasnika.Text = "Odjava";
+            this.gumbOdjavaVlasnika.UseVisualStyleBackColor = true;
             // 
             // VlasnikForm
             // 
@@ -409,11 +409,11 @@
             this.tabOtpustiKonobara.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKonobari)).EndInit();
             this.tabStatistika.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.groupBoxKolicina2.ResumeLayout(false);
+            this.groupBoxKolicina2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKolicinePica)).EndInit();
+            this.groupBoxKolicina1.ResumeLayout(false);
+            this.groupBoxKolicina1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -441,16 +441,16 @@
         private System.Windows.Forms.DataGridView dataGridViewKonobari;
         private System.Windows.Forms.Button btnPrikaziKonobare;
         private System.Windows.Forms.ComboBox odabirPica;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelOdaberiPice;
         private System.Windows.Forms.Button buttonPrikaziStatistiku;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelOdaberiDatum;
         private System.Windows.Forms.Label labelPrikaziKolicinu;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBoxKolicina1;
+        private System.Windows.Forms.GroupBox groupBoxKolicina2;
         private System.Windows.Forms.Button buttonPrikaziStatistiku1;
         private System.Windows.Forms.DataGridView dataGridViewKolicinePica;
         private System.Windows.Forms.MonthCalendar monthCalendar2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelOdaberiDatum2;
     }
 }
