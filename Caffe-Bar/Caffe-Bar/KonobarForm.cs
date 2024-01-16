@@ -323,5 +323,12 @@ namespace CaffeBar
             veza.Close();
             return akcija;
         }
+
+        private void gumbOdjavaKonobara_Click(object sender, EventArgs e)
+        {
+            PrijavaForm forma = new PrijavaForm();
+            forma.Show();
+            this.Hide();
+        }
     }
 }

@@ -20,7 +20,6 @@ namespace CaffeBar
             InitializeComponent();
         }
 
-        
         private void gumbOdustani_Click(object sender, EventArgs e)
         {
             Close();
@@ -61,7 +60,7 @@ namespace CaffeBar
                     }
                     else if (uloga == 2)
                     {
-                        VlasnikForm forma = new VlasnikForm();
+                        VlasnikForm forma = new VlasnikForm(tablica.Rows[0]["korisnicko_ime"].ToString());
                         forma.Show();
                         this.Hide();
                     }

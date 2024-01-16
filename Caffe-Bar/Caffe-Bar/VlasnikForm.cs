@@ -15,10 +15,12 @@ namespace CaffeBar
     public partial class VlasnikForm : Form
     {
         static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
-
-        public VlasnikForm()
+        public string username_ulogirani;
+        public VlasnikForm(string username_vlasnik)
         {
             InitializeComponent();
+
+            username_ulogirani = username_vlasnik;
             
             //inicijalno popunjavanje dropdowna kod statistike sa svim picima u kaficu
             SqlConnection veza = new SqlConnection(connectionString);
@@ -250,6 +252,13 @@ namespace CaffeBar
             }
             veza.Close();
 
+        }
+
+        private void gumbOdjavaVlasnika_Click(object sender, EventArgs e)
+        {
+            PrijavaForm forma = new PrijavaForm();
+            forma.Show();
+            this.Hide();
         }
     }
 }
