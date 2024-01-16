@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CaffeBar
 {
-    internal class Pice
+    public class Pice
     {
         public int id_pica {  get; set; }
         public string naziv_pica { get; set; }

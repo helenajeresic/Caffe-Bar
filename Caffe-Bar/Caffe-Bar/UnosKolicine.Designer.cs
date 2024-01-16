@@ -1,4 +1,4 @@
-﻿namespace Caffe_Bar
+﻿namespace CaffeBar
 {
     partial class UnosKolicine
     {
@@ -54,8 +54,7 @@
             this.gumbPotvrdi.Location = new System.Drawing.Point(135, 169);
             this.gumbPotvrdi.Name = "gumbPotvrdi";
             this.gumbPotvrdi.Size = new System.Drawing.Size(112, 34);
-            this.gumbPotvrdi.TabIndex = 4;
-            this.gumbPotvrdi.TabStop = false;
+            this.gumbPotvrdi.TabIndex = 0;
             this.gumbPotvrdi.Text = "Potvrdi";
             this.gumbPotvrdi.UseVisualStyleBackColor = true;
             this.gumbPotvrdi.Click += new System.EventHandler(this.gumbPotvrdi_Click);
@@ -68,7 +67,8 @@
             this.gumbOdustani.Location = new System.Drawing.Point(283, 169);
             this.gumbOdustani.Name = "gumbOdustani";
             this.gumbOdustani.Size = new System.Drawing.Size(112, 34);
-            this.gumbOdustani.TabIndex = 5;
+            this.gumbOdustani.TabIndex = 1;
+            this.gumbOdustani.TabStop = false;
             this.gumbOdustani.Text = "Odustani";
             this.gumbOdustani.UseVisualStyleBackColor = true;
             this.gumbOdustani.Click += new System.EventHandler(this.gumbOdustani_Click);
@@ -93,7 +93,8 @@
             0});
             this.numericUpDownKolicina.Name = "numericUpDownKolicina";
             this.numericUpDownKolicina.Size = new System.Drawing.Size(74, 29);
-            this.numericUpDownKolicina.TabIndex = 7;
+            this.numericUpDownKolicina.TabIndex = 2;
+            this.numericUpDownKolicina.TabStop = false;
             this.numericUpDownKolicina.Value = new decimal(new int[] {
             1,
             0,
@@ -105,6 +106,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.CancelButton = this.gumbOdustani;
             this.ClientSize = new System.Drawing.Size(527, 266);
             this.Controls.Add(this.numericUpDownKolicina);
             this.Controls.Add(this.labelPice);
