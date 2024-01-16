@@ -14,10 +14,35 @@ namespace CaffeBar
 {
     public partial class VlasnikForm : Form
     {
-        static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\\\\wsl.localhost\\Ubuntu-18.04\\home\\doriblas\\Caffe-Bar\\Caffe-Bar\\Caffe-Bar\\baza.mdf;Integrated Security=True";
-        public VlasnikForm()
+        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
+        public string username_ulogirani;
+        public VlasnikForm(string username_vlasnik)
         {
             InitializeComponent();
+
+            username_ulogirani = username_vlasnik;
+            
+            //inicijalno popunjavanje dropdowna kod statistike sa svim picima u kaficu
+            SqlConnection veza = new SqlConnection(connectionString);
+            veza.Open();
+            string upit = "SELECT * from Pica";
+            SqlCommand naredba = new SqlCommand(upit, veza);
+            List<string> lista_pica = new List<string>();
+            using (SqlDataReader citac = naredba.ExecuteReader())
+            {
+                while (citac.Read())
+                {
+                    lista_pica.Add(citac.GetString(1));
+                }
+            }
+            veza.Close();
+            lista_pica.Sort((x, y) => x.CompareTo(y));
+            foreach(string pica in lista_pica)
+            {
+                odabirPica.Items.Add(pica);
+            }
+            
+
         }
 
         private void btnSpremiKonobara_Click(object sender, EventArgs e)
@@ -76,6 +101,75 @@ namespace CaffeBar
             adapter.Fill(dt);
 
             dataGridViewKonobari.DataSource = dt;
+
+            veza.Close();
+        }
+
+
+        private void buttonPrikaziStatistiku_Click(object sender, EventArgs e)
+        {
+            //prvo provjerim jel odabrano pice, datum ne treba, on je po defaultu danasnji
+            if(odabirPica.SelectedIndex  == -1)
+            {
+                MessageBox.Show("Nije odabrano nijedno piće!");
+                return;
+            }
+            else
+            {
+                var odabrano_pice = odabirPica.SelectedItem.ToString();
+                var datum = monthCalendar1.SelectionStart;
+                SqlConnection veza = new SqlConnection(connectionString);
+
+                veza.Open();
+
+                string upit = "SELECT kolicina FROM RacunStavke "
+                    + "JOIN Pica "
+                    + "ON RacunStavke.id_pica = Pica.id_pica "
+                    + "WHERE naziv_pica = '"
+                    + odabrano_pice + "'"
+                    + " AND CONVERT(date, vrijeme) = '"
+                    + datum.ToString("yyyy-MM-dd") + "'";
+
+                SqlCommand naredba = new SqlCommand(upit, veza);
+                List<int> kolicine = new List<int>();
+                using (SqlDataReader citac = naredba.ExecuteReader())
+                {
+                    while (citac.Read())
+                    {
+                        kolicine.Add(citac.GetInt32(0));
+                    }
+                }
+                int zbroj = 0;
+                foreach(int i in kolicine)
+                {
+                    zbroj += i;
+                }
+                labelPrikaziKolicinu.Text = "Količina : " + zbroj;
+
+
+
+                veza.Close();
+            }
+        }
+
+        private void buttonPrikaziStatistiku1_Click(object sender, EventArgs e)
+        {
+            SqlConnection veza = new SqlConnection(connectionString);
+
+            veza.Open();
+            var datum = monthCalendar2.SelectionStart;
+            string upit = "SELECT naziv_pica AS 'Naziv pica', SUM(kolicina) AS 'Ukupna količina' FROM Pica " +
+                "JOIN RacunStavke " +
+                "ON RacunStavke.id_pica = Pica.id_pica " +
+                "WHERE CONVERT(date, vrijeme) = '"
+                + datum.ToString("yyyy-MM-dd") + "' " +
+                "GROUP BY naziv_pica " +
+                "ORDER BY SUM(kolicina) DESC";
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridViewKolicinePica.DataSource = dt;
 
             veza.Close();
         }
@@ -158,7 +252,13 @@ namespace CaffeBar
             }
             veza.Close();
 
+        }
 
+        private void gumbOdjavaVlasnika_Click(object sender, EventArgs e)
+        {
+            PrijavaForm forma = new PrijavaForm();
+            forma.Show();
+            this.Hide();
         }
     }
 }

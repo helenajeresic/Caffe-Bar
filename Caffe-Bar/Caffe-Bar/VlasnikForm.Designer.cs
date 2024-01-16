@@ -61,6 +61,18 @@
             this.tabModifikacijaPića = new System.Windows.Forms.TabPage();
             this.tabAkcije = new System.Windows.Forms.TabPage();
             this.tabStatistika = new System.Windows.Forms.TabPage();
+            this.groupBoxKolicina2 = new System.Windows.Forms.GroupBox();
+            this.buttonPrikaziStatistiku1 = new System.Windows.Forms.Button();
+            this.dataGridViewKolicinePica = new System.Windows.Forms.DataGridView();
+            this.monthCalendar2 = new System.Windows.Forms.MonthCalendar();
+            this.labelOdaberiDatum2 = new System.Windows.Forms.Label();
+            this.groupBoxKolicina1 = new System.Windows.Forms.GroupBox();
+            this.labelOdaberiPice = new System.Windows.Forms.Label();
+            this.labelPrikaziKolicinu = new System.Windows.Forms.Label();
+            this.odabirPica = new System.Windows.Forms.ComboBox();
+            this.buttonPrikaziStatistiku = new System.Windows.Forms.Button();
+            this.labelOdaberiDatum = new System.Windows.Forms.Label();
+            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.gumbOdjavaVlasnika = new System.Windows.Forms.Button();
             this.tabKonobar.SuspendLayout();
             this.tabZaposliKonobara.SuspendLayout();
@@ -70,6 +82,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKonobari)).BeginInit();
             this.tabUnosPića.SuspendLayout();
             this.groupBoxNovoPice.SuspendLayout();
+            this.tabStatistika.SuspendLayout();
+            this.groupBoxKolicina2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKolicinePica)).BeginInit();
+            this.groupBoxKolicina1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabKonobar
@@ -126,7 +142,7 @@
             this.labelImeKonobara.AutoSize = true;
             this.labelImeKonobara.Location = new System.Drawing.Point(167, 53);
             this.labelImeKonobara.Name = "labelImeKonobara";
-            this.labelImeKonobara.Size = new System.Drawing.Size(53, 29);
+            this.labelImeKonobara.Size = new System.Drawing.Size(41, 24);
             this.labelImeKonobara.TabIndex = 0;
             this.labelImeKonobara.Text = "Ime";
             // 
@@ -144,14 +160,14 @@
             // 
             this.txtIme.Location = new System.Drawing.Point(226, 48);
             this.txtIme.Name = "txtIme";
-            this.txtIme.Size = new System.Drawing.Size(284, 34);
+            this.txtIme.Size = new System.Drawing.Size(284, 29);
             this.txtIme.TabIndex = 1;
             // 
             // txtLozinka
             // 
             this.txtLozinka.Location = new System.Drawing.Point(226, 255);
             this.txtLozinka.Name = "txtLozinka";
-            this.txtLozinka.Size = new System.Drawing.Size(284, 34);
+            this.txtLozinka.Size = new System.Drawing.Size(284, 29);
             this.txtLozinka.TabIndex = 7;
             // 
             // labelPrezimeKonobara
@@ -159,7 +175,7 @@
             this.labelPrezimeKonobara.AutoSize = true;
             this.labelPrezimeKonobara.Location = new System.Drawing.Point(118, 115);
             this.labelPrezimeKonobara.Name = "labelPrezimeKonobara";
-            this.labelPrezimeKonobara.Size = new System.Drawing.Size(102, 29);
+            this.labelPrezimeKonobara.Size = new System.Drawing.Size(79, 24);
             this.labelPrezimeKonobara.TabIndex = 2;
             this.labelPrezimeKonobara.Text = "Prezime";
             // 
@@ -168,7 +184,7 @@
             this.labelLozinkaKonobara.AutoSize = true;
             this.labelLozinkaKonobara.Location = new System.Drawing.Point(125, 258);
             this.labelLozinkaKonobara.Name = "labelLozinkaKonobara";
-            this.labelLozinkaKonobara.Size = new System.Drawing.Size(95, 29);
+            this.labelLozinkaKonobara.Size = new System.Drawing.Size(74, 24);
             this.labelLozinkaKonobara.TabIndex = 6;
             this.labelLozinkaKonobara.Text = "Lozinka";
             // 
@@ -176,14 +192,14 @@
             // 
             this.txtPrezime.Location = new System.Drawing.Point(226, 112);
             this.txtPrezime.Name = "txtPrezime";
-            this.txtPrezime.Size = new System.Drawing.Size(284, 34);
+            this.txtPrezime.Size = new System.Drawing.Size(284, 29);
             this.txtPrezime.TabIndex = 3;
             // 
             // txtKorisnickoIme
             // 
             this.txtKorisnickoIme.Location = new System.Drawing.Point(226, 183);
             this.txtKorisnickoIme.Name = "txtKorisnickoIme";
-            this.txtKorisnickoIme.Size = new System.Drawing.Size(284, 34);
+            this.txtKorisnickoIme.Size = new System.Drawing.Size(284, 29);
             this.txtKorisnickoIme.TabIndex = 5;
             // 
             // labelUsernameKonobar
@@ -191,7 +207,7 @@
             this.labelUsernameKonobar.AutoSize = true;
             this.labelUsernameKonobar.Location = new System.Drawing.Point(48, 183);
             this.labelUsernameKonobar.Name = "labelUsernameKonobar";
-            this.labelUsernameKonobar.Size = new System.Drawing.Size(172, 29);
+            this.labelUsernameKonobar.Size = new System.Drawing.Size(133, 24);
             this.labelUsernameKonobar.TabIndex = 4;
             this.labelUsernameKonobar.Text = "Korisničko ime";
             // 
@@ -235,7 +251,7 @@
             // 
             this.txtOtpustiKonobara.Location = new System.Drawing.Point(212, 75);
             this.txtOtpustiKonobara.Name = "txtOtpustiKonobara";
-            this.txtOtpustiKonobara.Size = new System.Drawing.Size(284, 34);
+            this.txtOtpustiKonobara.Size = new System.Drawing.Size(284, 29);
             this.txtOtpustiKonobara.TabIndex = 7;
             // 
             // labelOtpustiKonobara
@@ -243,7 +259,7 @@
             this.labelOtpustiKonobara.AutoSize = true;
             this.labelOtpustiKonobara.Location = new System.Drawing.Point(21, 75);
             this.labelOtpustiKonobara.Name = "labelOtpustiKonobara";
-            this.labelOtpustiKonobara.Size = new System.Drawing.Size(172, 29);
+            this.labelOtpustiKonobara.Size = new System.Drawing.Size(133, 24);
             this.labelOtpustiKonobara.TabIndex = 6;
             this.labelOtpustiKonobara.Text = "Korisničko ime";
             // 
@@ -312,7 +328,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 261);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(383, 29);
+            this.label1.Size = new System.Drawing.Size(298, 24);
             this.label1.TabIndex = 8;
             this.label1.Text = "Najmanja količina prije upozorenja";
             // 
@@ -320,7 +336,7 @@
             // 
             this.txtUpozorenje.Location = new System.Drawing.Point(395, 256);
             this.txtUpozorenje.Name = "txtUpozorenje";
-            this.txtUpozorenje.Size = new System.Drawing.Size(284, 34);
+            this.txtUpozorenje.Size = new System.Drawing.Size(284, 29);
             this.txtUpozorenje.TabIndex = 9;
             // 
             // label3
@@ -328,7 +344,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(266, 210);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(123, 29);
+            this.label3.Size = new System.Drawing.Size(93, 24);
             this.label3.TabIndex = 6;
             this.label3.Text = "Kategorija";
             // 
@@ -336,7 +352,7 @@
             // 
             this.txtKategorija.Location = new System.Drawing.Point(395, 205);
             this.txtKategorija.Name = "txtKategorija";
-            this.txtKategorija.Size = new System.Drawing.Size(284, 34);
+            this.txtKategorija.Size = new System.Drawing.Size(284, 29);
             this.txtKategorija.TabIndex = 7;
             // 
             // label2
@@ -344,7 +360,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(307, 151);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 29);
+            this.label2.Size = new System.Drawing.Size(63, 24);
             this.label2.TabIndex = 4;
             this.label2.Text = "Cijena";
             // 
@@ -352,7 +368,7 @@
             // 
             this.txtCijenaPica.Location = new System.Drawing.Point(395, 146);
             this.txtCijenaPica.Name = "txtCijenaPica";
-            this.txtCijenaPica.Size = new System.Drawing.Size(284, 34);
+            this.txtCijenaPica.Size = new System.Drawing.Size(284, 29);
             this.txtCijenaPica.TabIndex = 5;
             // 
             // labelNazivPica
@@ -360,7 +376,7 @@
             this.labelNazivPica.AutoSize = true;
             this.labelNazivPica.Location = new System.Drawing.Point(317, 92);
             this.labelNazivPica.Name = "labelNazivPica";
-            this.labelNazivPica.Size = new System.Drawing.Size(72, 29);
+            this.labelNazivPica.Size = new System.Drawing.Size(56, 24);
             this.labelNazivPica.TabIndex = 2;
             this.labelNazivPica.Text = "Naziv";
             // 
@@ -368,7 +384,7 @@
             // 
             this.txtNazivPica.Location = new System.Drawing.Point(395, 87);
             this.txtNazivPica.Name = "txtNazivPica";
-            this.txtNazivPica.Size = new System.Drawing.Size(284, 34);
+            this.txtNazivPica.Size = new System.Drawing.Size(284, 29);
             this.txtNazivPica.TabIndex = 3;
             // 
             // tabModifikacijaPića
@@ -394,11 +410,130 @@
             // tabStatistika
             // 
             this.tabStatistika.BackColor = System.Drawing.Color.White;
+            this.tabStatistika.Controls.Add(this.groupBoxKolicina2);
+            this.tabStatistika.Controls.Add(this.groupBoxKolicina1);
             this.tabStatistika.Location = new System.Drawing.Point(4, 54);
             this.tabStatistika.Name = "tabStatistika";
             this.tabStatistika.Size = new System.Drawing.Size(1206, 559);
             this.tabStatistika.TabIndex = 5;
             this.tabStatistika.Text = "Statistika";
+            // 
+            // groupBoxKolicina2
+            // 
+            this.groupBoxKolicina2.Controls.Add(this.buttonPrikaziStatistiku1);
+            this.groupBoxKolicina2.Controls.Add(this.dataGridViewKolicinePica);
+            this.groupBoxKolicina2.Controls.Add(this.monthCalendar2);
+            this.groupBoxKolicina2.Controls.Add(this.labelOdaberiDatum2);
+            this.groupBoxKolicina2.Location = new System.Drawing.Point(460, 31);
+            this.groupBoxKolicina2.Name = "groupBoxKolicina2";
+            this.groupBoxKolicina2.Size = new System.Drawing.Size(734, 444);
+            this.groupBoxKolicina2.TabIndex = 7;
+            this.groupBoxKolicina2.TabStop = false;
+            this.groupBoxKolicina2.Text = "Količina svih pića u danu";
+            // 
+            // buttonPrikaziStatistiku1
+            // 
+            this.buttonPrikaziStatistiku1.Location = new System.Drawing.Point(34, 312);
+            this.buttonPrikaziStatistiku1.Name = "buttonPrikaziStatistiku1";
+            this.buttonPrikaziStatistiku1.Size = new System.Drawing.Size(204, 43);
+            this.buttonPrikaziStatistiku1.TabIndex = 6;
+            this.buttonPrikaziStatistiku1.Text = "Prikaži statistiku";
+            this.buttonPrikaziStatistiku1.UseVisualStyleBackColor = true;
+            this.buttonPrikaziStatistiku1.Click += new System.EventHandler(this.buttonPrikaziStatistiku1_Click);
+            // 
+            // dataGridViewKolicinePica
+            // 
+            this.dataGridViewKolicinePica.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridViewKolicinePica.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridViewKolicinePica.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewKolicinePica.Location = new System.Drawing.Point(278, 58);
+            this.dataGridViewKolicinePica.Name = "dataGridViewKolicinePica";
+            this.dataGridViewKolicinePica.RowHeadersWidth = 51;
+            this.dataGridViewKolicinePica.RowTemplate.Height = 24;
+            this.dataGridViewKolicinePica.Size = new System.Drawing.Size(447, 254);
+            this.dataGridViewKolicinePica.TabIndex = 5;
+            // 
+            // monthCalendar2
+            // 
+            this.monthCalendar2.Location = new System.Drawing.Point(20, 78);
+            this.monthCalendar2.Name = "monthCalendar2";
+            this.monthCalendar2.TabIndex = 4;
+            // 
+            // labelOdaberiDatum2
+            // 
+            this.labelOdaberiDatum2.AutoSize = true;
+            this.labelOdaberiDatum2.Location = new System.Drawing.Point(15, 40);
+            this.labelOdaberiDatum2.Name = "labelOdaberiDatum2";
+            this.labelOdaberiDatum2.Size = new System.Drawing.Size(140, 24);
+            this.labelOdaberiDatum2.TabIndex = 3;
+            this.labelOdaberiDatum2.Text = "Odaberi datum:";
+            // 
+            // groupBoxKolicina1
+            // 
+            this.groupBoxKolicina1.Controls.Add(this.labelOdaberiPice);
+            this.groupBoxKolicina1.Controls.Add(this.labelPrikaziKolicinu);
+            this.groupBoxKolicina1.Controls.Add(this.odabirPica);
+            this.groupBoxKolicina1.Controls.Add(this.buttonPrikaziStatistiku);
+            this.groupBoxKolicina1.Controls.Add(this.labelOdaberiDatum);
+            this.groupBoxKolicina1.Controls.Add(this.monthCalendar1);
+            this.groupBoxKolicina1.Location = new System.Drawing.Point(20, 31);
+            this.groupBoxKolicina1.Name = "groupBoxKolicina1";
+            this.groupBoxKolicina1.Size = new System.Drawing.Size(431, 445);
+            this.groupBoxKolicina1.TabIndex = 6;
+            this.groupBoxKolicina1.TabStop = false;
+            this.groupBoxKolicina1.Text = "Količina određenog pića u danu";
+            // 
+            // labelOdaberiPice
+            // 
+            this.labelOdaberiPice.AutoSize = true;
+            this.labelOdaberiPice.Location = new System.Drawing.Point(6, 48);
+            this.labelOdaberiPice.Name = "labelOdaberiPice";
+            this.labelOdaberiPice.Size = new System.Drawing.Size(124, 24);
+            this.labelOdaberiPice.TabIndex = 0;
+            this.labelOdaberiPice.Text = "Odaberi piće:";
+            // 
+            // labelPrikaziKolicinu
+            // 
+            this.labelPrikaziKolicinu.AutoSize = true;
+            this.labelPrikaziKolicinu.Location = new System.Drawing.Point(39, 378);
+            this.labelPrikaziKolicinu.Name = "labelPrikaziKolicinu";
+            this.labelPrikaziKolicinu.Size = new System.Drawing.Size(233, 24);
+            this.labelPrikaziKolicinu.TabIndex = 5;
+            this.labelPrikaziKolicinu.Text = "Ovdje se prikazuje statitika.";
+            // 
+            // odabirPica
+            // 
+            this.odabirPica.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.odabirPica.FormattingEnabled = true;
+            this.odabirPica.Location = new System.Drawing.Point(171, 40);
+            this.odabirPica.Name = "odabirPica";
+            this.odabirPica.Size = new System.Drawing.Size(224, 32);
+            this.odabirPica.TabIndex = 1;
+            // 
+            // buttonPrikaziStatistiku
+            // 
+            this.buttonPrikaziStatistiku.Location = new System.Drawing.Point(94, 312);
+            this.buttonPrikaziStatistiku.Name = "buttonPrikaziStatistiku";
+            this.buttonPrikaziStatistiku.Size = new System.Drawing.Size(204, 43);
+            this.buttonPrikaziStatistiku.TabIndex = 4;
+            this.buttonPrikaziStatistiku.Text = "Prikaži statistiku";
+            this.buttonPrikaziStatistiku.UseVisualStyleBackColor = true;
+            this.buttonPrikaziStatistiku.Click += new System.EventHandler(this.buttonPrikaziStatistiku_Click);
+            // 
+            // labelOdaberiDatum
+            // 
+            this.labelOdaberiDatum.AutoSize = true;
+            this.labelOdaberiDatum.Location = new System.Drawing.Point(6, 89);
+            this.labelOdaberiDatum.Name = "labelOdaberiDatum";
+            this.labelOdaberiDatum.Size = new System.Drawing.Size(140, 24);
+            this.labelOdaberiDatum.TabIndex = 2;
+            this.labelOdaberiDatum.Text = "Odaberi datum:";
+            // 
+            // monthCalendar1
+            // 
+            this.monthCalendar1.Location = new System.Drawing.Point(185, 89);
+            this.monthCalendar1.Name = "monthCalendar1";
+            this.monthCalendar1.TabIndex = 3;
             // 
             // gumbOdjavaVlasnika
             // 
@@ -409,6 +544,7 @@
             this.gumbOdjavaVlasnika.TabIndex = 6;
             this.gumbOdjavaVlasnika.Text = "Odjava";
             this.gumbOdjavaVlasnika.UseVisualStyleBackColor = true;
+            this.gumbOdjavaVlasnika.Click += new System.EventHandler(this.gumbOdjavaVlasnika_Click);
             // 
             // VlasnikForm
             // 
@@ -427,6 +563,12 @@
             this.tabUnosPića.ResumeLayout(false);
             this.groupBoxNovoPice.ResumeLayout(false);
             this.groupBoxNovoPice.PerformLayout();
+            this.tabStatistika.ResumeLayout(false);
+            this.groupBoxKolicina2.ResumeLayout(false);
+            this.groupBoxKolicina2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKolicinePica)).EndInit();
+            this.groupBoxKolicina1.ResumeLayout(false);
+            this.groupBoxKolicina1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -453,6 +595,18 @@
         private System.Windows.Forms.GroupBox gBoxDodajKonobara;
         private System.Windows.Forms.DataGridView dataGridViewKonobari;
         private System.Windows.Forms.Button btnPrikaziKonobare;
+        private System.Windows.Forms.ComboBox odabirPica;
+        private System.Windows.Forms.Label labelOdaberiPice;
+        private System.Windows.Forms.Button buttonPrikaziStatistiku;
+        private System.Windows.Forms.MonthCalendar monthCalendar1;
+        private System.Windows.Forms.Label labelOdaberiDatum;
+        private System.Windows.Forms.Label labelPrikaziKolicinu;
+        private System.Windows.Forms.GroupBox groupBoxKolicina1;
+        private System.Windows.Forms.GroupBox groupBoxKolicina2;
+        private System.Windows.Forms.Button buttonPrikaziStatistiku1;
+        private System.Windows.Forms.DataGridView dataGridViewKolicinePica;
+        private System.Windows.Forms.MonthCalendar monthCalendar2;
+        private System.Windows.Forms.Label labelOdaberiDatum2;
         private System.Windows.Forms.GroupBox groupBoxOtpusti;
         private System.Windows.Forms.Button btnOtpusti;
         private System.Windows.Forms.TextBox txtOtpustiKonobara;
@@ -467,5 +621,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtKategorija;
         private System.Windows.Forms.Button btnUnosPica;
+
     }
 }

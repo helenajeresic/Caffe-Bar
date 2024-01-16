@@ -46,11 +46,13 @@
             // 
             resources.ApplyResources(this.textBoxIme, "textBoxIme");
             this.textBoxIme.Name = "textBoxIme";
+            this.textBoxIme.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxIme_KeyPress);
             // 
             // textBoxLozinka
             // 
             resources.ApplyResources(this.textBoxLozinka, "textBoxLozinka");
             this.textBoxLozinka.Name = "textBoxLozinka";
+            this.textBoxLozinka.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxLozinka_KeyPress);
             // 
             // labelUpisiLozinku
             // 
@@ -63,6 +65,7 @@
             this.gumbPrijava.Name = "gumbPrijava";
             this.gumbPrijava.TabStop = false;
             this.gumbPrijava.UseVisualStyleBackColor = true;
+            this.gumbPrijava.Click += new System.EventHandler(this.gumbPrijava_Click);
             // 
             // gumbOdustani
             // 
