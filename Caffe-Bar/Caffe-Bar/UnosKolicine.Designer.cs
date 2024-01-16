@@ -77,7 +77,7 @@
             // 
             this.labelPice.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
             this.labelPice.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.labelPice.Location = new System.Drawing.Point(140, 29);
+            this.labelPice.Location = new System.Drawing.Point(186, 36);
             this.labelPice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelPice.Name = "labelPice";
             this.labelPice.Size = new System.Drawing.Size(275, 29);

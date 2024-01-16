@@ -150,7 +150,7 @@ namespace CaffeBar
                 decimal kolicinaSkladiste = (decimal)d.Rows[indeksRetka].Cells[5].Value;
                 string najmanjaKolicina = d.Rows[indeksRetka].Cells[6].Value.ToString();
 
-                string label = nazivPica + "\t\t" + Math.Round(cijenaPica, 2);
+                string label = nazivPica + "  " + Math.Round(cijenaPica, 2);
                 int kolicina = GetQuantityFromUser(label);
 
                 if (kolicina > 0)
