@@ -430,7 +430,21 @@ namespace CaffeBar
 
         private void buttonKonobarskiPopust_Click(object sender, EventArgs e)
         {
+            PopustForm popustForm = new PopustForm(narucenaPica);
+            popustForm.Show();
 
+            //dodati novu listu iskoristenih ppusta
+            //treba kod ispisa statistike i prometa -- to radije upit na bazu
+            // tu radije samo zapisati manji total i zapisati popust?
+            //zarada je onda zbroj totala
+            //iskoristeni popusti se dobijju iz zapisa konobar popust
+            narucenaPica = popustForm.azurirajRacun();
+            string text = popustForm.dodajTekst();
+
+            if(DialogResult == DialogResult.OK)
+            {
+
+            }
         }
     }
 }

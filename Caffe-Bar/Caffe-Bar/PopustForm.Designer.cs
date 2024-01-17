@@ -31,12 +31,11 @@
             this.components = new System.ComponentModel.Container();
             this.gumbPotvrdiPopust = new System.Windows.Forms.Button();
             this.gumbOdustaniPopust = new System.Windows.Forms.Button();
-            this.dataGridViewKonobariPopust = new System.Windows.Forms.DataGridView();
-            this.bazaDataSet = new Caffe_Bar.bazaDataSet();
             this.bazaDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKonobariPopust)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bazaDataSet)).BeginInit();
+            this.bazaDataSet = new Caffe_Bar.bazaDataSet();
+            this.odabirKonobara = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.bazaDataSetBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bazaDataSet)).BeginInit();
             this.SuspendLayout();
             // 
             // gumbPotvrdiPopust
@@ -63,25 +62,24 @@
             this.gumbOdustaniPopust.Text = "Odustani";
             this.gumbOdustaniPopust.UseVisualStyleBackColor = true;
             // 
-            // dataGridViewKonobariPopust
+            // bazaDataSetBindingSource
             // 
-            this.dataGridViewKonobariPopust.AutoGenerateColumns = false;
-            this.dataGridViewKonobariPopust.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewKonobariPopust.DataSource = this.bazaDataSetBindingSource;
-            this.dataGridViewKonobariPopust.Location = new System.Drawing.Point(49, 48);
-            this.dataGridViewKonobariPopust.Name = "dataGridViewKonobariPopust";
-            this.dataGridViewKonobariPopust.Size = new System.Drawing.Size(339, 347);
-            this.dataGridViewKonobariPopust.TabIndex = 3;
+            this.bazaDataSetBindingSource.DataSource = this.bazaDataSet;
+            this.bazaDataSetBindingSource.Position = 0;
             // 
             // bazaDataSet
             // 
             this.bazaDataSet.DataSetName = "bazaDataSet";
             this.bazaDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // bazaDataSetBindingSource
+            // odabirKonobara
             // 
-            this.bazaDataSetBindingSource.DataSource = this.bazaDataSet;
-            this.bazaDataSetBindingSource.Position = 0;
+            this.odabirKonobara.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.odabirKonobara.FormattingEnabled = true;
+            this.odabirKonobara.Location = new System.Drawing.Point(50, 44);
+            this.odabirKonobara.Name = "odabirKonobara";
+            this.odabirKonobara.Size = new System.Drawing.Size(245, 33);
+            this.odabirKonobara.TabIndex = 3;
             // 
             // PopustForm
             // 
@@ -90,16 +88,15 @@
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.CancelButton = this.gumbOdustaniPopust;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.dataGridViewKonobariPopust);
+            this.Controls.Add(this.odabirKonobara);
             this.Controls.Add(this.gumbOdustaniPopust);
             this.Controls.Add(this.gumbPotvrdiPopust);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PopustForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PopustForm";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKonobariPopust)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bazaDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bazaDataSetBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bazaDataSet)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -108,8 +105,8 @@
 
         private System.Windows.Forms.Button gumbPotvrdiPopust;
         private System.Windows.Forms.Button gumbOdustaniPopust;
-        private System.Windows.Forms.DataGridView dataGridViewKonobariPopust;
         private System.Windows.Forms.BindingSource bazaDataSetBindingSource;
         private Caffe_Bar.bazaDataSet bazaDataSet;
+        private System.Windows.Forms.ComboBox odabirKonobara;
     }
 }
