@@ -10,7 +10,7 @@ namespace CaffeBar
 {
     public partial class KonobarForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=\\wsl.localhost\Ubuntu-18.04\home\doriblas\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
         private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica = new Dictionary<Pice, decimal>();
         public int id_ulogirani;
@@ -135,8 +135,8 @@ namespace CaffeBar
                     if (decimal.TryParse(stringValue, out decimal originalValue))
                     {
                         decimal roundedValue = Math.Round(originalValue, 2);
-                        e.Value = roundedValue.ToString(".00");
-                        e.CellStyle.Format = ".00";
+                        e.Value = roundedValue.ToString("0.00");
+                        e.CellStyle.Format = "0.00";
                         e.FormattingApplied = true;
                     }
                     else
