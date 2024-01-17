@@ -15,7 +15,7 @@ namespace CaffeBar
 {
     public partial class VlasnikForm : Form
     {
-        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security = True";
+        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=\\wsl.localhost\Ubuntu-18.04\home\doriblas\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
         public string username_ulogirani;
         public VlasnikForm(string username_vlasnik)
         {
@@ -284,6 +284,14 @@ namespace CaffeBar
 
             if (comboBoxNovoPiceKategorija.SelectedItem is ComboboxItem odabranaKategorija)
             {
+                string nazivPica = txtNazivPica.Text;
+
+                if (ProvjeriPostojiLiNaziv(nazivPica))
+                {
+                    MessageBox.Show("Piće s ovim nazivom već postoji.");
+                    return;
+                }
+
                 Pice pice = new Pice()
                 {
                     naziv_pica = txtNazivPica.Text,
@@ -416,12 +424,33 @@ namespace CaffeBar
                 return;
             }
 
-            var odabrano_pice = comboBoxPicaModificiraj.SelectedItem.ToString();
-            var novi_naziv = txtPromijeniNaziv.Text;
+            var odabranoPice = comboBoxPicaModificiraj.SelectedItem.ToString();
+            var noviNaziv = txtPromijeniNaziv.Text;
 
-            IzvrsiUpdatePica("naziv_pica", novi_naziv, odabrano_pice);
-            UcitajPicaUComboBox();
+            if (ProvjeriPostojiLiNaziv(noviNaziv))
+            {
+                MessageBox.Show("Piće s ovim nazivom već postoji.");
+            }
+            else
+            {
+                IzvrsiUpdatePica("naziv_pica", noviNaziv, odabranoPice);
+                UcitajPicaUComboBox();
+            }
         }
+
+        private bool ProvjeriPostojiLiNaziv(string naziv)
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+                string upit = "SELECT COUNT(*) FROM Pica WHERE naziv_pica = @naziv";
+                SqlCommand cmd = new SqlCommand(upit, veza);
+                cmd.Parameters.AddWithValue("@naziv", naziv);
+                int brojPostojecih = Convert.ToInt32(cmd.ExecuteScalar());
+                return brojPostojecih > 0;
+            }
+        }
+
 
         private void btnPromijeniNajmanjuKolicinu_Click(object sender, EventArgs e)
         {
@@ -477,6 +506,7 @@ namespace CaffeBar
         private void UcitajPicaUComboBox()
         {
             comboBoxPicaModificiraj.Items.Clear();
+            odabirPica.Items.Clear();
 
             using (SqlConnection veza = new SqlConnection(connectionString))
             {
@@ -494,6 +524,7 @@ namespace CaffeBar
                             Value = citac["id_pica"]
                         };
                         comboBoxPicaModificiraj.Items.Add(item);
+                        odabirPica.Items.Add(item);
                     }
                 }
             }
