@@ -15,7 +15,7 @@ namespace CaffeBar
 {
     public partial class VlasnikForm : Form
     {
-        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
+        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
         public string username_ulogirani;
         public VlasnikForm(string username_vlasnik)
         {
@@ -43,6 +43,7 @@ namespace CaffeBar
                 odabirPica.Items.Add(pica);
                 comboBoxPicaModificiraj.Items.Add(pica);
             }
+            UcitajPicaUComboBoxAkcija();
             UcitajKategorijeUComboBox();
 
         }
@@ -327,6 +328,7 @@ namespace CaffeBar
                 veza.Close();
                 ResetirajFormu(groupBoxNovoPice);
                 UcitajPicaUComboBox();
+                UcitajPicaUComboBoxAkcija();
             }
             else
             {
@@ -435,6 +437,7 @@ namespace CaffeBar
             {
                 IzvrsiUpdatePica("naziv_pica", noviNaziv, odabranoPice);
                 UcitajPicaUComboBox();
+                UcitajPicaUComboBoxAkcija();
             }
         }
 
@@ -555,11 +558,6 @@ namespace CaffeBar
             }
         }
 
-        private void groupBoxModifikacija_Enter(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnNovaKategorija_Click(object sender, EventArgs e)
         {
             foreach (Control kontrola in groupBoxNovaKategorija.Controls)
@@ -598,5 +596,176 @@ namespace CaffeBar
             veza.Close();
 
         }
+
+        private void buttonSveAkcije_Click(object sender, EventArgs e)
+        {
+            PrikaziSveAkcije();
+        }
+
+        private void PrikaziSveAkcije()
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string upit = "SELECT A.id_akcija AS 'id_akcija', P.naziv_pica AS 'Naziv pića', A.od AS 'Traje od', A.do AS 'Traje do', A.popust AS 'Popust (%)'" +
+                              "FROM Akcija A " +
+                              "JOIN Pica P ON A.id_pica = P.id_pica ";
+                SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                dataGridViewAkcija.DataSource = dt;
+
+                if (dt.Columns.Contains("id_akcija"))
+                {
+                    dataGridViewAkcija.Columns["id_akcija"].Visible = false;
+                }
+            }
+        }
+
+        private void UcitajPicaUComboBoxAkcija()
+        {
+            comboBoxAkcija.Items.Clear();
+            odabirPica.Items.Clear();
+
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+                string upit = "SELECT id_pica, naziv_pica FROM Pica";
+                SqlCommand cmd = new SqlCommand(upit, veza);
+
+                using (SqlDataReader citac = cmd.ExecuteReader())
+                {
+                    while (citac.Read())
+                    {
+                        ComboboxItem item = new ComboboxItem
+                        {
+                            Text = citac["naziv_pica"].ToString(),
+                            Value = citac["id_pica"]
+                        };
+                        comboBoxAkcija.Items.Add(item);
+                        odabirPica.Items.Add(item);
+                    }
+                }
+            }
+        }
+
+        private void buttonAkcija_Click(object sender, EventArgs e)
+        {
+            if (comboBoxAkcija.SelectedItem == null)
+            {
+                MessageBox.Show("Odaberite piće za koje želite dodati akciju.", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string nazivPica = ((ComboboxItem)comboBoxAkcija.SelectedItem).Text;
+
+            int idPica;
+
+            int popust = (int)numericUpDownAkcija.Value;
+
+            DateTime datumOd = dateTimePickerAkcijaOdDatum.Value.Date + dateTimePickerAkcijaOdVrijeme.Value.TimeOfDay;
+            DateTime datumDo = dateTimePickerAkcijaDoDatum.Value.Date + dateTimePickerAkcijaDoVrijeme.Value.TimeOfDay;
+
+            if (datumOd > datumDo)
+            {
+                MessageBox.Show("Datum početka akcije mora biti prije datuma završetka akcije.", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string upitDohvatiIdPica = "SELECT id_pica FROM Pica WHERE naziv_pica = @nazivPica";
+
+                using (SqlCommand cmdDohvatiIdPica = new SqlCommand(upitDohvatiIdPica, veza))
+                {
+                    cmdDohvatiIdPica.Parameters.AddWithValue("@nazivPica", nazivPica);
+
+                    object rezultat = cmdDohvatiIdPica.ExecuteScalar();
+
+                    if (rezultat != null && rezultat != DBNull.Value)
+                    {
+                        idPica = Convert.ToInt32(rezultat);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nije moguće pronaći identifikator pića za odabrani naziv.", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                // Provjeri preklapanje s postojećim akcijama za odabrano piće
+                string provjeraPreklapanja = "SELECT COUNT(*) FROM Akcija WHERE id_pica = @idPica " +
+                                             "AND ((@datumOd BETWEEN od AND do) OR (@datumDo BETWEEN od AND do))";
+
+                using (SqlCommand cmdProvjeriPreklapanje = new SqlCommand(provjeraPreklapanja, veza))
+                {
+                    cmdProvjeriPreklapanje.Parameters.AddWithValue("@idPica", idPica);
+                    cmdProvjeriPreklapanje.Parameters.AddWithValue("@datumOd", datumOd);
+                    cmdProvjeriPreklapanje.Parameters.AddWithValue("@datumDo", datumDo);
+
+                    int brojPreklapanja = (int)cmdProvjeriPreklapanje.ExecuteScalar();
+
+                    if (brojPreklapanja > 0)
+                    {
+                        MessageBox.Show("Već postoji akcija za odabrano piće koja se preklapa s odabranim vremenskim periodom.", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                // Dodaj akciju u bazu
+                string dodajAkciju = "INSERT INTO Akcija (id_pica, od, do, popust) VALUES (@idPica, @datumOd, @datumDo, @popust)";
+
+                using (SqlCommand cmdDodajAkciju = new SqlCommand(dodajAkciju, veza))
+                {
+                    cmdDodajAkciju.Parameters.AddWithValue("@idPica", idPica);
+                    cmdDodajAkciju.Parameters.AddWithValue("@datumOd", datumOd);
+                    cmdDodajAkciju.Parameters.AddWithValue("@datumDo", datumDo);
+                    cmdDodajAkciju.Parameters.AddWithValue("@popust", popust); 
+
+                    cmdDodajAkciju.ExecuteNonQuery();
+                    MessageBox.Show("Akcija je uspješno dodana.", "Uspjeh", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+
+            PrikaziSveAkcije();
+        }
+
+        private void dataGridViewAkcija_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DialogResult rezultat = MessageBox.Show("Jeste li sigurni da želite obrisati odabranu akciju?", "Potvrda brisanja", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (rezultat == DialogResult.Yes)
+                {
+                    int idAkcije = (int)dataGridViewAkcija.Rows[e.RowIndex].Cells["id_akcija"].Value;
+
+                    ObrisiAkciju(idAkcije);
+
+                    PrikaziSveAkcije();
+                }
+            }
+        }
+
+        private void ObrisiAkciju(int idAkcije)
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string upitBrisanje = "DELETE FROM Akcija WHERE id_akcija = @idAkcije";
+
+                using (SqlCommand cmdBrisanje = new SqlCommand(upitBrisanje, veza))
+                {
+                    cmdBrisanje.Parameters.AddWithValue("@idAkcije", idAkcije);
+                    cmdBrisanje.ExecuteNonQuery();
+                }
+            }
+        }
+
     }
 }
