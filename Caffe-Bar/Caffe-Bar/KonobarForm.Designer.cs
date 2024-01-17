@@ -124,6 +124,7 @@
             this.buttonKonobarskiPopust.TabIndex = 7;
             this.buttonKonobarskiPopust.Text = "Iskoristi popust";
             this.buttonKonobarskiPopust.UseVisualStyleBackColor = true;
+            this.buttonKonobarskiPopust.Click += new System.EventHandler(this.buttonKonobarskiPopust_Click);
             // 
             // gumbIzdajRacun
             // 

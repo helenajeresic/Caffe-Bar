@@ -88,6 +88,12 @@
     </Compile>
     <Compile Include="Osoba.cs" />
     <Compile Include="Pice.cs" />
+    <Compile Include="PopustForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PopustForm.Designer.cs">
+      <DependentUpon>PopustForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PrijavaForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="KonobarForm.resx">
       <DependentUpon>KonobarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopustForm.resx">
+      <DependentUpon>PopustForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PrijavaForm.resx">
       <DependentUpon>PrijavaForm.cs</DependentUpon>
