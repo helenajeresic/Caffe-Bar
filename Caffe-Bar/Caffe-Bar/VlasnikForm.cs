@@ -15,7 +15,9 @@ namespace CaffeBar
 {
     public partial class VlasnikForm : Form
     {
+
         static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
+
         public string username_ulogirani;
         public VlasnikForm(string username_vlasnik)
         {
