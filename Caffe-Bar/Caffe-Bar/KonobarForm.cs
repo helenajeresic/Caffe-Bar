@@ -84,6 +84,17 @@ namespace CaffeBar
 
             dataGridViewPica.Columns[1].HeaderText = "Naziv pića";
             dataGridViewPica.Columns[2].HeaderText = "Cijena pića";
+
+            if(provjeraAkcije() > 0)
+            {
+                foreach (DataGridViewRow row in dataGridViewPica.Rows)
+                {
+                    if (row.Cells["cijena_pica"].Value != null)
+                    {
+                        row.Cells["cijena_pica"].Style.ForeColor = Color.Blue;
+                    }
+                }
+            }
         }
 
         private void buttonPrikaziPica_Click(object sender, EventArgs e)

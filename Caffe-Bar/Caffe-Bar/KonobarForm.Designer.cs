@@ -98,7 +98,7 @@
             // 
             this.labelAkcijaUTijeku.AutoSize = true;
             this.labelAkcijaUTijeku.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelAkcijaUTijeku.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.labelAkcijaUTijeku.ForeColor = System.Drawing.Color.Blue;
             this.labelAkcijaUTijeku.Location = new System.Drawing.Point(493, 39);
             this.labelAkcijaUTijeku.Name = "labelAkcijaUTijeku";
             this.labelAkcijaUTijeku.Size = new System.Drawing.Size(0, 25);
@@ -186,7 +186,7 @@
             this.tabSkladiste.Margin = new System.Windows.Forms.Padding(5);
             this.tabSkladiste.Name = "tabSkladiste";
             this.tabSkladiste.Padding = new System.Windows.Forms.Padding(5);
-            this.tabSkladiste.Size = new System.Drawing.Size(1207, 596);
+            this.tabSkladiste.Size = new System.Drawing.Size(1243, 596);
             this.tabSkladiste.TabIndex = 1;
             this.tabSkladiste.Text = "Skladište";
             this.tabSkladiste.UseVisualStyleBackColor = true;
@@ -197,7 +197,7 @@
             this.tabŠank.Margin = new System.Windows.Forms.Padding(5);
             this.tabŠank.Name = "tabŠank";
             this.tabŠank.Padding = new System.Windows.Forms.Padding(5);
-            this.tabŠank.Size = new System.Drawing.Size(1207, 596);
+            this.tabŠank.Size = new System.Drawing.Size(1243, 596);
             this.tabŠank.TabIndex = 2;
             this.tabŠank.Text = "Šank";
             this.tabŠank.UseVisualStyleBackColor = true;
@@ -208,7 +208,7 @@
             this.tabNarudžba.Margin = new System.Windows.Forms.Padding(5);
             this.tabNarudžba.Name = "tabNarudžba";
             this.tabNarudžba.Padding = new System.Windows.Forms.Padding(5);
-            this.tabNarudžba.Size = new System.Drawing.Size(1207, 596);
+            this.tabNarudžba.Size = new System.Drawing.Size(1243, 596);
             this.tabNarudžba.TabIndex = 3;
             this.tabNarudžba.Text = "Narudžba";
             this.tabNarudžba.UseVisualStyleBackColor = true;
