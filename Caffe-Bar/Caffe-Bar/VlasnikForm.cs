@@ -15,7 +15,7 @@ namespace CaffeBar
 {
     public partial class VlasnikForm : Form
     {
-        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=\\wsl.localhost\Ubuntu-18.04\home\doriblas\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
+        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
         public string username_ulogirani;
         public VlasnikForm(string username_vlasnik)
         {

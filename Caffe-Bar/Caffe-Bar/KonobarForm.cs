@@ -10,7 +10,7 @@ namespace CaffeBar
 {
     public partial class KonobarForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
         private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica = new Dictionary<Pice, decimal>();
         public int id_ulogirani;
@@ -281,6 +281,7 @@ namespace CaffeBar
                 updateKolicinaPica(narucenaPica);
                 zapisRacunStavke(vrijeme);
                 //zapisKonobarPopust();
+                AzurirajStanjeSanka();
 
                 MessageBox.Show("Račun uspješno evidentiran!", "Obavijest");
                 textRacuna.Clear();
@@ -430,80 +431,207 @@ namespace CaffeBar
             this.Hide();
         }
         
-        private void buttonPrikaziStanjeSanka_Click(object sender, EventArgs e)
-        {
-            //popuvanjanje forme sa stanjima pica u sanku
-            SqlConnection veza = new SqlConnection(connectionString);
-
-            veza.Open();
-
-            string upit = "SELECT naziv_pica as 'Naziv Pica', kolicina_kafic as 'Količina'" +
-                " FROM Pica" +
-                " ORDER BY naziv_pica";
-            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-
-            dataGridViewSank.DataSource = dt;
-
-            veza.Close();
-        }
-
-        private void buttonPrikaziStanjeSanka_Click_1(object sender, EventArgs e)
-        {
-            //popuvanjanje forme sa stanjima pica u sanku - potrebno za tab Šank
-            //popuvanja se kod samog pokretanja forme
-            SqlConnection veza = new SqlConnection(connectionString);
-
-            veza.Open();
-
-            string upit = "SELECT naziv_pica as 'Naziv pića', kolicina_kafic as 'Količina'" +
-                " FROM Pica" +
-                " ORDER BY naziv_pica";
-            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-
-            dataGridViewSank.DataSource = dt;
-
-
-            //popunjavanje labele koja upozorava korisnika da napuni sank ako je kolicina nekog pica u sanku manja od 5
-            //labela se popunjava odmah kod pokretanja forme
-            upit = "SELECT naziv_pica, kolicina_kafic FROM Pica " +
-                "WHERE kolicina_kafic <= 5";
-            SqlCommand naredba1 = new SqlCommand(upit, veza);
-            Dictionary<string, decimal> pica = new Dictionary<string, decimal>();
-            using (SqlDataReader citac = naredba1.ExecuteReader())
-            {
-                while (citac.Read())
-                {
-                    pica.Add(citac.GetString(0), citac.GetDecimal(1));
-                }
-            }
-            veza.Close();
-            string popuniLabelu;
-
-            if (pica.Count > 0)
-            {
-                labelPotrebnoNapunitiSank.ForeColor = Color.Red;
-                popuniLabelu = "Niska zaliha sljedećih pića u šanku! \n" +
-                "Potrebno je nadopuniti iz skladišta! \n\n";
-
-                foreach (var stavka in pica)
-                {
-                    popuniLabelu += "   " + stavka.Key + ": trenutna količina " + stavka.Value + "\n";
-                }
-            }
-            else
-            {
-                labelPotrebnoNapunitiSank.ForeColor = Color.Green;
-                popuniLabelu = "Zaliha svih pića u šanku je dobra!";
-            }
-            labelPotrebnoNapunitiSank.Text = popuniLabelu;
-        }
 
         private void KonobarForm_Load(object sender, EventArgs e)
         {
+
+        }
+        /// <summary>
+        /// Klikom na gumb prikazuju se podaci o svim količinama pića u skladištu
+        /// Popuvanja se dropdown za odabir pića koje želimo za premještanje iz skladišta u šank
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonStanjeSkladista_Click(object sender, EventArgs e)
+        {
+            SqlConnection veza = new SqlConnection(connectionString);
+
+            veza.Open();
+
+            string upit = "SELECT naziv_pica as 'Naziv pića', kolicina_skladista as 'Količina na skladištu'" +
+                " FROM Pica" +
+                " ORDER BY naziv_pica";
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridViewStanjeSkladista.DataSource = dt;
+
+            var lista_pica = GetPicaFromDatabase("SELECT * FROM Pica");
+
+            veza.Close();
+
+            lista_pica.Sort((x, y) => x.naziv_pica.CompareTo(y.naziv_pica));
+
+            foreach (var pice in lista_pica)
+            {
+                if (!comboBoxOdaberiPiceZaSank.Items.Contains(pice.naziv_pica))
+                {
+                    comboBoxOdaberiPiceZaSank.Items.Add(pice.naziv_pica);    
+                }    
+            }
+        }
+        
+        /// <summary>
+        /// Funkcija koja dohvaća količinu pića koja se nalazi u skladištu 
+        /// </summary>
+        /// <param name="idPica"></param>
+        /// <returns>dostupna_kolicina</returns>
+        public decimal dohvatiDostupnuKolicinuSkladista(int idPica)
+        {
+            decimal dostupnaKolicina = 0;
+
+            SqlConnection veza = new SqlConnection(connectionString);
+            veza.Open();
+            string upit = "SELECT kolicina_skladista FROM Pica WHERE id_pica = @idPica";
+            SqlCommand naredba = new SqlCommand(upit, veza);
+
+            naredba.Parameters.AddWithValue("@IdPica", idPica);
+
+            using (SqlDataReader čitač = naredba.ExecuteReader())
+            {
+                if (čitač.Read())
+                {
+                    dostupnaKolicina = čitač.GetDecimal(0);
+                }
+            }
+            veza.Close();
+
+            return dostupnaKolicina;
+        }
+        
+        /// <summary>
+        /// Klikom na gumb dodaje se odabrani proizvod i odabrana količina u šank, a miče se sa skladišta
+        /// Ako je odabrana količina veća od količine u skladištu, javlja se poruka i može se početi ispočetka
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonDodajUSank_Click(object sender, EventArgs e)
+        {
+            var lista_pica = GetPicaFromDatabase("SELECT * FROM Pica");
+            lista_pica.Sort((x, y) => x.naziv_pica.CompareTo(y.naziv_pica));
+
+            if(comboBoxOdaberiPiceZaSank.SelectedIndex != -1)
+            {
+                var odabrano_pice = comboBoxOdaberiPiceZaSank.SelectedItem.ToString();
+                int odabrano_pice_id = 0;
+                Pice odabrano = new Pice();
+                foreach (var pice in lista_pica)
+                {
+                    if (pice.naziv_pica == odabrano_pice)
+                    {
+                        odabrano_pice_id = pice.id_pica;
+                        odabrano = pice;
+                        break;
+                    }
+                }
+                var dostupno_na_skladistu = dohvatiDostupnuKolicinuSkladista(odabrano_pice_id);
+
+                var odabrana_kolicina = numericUpDownOdaberiKolicinuZaSank.Value;
+                if (odabrana_kolicina > dostupno_na_skladistu)
+                {
+                    MessageBox.Show("Prevelika količina! Nema toliko na skladištu!", "Dodavanje nije uspjelo");
+                }
+                else
+                {
+                    try
+                    {
+                        using (SqlConnection veza = new SqlConnection(connectionString))
+                        {
+                            veza.Open();
+
+                            var nova_kolicina = odabrano.kolicina_kafic + odabrana_kolicina;
+                            var nova_kolicina1 = odabrano.kolicina_skladista - odabrana_kolicina;
+
+                            string azuriraj = "UPDATE Pica SET kolicina_kafic = @nova_kolicina, kolicina_skladista = @nova_kolicina1 WHERE id_pica = @odabrano_pice_id";
+
+                            using (SqlCommand naredba = new SqlCommand(azuriraj, veza))
+                            {
+                                naredba.Parameters.AddWithValue("@nova_kolicina", nova_kolicina);
+                                naredba.Parameters.AddWithValue("@nova_kolicina1", nova_kolicina1);
+                                naredba.Parameters.AddWithValue("@odabrano_pice_id", odabrano.id_pica);
+
+                                naredba.ExecuteNonQuery();
+
+                                MessageBox.Show($"Dodano {odabrana_kolicina}x {odabrano_pice} u šank!", "Uspješno dodano");
+                            }
+                            veza.Close();
+
+                            AzurirajStanjeSanka();
+                            AzurirajStanjeSkladista();   
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Greška: {ex.Message}");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Klikom na gumb prikazuju se podaci o svim količinama pića u šanku
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonPrikaziStanjeSank_Click(object sender, EventArgs e)
+        {
+            SqlConnection veza = new SqlConnection(connectionString);
+
+            veza.Open();
+
+            string upit = "SELECT naziv_pica as 'Naziv pića', kolicina_kafic as 'Količina šank'" +
+                " FROM Pica" +
+                " ORDER BY naziv_pica";
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridViewStanjeSank.DataSource = dt;
+            veza.Close();
+        }
+
+        /// <summary>
+        /// Funkcija koja ažurira količine pića u skladištu
+        /// </summary>
+        public void AzurirajStanjeSkladista()
+        {
+            SqlConnection veza = new SqlConnection(connectionString);
+
+            veza.Open();
+
+            string upit = "SELECT naziv_pica as 'Naziv pića', kolicina_skladista as 'Količina na skladištu'" +
+                                " FROM Pica" +
+                                " ORDER BY naziv_pica";
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridViewStanjeSkladista.DataSource = dt;
+
+            veza.Close();
+
+        }
+
+        /// <summary>
+        /// Funkcija koja ažurira količine pića u šanku
+        /// </summary>
+        public void AzurirajStanjeSanka()
+        {
+            SqlConnection veza = new SqlConnection(connectionString);
+
+            veza.Open();
+
+            string upit =  "SELECT naziv_pica as 'Naziv pića', kolicina_kafic as 'Količina šank'" +
+                           " FROM Pica" +
+                           " ORDER BY naziv_pica"; 
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridViewStanjeSank.DataSource = dt;
+
+            veza.Close();
 
         }
     }
