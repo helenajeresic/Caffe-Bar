@@ -28,6 +28,8 @@ namespace CaffeBar
 
             labelUsername.Text = "Prijavljen konobar: " + username_konobar;
             dataGridViewPica.CellFormatting += dataGridViewPica_CellFormatting;
+
+            
         }
 
         private List<Pice> GetPicaFromDatabase(string upit)
@@ -426,6 +428,77 @@ namespace CaffeBar
             PrijavaForm forma = new PrijavaForm();
             forma.Show();
             this.Hide();
+
+        private void buttonPrikaziStanjeSanka_Click(object sender, EventArgs e)
+        {
+            //popuvanjanje forme sa stanjima pica u sanku
+            SqlConnection veza = new SqlConnection(connectionString);
+
+            veza.Open();
+
+            string upit = "SELECT naziv_pica as 'Naziv Pica', kolicina_kafic as 'Količina'" +
+                " FROM Pica" +
+                " ORDER BY naziv_pica";
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridViewSank.DataSource = dt;
+
+            veza.Close();
+        }
+
+        private void buttonPrikaziStanjeSanka_Click_1(object sender, EventArgs e)
+        {
+            //popuvanjanje forme sa stanjima pica u sanku - potrebno za tab Šank
+            //popuvanja se kod samog pokretanja forme
+            SqlConnection veza = new SqlConnection(connectionString);
+
+            veza.Open();
+
+            string upit = "SELECT naziv_pica as 'Naziv pića', kolicina_kafic as 'Količina'" +
+                " FROM Pica" +
+                " ORDER BY naziv_pica";
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridViewSank.DataSource = dt;
+
+
+            //popunjavanje labele koja upozorava korisnika da napuni sank ako je kolicina nekog pica u sanku manja od 5
+            //labela se popunjava odmah kod pokretanja forme
+            upit = "SELECT naziv_pica, kolicina_kafic FROM Pica " +
+                "WHERE kolicina_kafic <= 5";
+            SqlCommand naredba1 = new SqlCommand(upit, veza);
+            Dictionary<string, decimal> pica = new Dictionary<string, decimal>();
+            using (SqlDataReader citac = naredba1.ExecuteReader())
+            {
+                while (citac.Read())
+                {
+                    pica.Add(citac.GetString(0), citac.GetDecimal(1));
+                }
+            }
+            veza.Close();
+            string popuniLabelu;
+
+            if (pica.Count > 0)
+            {
+                labelPotrebnoNapunitiSank.ForeColor = Color.Red;
+                popuniLabelu = "Niska zaliha sljedećih pića u šanku! \n" +
+                "Potrebno je nadopuniti iz skladišta! \n\n";
+
+                foreach (var stavka in pica)
+                {
+                    popuniLabelu += "   " + stavka.Key + ": trenutna količina " + stavka.Value + "\n";
+                }
+            }
+            else
+            {
+                labelPotrebnoNapunitiSank.ForeColor = Color.Green;
+                popuniLabelu = "Zaliha svih pića u šanku je dobra!";
+            }
+            labelPotrebnoNapunitiSank.Text = popuniLabelu;
         }
     }
 }
