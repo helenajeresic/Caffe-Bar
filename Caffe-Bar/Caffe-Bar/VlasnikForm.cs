@@ -43,7 +43,7 @@ namespace CaffeBar
                 odabirPica.Items.Add(pica);
                 comboBoxPicaModificiraj.Items.Add(pica);
             }
-            
+            UcitajKategorijeUComboBox();
 
         }
         public void ResetirajFormu(Control kontrola)
@@ -275,39 +275,49 @@ namespace CaffeBar
                 }
             }
 
-            Pice pice = new Pice()
+            if (comboBoxNovoPiceKategorija.SelectedItem is ComboboxItem odabranaKategorija)
             {
-                naziv_pica = txtNazivPica.Text,
-                cijena_pica = Convert.ToDecimal(txtCijenaPica.Text),
-                id_kategorija_pica = int.Parse(txtKategorija.Text),
-                kolicina_kafic = 0,
-                kolicina_skladista = 0,
-                najmanja_kolicina = txtUpozorenje.Text
-            };
-            SqlConnection veza = new SqlConnection(connectionString);
-            veza.Open();
-            string upit = "INSERT INTO "
-                + "Pica (naziv_pica, cijena_pica, id_kategorija_pica, kolicina_kafic, kolicina_skladista, najmanja_kolicina) "
-                + "VALUES (@naziv_pica, @cijena_pica, @id_kategorija_pica, @kolicina_kafic, @kolicina_skladista, @najmanja_kolicina)";
-            SqlCommand naredba = new SqlCommand(upit, veza);
-            naredba.Parameters.AddWithValue("@naziv_pica", pice.naziv_pica);
-            naredba.Parameters.AddWithValue("@cijena_pica", pice.cijena_pica);
-            naredba.Parameters.AddWithValue("@id_kategorija_pica", pice.id_kategorija_pica);
-            naredba.Parameters.AddWithValue("@kolicina_kafic", pice.kolicina_kafic);
-            naredba.Parameters.AddWithValue("@kolicina_skladista", pice.kolicina_skladista);
-            naredba.Parameters.AddWithValue("@najmanja_kolicina", pice.najmanja_kolicina);
+                Pice pice = new Pice()
+                {
+                    naziv_pica = txtNazivPica.Text,
+                    cijena_pica = Convert.ToDecimal(txtCijenaPica.Text),
+                    id_kategorija_pica = (int)odabranaKategorija.Value,
+                    kolicina_kafic = 0,
+                    kolicina_skladista = 0,
+                    najmanja_kolicina = txtUpozorenje.Text
+                };
 
-            try
-            {
-                naredba.ExecuteNonQuery();
-                MessageBox.Show("Piće uspješno dodano!");
+                SqlConnection veza = new SqlConnection(connectionString);
+                veza.Open();
+                string upit = "INSERT INTO "
+                    + "Pica (naziv_pica, cijena_pica, id_kategorija_pica, kolicina_kafic, kolicina_skladista, najmanja_kolicina) "
+                    + "VALUES (@naziv_pica, @cijena_pica, @id_kategorija_pica, @kolicina_kafic, @kolicina_skladista, @najmanja_kolicina)";
+                SqlCommand naredba = new SqlCommand(upit, veza);
+                naredba.Parameters.AddWithValue("@naziv_pica", pice.naziv_pica);
+                naredba.Parameters.AddWithValue("@cijena_pica", pice.cijena_pica);
+                naredba.Parameters.AddWithValue("@id_kategorija_pica", pice.id_kategorija_pica);
+                naredba.Parameters.AddWithValue("@kolicina_kafic", pice.kolicina_kafic);
+                naredba.Parameters.AddWithValue("@kolicina_skladista", pice.kolicina_skladista);
+                naredba.Parameters.AddWithValue("@najmanja_kolicina", pice.najmanja_kolicina);
+
+                try
+                {
+                    naredba.ExecuteNonQuery();
+                    MessageBox.Show("Piće uspješno dodano!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Došlo je do greške: " + ex.Message);
+                }
+                veza.Close();
+                ResetirajFormu(groupBoxNovoPice);
+                UcitajPicaUComboBox();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Došlo je do greške: " + ex.Message);
+                MessageBox.Show("Niste odabrali kategoriju.");
             }
-            veza.Close();
-            ResetirajFormu(groupBoxNovoPice);
+
         }
 
         private void gumbOdjavaVlasnika_Click(object sender, EventArgs e)
@@ -317,7 +327,7 @@ namespace CaffeBar
             this.Hide();
         }
 
-        
+
         private void PrikaziPicaModificiraj()
         {
             if (comboBoxPicaModificiraj.SelectedIndex == -1)
@@ -325,21 +335,29 @@ namespace CaffeBar
                 MessageBox.Show("Nije odabrano nijedno piće!");
                 return;
             }
-            else
-                using (SqlConnection veza = new SqlConnection(connectionString))
-                {
-                    var odabrano_pice = comboBoxPicaModificiraj.SelectedItem.ToString();
-                    veza.Open();
 
-                    string upit = "SELECT  naziv_pica as 'Naziv', cijena_pica as 'Cijena', najmanja_kolicina as 'Najmanja količina'" +
-                                   "FROM Pica WHERE naziv_pica = '" + odabrano_pice + "'";
-                    SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+                var odabranoPice = comboBoxPicaModificiraj.SelectedItem.ToString();
 
-                    dataGridViewPicaModificiraj.DataSource = dt;
-                }
+                // Parametrizirani SQL upit
+                string upit = "SELECT naziv_pica as 'Naziv', " +
+                              "CAST(cijena_pica AS DECIMAL(10, 2)) as 'Cijena', " +
+                              "najmanja_kolicina as 'Najmanja količina' " +
+                              "FROM Pica WHERE naziv_pica = @nazivPica";
+
+                SqlCommand cmd = new SqlCommand(upit, veza);
+                cmd.Parameters.AddWithValue("@nazivPica", odabranoPice);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                dataGridViewPicaModificiraj.DataSource = dt;
+            }
         }
+
         private void btnPiceModificiraj_Click(object sender, EventArgs e)
         {
             PrikaziPicaModificiraj();
@@ -474,6 +492,73 @@ namespace CaffeBar
             }
         }
 
+        private void UcitajKategorijeUComboBox()
+        {
+            comboBoxNovoPiceKategorija.Items.Clear();
 
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+                string upit = "SELECT id_kategorija_pica, naziv_kategorije FROM Kategorija";
+                SqlCommand cmd = new SqlCommand(upit, veza);
+
+                using (SqlDataReader citac = cmd.ExecuteReader())
+                {
+                    while (citac.Read())
+                    {
+                        ComboboxItem item = new ComboboxItem
+                        {
+                            Text = citac["naziv_kategorije"].ToString(),
+                            Value = citac["id_kategorija_pica"]
+                        };
+                        comboBoxNovoPiceKategorija.Items.Add(item);
+                    }
+                }
+            }
+        }
+
+        private void groupBoxModifikacija_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnNovaKategorija_Click(object sender, EventArgs e)
+        {
+            foreach (Control kontrola in groupBoxNovaKategorija.Controls)
+            {
+                if (kontrola is TextBox t && t.Text.Length == 0)
+                {
+                    MessageBox.Show("Nisu popunjena sva polja!");
+                    return;
+                }
+            }
+            Kategorija kategorija = new Kategorija()
+            {
+                naziv_kategorije = txtNovaKategorija.Text
+            };
+
+            SqlConnection veza = new SqlConnection(connectionString);
+            veza.Open();
+            string upit = "INSERT INTO "
+                + "Kategorija (naziv_kategorije) "
+                + "VALUES (@naziv_kategorije)";
+            SqlCommand naredba = new SqlCommand(upit, veza);
+            naredba.Parameters.AddWithValue("@naziv_kategorije", kategorija.naziv_kategorije);
+
+            try
+            {
+                naredba.ExecuteNonQuery();
+                MessageBox.Show("Kategorija uspješno dodana!");
+                ResetirajFormu(this);
+                UcitajKategorijeUComboBox();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Došlo je do greške: " + ex.Message);
+            }
+
+            veza.Close();
+
+        }
     }
 }
