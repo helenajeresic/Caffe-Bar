@@ -82,40 +82,47 @@ namespace CaffeBar
                     return;
                 }
             }
-            Osoba konobar = new Osoba()
-            { 
-                ime = txtIme.Text,
-                prezime = txtPrezime.Text,
-                uloga = 1,
-                korisnicko_ime = txtKorisnickoIme.Text,
-                lozinka = txtLozinka.Text
-            };
-            SqlConnection veza = new SqlConnection(connectionString);
-            veza.Open();
 
-            string upit = "INSERT INTO "
-                + "Osobe (ime, prezime, uloga, korisnicko_ime, lozinka) "
-                + "VALUES (@ime, @prezime, @uloga, @korisnicko_ime, @lozinka)";
-            SqlCommand naredba = new SqlCommand(upit, veza);
-            naredba.Parameters.AddWithValue("@ime", konobar.ime);
-            naredba.Parameters.AddWithValue("@prezime", konobar.prezime);
-            naredba.Parameters.AddWithValue("@uloga", konobar.uloga);
-            naredba.Parameters.AddWithValue("@korisnicko_ime", konobar.korisnicko_ime);
-            naredba.Parameters.AddWithValue("@lozinka", konobar.lozinka);
-
-            try
+            using (SqlConnection veza = new SqlConnection(connectionString))
             {
-                naredba.ExecuteNonQuery();
-                MessageBox.Show("Konobar uspješno zaposlen!");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Došlo je do greške: " + ex.Message);
+                veza.Open();
+
+                // Provjeravamo postoji li već konobar s istim korisničkim imenom
+                string provjeraUpita = "SELECT COUNT(*) FROM Osobe WHERE korisnicko_ime = @korisnickoIme";
+                SqlCommand provjeraNaredba = new SqlCommand(provjeraUpita, veza);
+                provjeraNaredba.Parameters.AddWithValue("@korisnickoIme", txtKorisnickoIme.Text);
+
+                int brojPostojecih = Convert.ToInt32(provjeraNaredba.ExecuteScalar());
+                if (brojPostojecih > 0)
+                {
+                    MessageBox.Show("Konobar s istim korisničkim imenom već postoji.");
+                    return;
+                }
+
+                // Umetanje novog konobara
+                string upit = "INSERT INTO Osobe (ime, prezime, uloga, korisnicko_ime, lozinka) " +
+                              "VALUES (@ime, @prezime, @uloga, @korisnicko_ime, @lozinka)";
+                SqlCommand naredba = new SqlCommand(upit, veza);
+                naredba.Parameters.AddWithValue("@ime", txtIme.Text);
+                naredba.Parameters.AddWithValue("@prezime", txtPrezime.Text);
+                naredba.Parameters.AddWithValue("@uloga", 1); // Uloga konobara
+                naredba.Parameters.AddWithValue("@korisnicko_ime", txtKorisnickoIme.Text);
+                naredba.Parameters.AddWithValue("@lozinka", txtLozinka.Text); // Trebalo bi hashirati lozinku
+
+                try
+                {
+                    naredba.ExecuteNonQuery();
+                    MessageBox.Show("Konobar uspješno zaposlen!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Došlo je do greške: " + ex.Message);
+                }
             }
 
-            veza.Close();
             ResetirajFormu(gBoxDodajKonobara);
         }
+
 
         private void btnPrikaziKonobare_Click(object sender, EventArgs e)
         {
@@ -220,7 +227,7 @@ namespace CaffeBar
             SqlConnection veza = new SqlConnection(connectionString);
             veza.Open();
 
-            string upit = "DELETE FROM Osobe WHERE korisnicko_ime = @korisnicko_ime";
+            string upit = "UPDATE Osobe SET uloga = 3 WHERE korisnicko_ime = @korisnicko_ime";
             SqlCommand naredba = new SqlCommand(upit, veza);
             naredba.Parameters.AddWithValue("@korisnicko_ime", txtOtpustiKonobara.Text);
 
