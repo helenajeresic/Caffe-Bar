@@ -30,6 +30,7 @@
         {
             this.tabKonobar = new System.Windows.Forms.TabControl();
             this.tabIzdajRacun = new System.Windows.Forms.TabPage();
+            this.labelUsername = new System.Windows.Forms.Label();
             this.labelAkcijaUTijeku = new System.Windows.Forms.Label();
             this.buttonOcistiRacun = new System.Windows.Forms.Button();
             this.buttonKonobarskiPopust = new System.Windows.Forms.Button();
@@ -59,12 +60,13 @@
             this.tabKonobar.Multiline = true;
             this.tabKonobar.Name = "tabKonobar";
             this.tabKonobar.SelectedIndex = 0;
-            this.tabKonobar.Size = new System.Drawing.Size(1215, 654);
+            this.tabKonobar.Size = new System.Drawing.Size(1251, 654);
             this.tabKonobar.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabKonobar.TabIndex = 4;
             // 
             // tabIzdajRacun
             // 
+            this.tabIzdajRacun.Controls.Add(this.labelUsername);
             this.tabIzdajRacun.Controls.Add(this.labelAkcijaUTijeku);
             this.tabIzdajRacun.Controls.Add(this.buttonOcistiRacun);
             this.tabIzdajRacun.Controls.Add(this.buttonKonobarskiPopust);
@@ -78,24 +80,34 @@
             this.tabIzdajRacun.Margin = new System.Windows.Forms.Padding(5);
             this.tabIzdajRacun.Name = "tabIzdajRacun";
             this.tabIzdajRacun.Padding = new System.Windows.Forms.Padding(5);
-            this.tabIzdajRacun.Size = new System.Drawing.Size(1207, 596);
+            this.tabIzdajRacun.Size = new System.Drawing.Size(1243, 596);
             this.tabIzdajRacun.TabIndex = 0;
             this.tabIzdajRacun.Text = "Izdaj račun";
             this.tabIzdajRacun.UseVisualStyleBackColor = true;
             // 
+            // labelUsername
+            // 
+            this.labelUsername.AutoSize = true;
+            this.labelUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelUsername.Location = new System.Drawing.Point(883, 39);
+            this.labelUsername.Name = "labelUsername";
+            this.labelUsername.Size = new System.Drawing.Size(0, 25);
+            this.labelUsername.TabIndex = 10;
+            // 
             // labelAkcijaUTijeku
             // 
             this.labelAkcijaUTijeku.AutoSize = true;
+            this.labelAkcijaUTijeku.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.labelAkcijaUTijeku.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.labelAkcijaUTijeku.Location = new System.Drawing.Point(483, 29);
+            this.labelAkcijaUTijeku.Location = new System.Drawing.Point(493, 39);
             this.labelAkcijaUTijeku.Name = "labelAkcijaUTijeku";
-            this.labelAkcijaUTijeku.Size = new System.Drawing.Size(0, 24);
+            this.labelAkcijaUTijeku.Size = new System.Drawing.Size(0, 25);
             this.labelAkcijaUTijeku.TabIndex = 9;
             // 
             // buttonOcistiRacun
             // 
             this.buttonOcistiRacun.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.buttonOcistiRacun.Location = new System.Drawing.Point(1030, 387);
+            this.buttonOcistiRacun.Location = new System.Drawing.Point(1070, 384);
             this.buttonOcistiRacun.Name = "buttonOcistiRacun";
             this.buttonOcistiRacun.Size = new System.Drawing.Size(155, 48);
             this.buttonOcistiRacun.TabIndex = 8;
@@ -106,7 +118,7 @@
             // buttonKonobarskiPopust
             // 
             this.buttonKonobarskiPopust.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.buttonKonobarskiPopust.Location = new System.Drawing.Point(1030, 456);
+            this.buttonKonobarskiPopust.Location = new System.Drawing.Point(1070, 456);
             this.buttonKonobarskiPopust.Name = "buttonKonobarskiPopust";
             this.buttonKonobarskiPopust.Size = new System.Drawing.Size(155, 48);
             this.buttonKonobarskiPopust.TabIndex = 7;
@@ -116,7 +128,7 @@
             // gumbIzdajRacun
             // 
             this.gumbIzdajRacun.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.gumbIzdajRacun.Location = new System.Drawing.Point(1030, 520);
+            this.gumbIzdajRacun.Location = new System.Drawing.Point(1070, 525);
             this.gumbIzdajRacun.Name = "gumbIzdajRacun";
             this.gumbIzdajRacun.Size = new System.Drawing.Size(155, 48);
             this.gumbIzdajRacun.TabIndex = 6;
@@ -129,7 +141,7 @@
             this.textRacuna.Location = new System.Drawing.Point(487, 93);
             this.textRacuna.Name = "textRacuna";
             this.textRacuna.ReadOnly = true;
-            this.textRacuna.Size = new System.Drawing.Size(525, 475);
+            this.textRacuna.Size = new System.Drawing.Size(525, 480);
             this.textRacuna.TabIndex = 3;
             this.textRacuna.Text = "";
             // 
@@ -153,7 +165,7 @@
             this.dataGridViewPica.GridColor = System.Drawing.SystemColors.ActiveCaption;
             this.dataGridViewPica.Location = new System.Drawing.Point(22, 93);
             this.dataGridViewPica.Name = "dataGridViewPica";
-            this.dataGridViewPica.Size = new System.Drawing.Size(434, 411);
+            this.dataGridViewPica.Size = new System.Drawing.Size(434, 480);
             this.dataGridViewPica.TabIndex = 1;
             this.dataGridViewPica.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPica_CellClick);
             this.dataGridViewPica.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewPica_CellFormatting);
@@ -216,7 +228,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1250, 647);
+            this.ClientSize = new System.Drawing.Size(1275, 666);
             this.Controls.Add(this.gumbOdjavaKonobara);
             this.Controls.Add(this.tabKonobar);
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -249,5 +261,6 @@
         private System.Windows.Forms.Button gumbIzdajRacun;
         private System.Windows.Forms.Button buttonOcistiRacun;
         private System.Windows.Forms.Label labelAkcijaUTijeku;
+        private System.Windows.Forms.Label labelUsername;
     }
 }

@@ -10,7 +10,7 @@ namespace CaffeBar
 {
     public partial class KonobarForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
         private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica = new Dictionary<Pice, decimal>();
         public int id_ulogirani;
@@ -24,8 +24,9 @@ namespace CaffeBar
             id_ulogirani = id_konobar;
             ime_ulogirani = ime_konobar;
             prezime_ulogirani = prezime_konobar;
-            username_ulogirani = username_konobar; 
+            username_ulogirani = username_konobar;
 
+            labelUsername.Text = "Prijavljen konobar: " + username_konobar;
             dataGridViewPica.CellFormatting += dataGridViewPica_CellFormatting;
         }
 
@@ -257,14 +258,17 @@ namespace CaffeBar
         public void gumbIzdajRacun_Click(object sender, EventArgs e)
         {
             IzdajRacun izdajRacun = new IzdajRacun();
-            izdajRacun.calculateTotal(narucenaPica);
+            decimal total = izdajRacun.calculateTotal(narucenaPica);
             izdajRacun.updateFinalniRacun(textRacuna.Rtf);
-
+            izdajRacun.updateKonobarInfo(id_ulogirani, ime_ulogirani, prezime_ulogirani);
+            DateTime vrijeme = izdajRacun.VrijemeRacuna;
+            
             if (izdajRacun.ShowDialog() == DialogResult.OK)
             {
-                //skini s baze kolicine 
-                // zapisi racun stavke
-                // zapisi konobar popust
+                updateKolicinaPica(narucenaPica);
+                zapisRacunStavke(vrijeme);
+                //zapisKonobarPopust();
+
                 MessageBox.Show("Račun uspješno evidentiran!", "Obavijest");
                 textRacuna.Clear();
                 narucenaPica.Clear();
@@ -275,6 +279,87 @@ namespace CaffeBar
             }
 
         }
+
+        private void updateKolicinaPica(Dictionary<Pice, decimal> narucenaPica)
+        {
+            using(SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                foreach(KeyValuePair<Pice, decimal> stavkaRacuna in narucenaPica)
+                {
+                    Pice pice = stavkaRacuna.Key;
+                    decimal novaKolicina = pice.kolicina_kafic - stavkaRacuna.Value;
+
+                    string azuriraj = "UPDATE Pica SET kolicina_kafic = @novaKolicina WHERE id_pica = @idPica";
+
+                    using (SqlCommand azurirajNaredba = new SqlCommand(azuriraj, veza))
+                    {
+                        azurirajNaredba.Parameters.AddWithValue("@novaKolicina", novaKolicina);
+                        azurirajNaredba.Parameters.AddWithValue("@idPica", pice.id_pica);
+
+                        azurirajNaredba.ExecuteNonQuery();
+                    }
+                }
+                veza.Close();
+            }
+        }
+
+        private void zapisRacunStavke(DateTime vrijeme)
+        {
+            int id_racuna = 0;
+
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string selectQuery = "SELECT id_racun FROM Racun WHERE datum_vrijeme = @vrijeme";
+                SqlCommand selectCommand = new SqlCommand(selectQuery, veza);
+                selectCommand.Parameters.AddWithValue("@vrijeme", vrijeme);
+
+                using (SqlDataReader čitač = selectCommand.ExecuteReader())
+                {
+                    if (čitač.Read())
+                    {
+                        id_racuna = čitač.GetInt32(0);
+                    }
+                }
+
+                if (id_racuna == 0)
+                {
+                    MessageBox.Show("Greška u dohvatu id_racuna", "Greška");
+                }
+                else
+                {
+                    foreach (KeyValuePair<Pice, decimal> pice in narucenaPica)
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            string insertQuery = "INSERT INTO RacunStavke (id_racun, id_pica, kolicina, vrijeme) " +
+                                "VALUES (@id_racun, @id_pica, @kolicina, @vrijeme)";
+                            SqlCommand insertCommand = new SqlCommand(insertQuery, connection);
+
+                            insertCommand.Parameters.AddWithValue("@id_racun", id_racuna);
+                            insertCommand.Parameters.AddWithValue("@id_pica", pice.Key.id_pica);
+                            insertCommand.Parameters.AddWithValue("@kolicina", pice.Value);
+                            insertCommand.Parameters.AddWithValue("@vrijeme", vrijeme);
+
+                            try
+                            {
+                                insertCommand.ExecuteNonQuery();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Greška prilikom upisa u RacunStavke: " + ex.Message, "Greška");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         public decimal dohvatiDostupnuKolicinu(int idPica)
         {
@@ -326,6 +411,7 @@ namespace CaffeBar
 
         private void gumbOdjavaKonobara_Click(object sender, EventArgs e)
         {
+            labelUsername.Text = "";
             PrijavaForm forma = new PrijavaForm();
             forma.Show();
             this.Hide();
