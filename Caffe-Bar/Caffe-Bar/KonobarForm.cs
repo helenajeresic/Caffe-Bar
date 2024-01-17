@@ -501,5 +501,10 @@ namespace CaffeBar
             }
             labelPotrebnoNapunitiSank.Text = popuniLabelu;
         }
+
+        private void KonobarForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
