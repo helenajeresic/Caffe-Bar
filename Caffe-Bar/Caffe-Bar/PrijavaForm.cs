@@ -13,14 +13,13 @@ namespace CaffeBar
 {
     public partial class PrijavaForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=\\wsl.localhost\Ubuntu-18.04\home\doriblas\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
 
         public PrijavaForm()
         {
             InitializeComponent();
         }
 
-        
         private void gumbOdustani_Click(object sender, EventArgs e)
         {
             Close();
@@ -61,7 +60,7 @@ namespace CaffeBar
                     }
                     else if (uloga == 2)
                     {
-                        VlasnikForm forma = new VlasnikForm();
+                        VlasnikForm forma = new VlasnikForm(tablica.Rows[0]["korisnicko_ime"].ToString());
                         forma.Show();
                         this.Hide();
                     }

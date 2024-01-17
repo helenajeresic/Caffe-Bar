@@ -9,16 +9,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
+using Caffe_Bar;
 
 namespace CaffeBar
 {
     public partial class VlasnikForm : Form
     {
-        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
-
-        public VlasnikForm()
+        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=\\wsl.localhost\Ubuntu-18.04\home\doriblas\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
+        public string username_ulogirani;
+        public VlasnikForm(string username_vlasnik)
         {
             InitializeComponent();
+
+            username_ulogirani = username_vlasnik;
             
             //inicijalno popunjavanje dropdowna kod statistike sa svim picima u kaficu
             SqlConnection veza = new SqlConnection(connectionString);
@@ -38,9 +41,35 @@ namespace CaffeBar
             foreach(string pica in lista_pica)
             {
                 odabirPica.Items.Add(pica);
+                comboBoxPicaModificiraj.Items.Add(pica);
             }
             
 
+        }
+        public void ResetirajFormu(Control kontrola)
+        {
+            foreach (Control child in kontrola.Controls)
+            {
+                if (child is TextBox)
+                {
+                    ((TextBox)child).Text = String.Empty;
+                }
+                else if (child is ComboBox)
+                {
+                    ((ComboBox)child).SelectedIndex = -1;
+                }
+                else if (child is CheckBox)
+                {
+                    ((CheckBox)child).Checked = false;
+                }
+                // Ovdje možete dodati više uvjeta za druge vrste kontrola
+
+                // Rekurzivno resetiranje za kontejnere koji sadrže druge kontrole
+                if (child.HasChildren)
+                {
+                    ResetirajFormu(child);
+                }
+            }
         }
 
         private void btnSpremiKonobara_Click(object sender, EventArgs e)
@@ -85,22 +114,27 @@ namespace CaffeBar
             }
 
             veza.Close();
+            ResetirajFormu(gBoxDodajKonobara);
         }
 
         private void btnPrikaziKonobare_Click(object sender, EventArgs e)
         {
-            SqlConnection veza = new SqlConnection(connectionString);
+            PrikaziKonobare();
+        }
 
-            veza.Open();
+        private void PrikaziKonobare()
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
 
-            string upit = "SELECT ime as 'Ime', prezime as 'Prezime', korisnicko_ime as 'Korisničko ime' FROM Osobe WHERE uloga = 1"; 
-            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
-            DataTable dt  = new DataTable();
-            adapter.Fill(dt);
+                string upit = "SELECT ime as 'Ime', prezime as 'Prezime', korisnicko_ime as 'Korisničko ime' FROM Osobe WHERE uloga = 1";
+                SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
 
-            dataGridViewKonobari.DataSource = dt;
-
-            veza.Close();
+                dataGridViewKonobari.DataSource = dt;
+            }
         }
 
 
@@ -190,11 +224,20 @@ namespace CaffeBar
             SqlCommand naredba = new SqlCommand(upit, veza);
             naredba.Parameters.AddWithValue("@korisnicko_ime", txtOtpustiKonobara.Text);
 
-            //Treba dodati da izbaci grešku ako konobar s tim usernameom ne postoji
             try
             {
-                naredba.ExecuteNonQuery();
-                MessageBox.Show("Konobar otpušten!");
+                if (ProvjeriPostojiLiKonobar(txtOtpustiKonobara.Text))
+                {
+                    naredba.ExecuteNonQuery();
+                    MessageBox.Show("Konobar otpušten!");
+
+                    // Osvježavanje prikaza konobara
+                    PrikaziKonobare();
+                }
+                else
+                {
+                    MessageBox.Show("Konobar s tim korisničkim imenom ne postoji.");
+                }
             }
             catch (Exception ex)
             {
@@ -203,7 +246,22 @@ namespace CaffeBar
 
 
             veza.Close();
+            ResetirajFormu(this);
+        }
+        private bool ProvjeriPostojiLiKonobar(string korisnickoIme)
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+                string upit = "SELECT COUNT(*) FROM Osobe WHERE korisnicko_ime = @korisnickoIme";
+                SqlCommand naredba = new SqlCommand(upit, veza);
+                naredba.Parameters.AddWithValue("@korisnickoIme", korisnickoIme);
 
+                int brojZapisa = Convert.ToInt32(naredba.ExecuteScalar());
+
+                veza.Close();
+                return brojZapisa > 0;
+            }
         }
 
         private void btnUnosPica_Click(object sender, EventArgs e)
@@ -249,7 +307,173 @@ namespace CaffeBar
                 MessageBox.Show("Došlo je do greške: " + ex.Message);
             }
             veza.Close();
-
+            ResetirajFormu(groupBoxNovoPice);
         }
+
+        private void gumbOdjavaVlasnika_Click(object sender, EventArgs e)
+        {
+            PrijavaForm forma = new PrijavaForm();
+            forma.Show();
+            this.Hide();
+        }
+
+        
+        private void PrikaziPicaModificiraj()
+        {
+            if (comboBoxPicaModificiraj.SelectedIndex == -1)
+            {
+                MessageBox.Show("Nije odabrano nijedno piće!");
+                return;
+            }
+            else
+                using (SqlConnection veza = new SqlConnection(connectionString))
+                {
+                    var odabrano_pice = comboBoxPicaModificiraj.SelectedItem.ToString();
+                    veza.Open();
+
+                    string upit = "SELECT  naziv_pica as 'Naziv', cijena_pica as 'Cijena', najmanja_kolicina as 'Najmanja količina'" +
+                                   "FROM Pica WHERE naziv_pica = '" + odabrano_pice + "'";
+                    SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    dataGridViewPicaModificiraj.DataSource = dt;
+                }
+        }
+        private void btnPiceModificiraj_Click(object sender, EventArgs e)
+        {
+            PrikaziPicaModificiraj();
+        }
+
+        private void btnPromijeniCijenu_Click(object sender, EventArgs e)
+        {
+            if(txtPromijeniCijenu.Text.Length == 0)
+            {
+                MessageBox.Show("Niste unijeli novu cijenu.");
+                return;
+            }
+            if (comboBoxPicaModificiraj.SelectedIndex == -1)
+            {
+                MessageBox.Show("Nije odabrano nijedno piće!");
+                return;
+            }
+
+            SqlConnection veza = new SqlConnection(connectionString);
+            veza.Open();
+            var odabrano_pice = comboBoxPicaModificiraj.SelectedItem.ToString();
+            var nova_cijena = Convert.ToDecimal(txtPromijeniCijenu.Text);
+
+            string upit = "UPDATE Pica SET cijena_pica = '" + nova_cijena + "'"
+                + "WHERE naziv_pica = '" + odabrano_pice + "'";
+
+            SqlCommand naredba = new SqlCommand(upit, veza);
+            if (naredba.ExecuteNonQuery() > 0) 
+            {
+                MessageBox.Show("Nova cijena unesena!");
+            }
+            else
+                MessageBox.Show("Nije uspjelo!");
+            veza.Close();
+            ResetirajFormu(groupBoxModifikacija);
+            dataGridViewPicaModificiraj.DataSource = null;
+        }
+
+        private void btnPromijeniNaziv_Click(object sender, EventArgs e)
+        {
+            if (txtPromijeniNaziv.Text.Length == 0)
+            {
+                MessageBox.Show("Niste unijeli novi naziv.");
+                return;
+            }
+            if (comboBoxPicaModificiraj.SelectedIndex == -1)
+            {
+                MessageBox.Show("Nije odabrano nijedno piće!");
+                return;
+            }
+
+            var odabrano_pice = comboBoxPicaModificiraj.SelectedItem.ToString();
+            var novi_naziv = txtPromijeniNaziv.Text;
+
+            IzvrsiUpdatePica("naziv_pica", novi_naziv, odabrano_pice);
+            UcitajPicaUComboBox();
+        }
+
+        private void btnPromijeniNajmanjuKolicinu_Click(object sender, EventArgs e)
+        {
+            if (txtPromijeniNajmanjuKolicinu.Text.Length == 0)
+            {
+                MessageBox.Show("Niste unijeli novu najmanju količinu.");
+                return;
+            }
+            if (comboBoxPicaModificiraj.SelectedIndex == -1)
+            {
+                MessageBox.Show("Nije odabrano nijedno piće!");
+                return;
+            }
+
+            var odabrano_pice = comboBoxPicaModificiraj.SelectedItem.ToString();
+            var nova_kolicina = txtPromijeniNajmanjuKolicinu.Text;
+
+            IzvrsiUpdatePica("najmanja_kolicina", nova_kolicina, odabrano_pice);
+        }
+
+        private void IzvrsiUpdatePica(string kolona, string novaVrijednost, string nazivPica)
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+                string upit = $"UPDATE Pica SET {kolona} = @novaVrijednost WHERE naziv_pica = @nazivPica";
+
+                SqlCommand naredba = new SqlCommand(upit, veza);
+                naredba.Parameters.AddWithValue("@novaVrijednost", novaVrijednost);
+                naredba.Parameters.AddWithValue("@nazivPica", nazivPica);
+
+                try
+                {
+                    if (naredba.ExecuteNonQuery() > 0)
+                    {
+                        MessageBox.Show("Uspješno promijenjeno!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Promjena nije uspjela.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Došlo je do greške: " + ex.Message);
+                }
+
+                ResetirajFormu(groupBoxModifikacija);
+                dataGridViewPicaModificiraj.DataSource = null;
+            }
+        }
+
+        private void UcitajPicaUComboBox()
+        {
+            comboBoxPicaModificiraj.Items.Clear();
+
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+                string upit = "SELECT id_pica, naziv_pica FROM Pica";
+                SqlCommand cmd = new SqlCommand(upit, veza);
+
+                using (SqlDataReader citac = cmd.ExecuteReader())
+                {
+                    while (citac.Read())
+                    {
+                        ComboboxItem item = new ComboboxItem
+                        {
+                            Text = citac["naziv_pica"].ToString(),
+                            Value = citac["id_pica"]
+                        };
+                        comboBoxPicaModificiraj.Items.Add(item);
+                    }
+                }
+            }
+        }
+
+
     }
 }
