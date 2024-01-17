@@ -67,6 +67,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>bazaDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ComboboxItem.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
