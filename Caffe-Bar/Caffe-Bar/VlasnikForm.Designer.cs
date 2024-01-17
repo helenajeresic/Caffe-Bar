@@ -29,10 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabKonobar = new System.Windows.Forms.TabControl();
             this.tabZaposliKonobara = new System.Windows.Forms.TabPage();
             this.gBoxDodajKonobara = new System.Windows.Forms.GroupBox();
@@ -55,6 +57,7 @@
             this.btnPrikaziKonobare = new System.Windows.Forms.Button();
             this.tabUnosPića = new System.Windows.Forms.TabPage();
             this.groupBoxNovaKategorija = new System.Windows.Forms.GroupBox();
+            this.btnNovaKategorija = new System.Windows.Forms.Button();
             this.labelNazivNoveKategorije = new System.Windows.Forms.Label();
             this.txtNovaKategorija = new System.Windows.Forms.TextBox();
             this.groupBoxNovoPice = new System.Windows.Forms.GroupBox();
@@ -86,6 +89,20 @@
             this.btnPromijeniNajmanjuKolicinu = new System.Windows.Forms.Button();
             this.dataGridViewPicaModificiraj = new System.Windows.Forms.DataGridView();
             this.tabAkcije = new System.Windows.Forms.TabPage();
+            this.groupBoxAkcija = new System.Windows.Forms.GroupBox();
+            this.labelPopust = new System.Windows.Forms.Label();
+            this.numericUpDownAkcija = new System.Windows.Forms.NumericUpDown();
+            this.buttonSveAkcije = new System.Windows.Forms.Button();
+            this.dataGridViewAkcija = new System.Windows.Forms.DataGridView();
+            this.buttonAkcija = new System.Windows.Forms.Button();
+            this.dateTimePickerAkcijaDoVrijeme = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerAkcijaOdVrijeme = new System.Windows.Forms.DateTimePicker();
+            this.labelAkcijaDo = new System.Windows.Forms.Label();
+            this.labelAkcijaOd = new System.Windows.Forms.Label();
+            this.dateTimePickerAkcijaDoDatum = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerAkcijaOdDatum = new System.Windows.Forms.DateTimePicker();
+            this.labelAkcijaPice = new System.Windows.Forms.Label();
+            this.comboBoxAkcija = new System.Windows.Forms.ComboBox();
             this.tabStatistika = new System.Windows.Forms.TabPage();
             this.groupBoxKolicina2 = new System.Windows.Forms.GroupBox();
             this.buttonPrikaziStatistiku1 = new System.Windows.Forms.Button();
@@ -102,7 +119,6 @@
             this.gumbOdjavaVlasnika = new System.Windows.Forms.Button();
             this.bazaDataSet = new Caffe_Bar.bazaDataSet();
             this.bazaDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.btnNovaKategorija = new System.Windows.Forms.Button();
             this.tabKonobar.SuspendLayout();
             this.tabZaposliKonobara.SuspendLayout();
             this.gBoxDodajKonobara.SuspendLayout();
@@ -119,6 +135,10 @@
             this.flowLayoutPanelOdaberiPiceModifikacija.SuspendLayout();
             this.flowLayoutPanelPromijeniCijenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPicaModificiraj)).BeginInit();
+            this.tabAkcije.SuspendLayout();
+            this.groupBoxAkcija.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAkcija)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAkcija)).BeginInit();
             this.tabStatistika.SuspendLayout();
             this.groupBoxKolicina2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKolicinePica)).BeginInit();
@@ -197,12 +217,12 @@
             // 
             this.txtIme.Location = new System.Drawing.Point(181, 3);
             this.txtIme.Name = "txtIme";
-            this.txtIme.Size = new System.Drawing.Size(285, 34);
+            this.txtIme.Size = new System.Drawing.Size(285, 29);
             this.txtIme.TabIndex = 1;
             // 
             // labelPrezimeKonobara
             // 
-            this.labelPrezimeKonobara.Location = new System.Drawing.Point(3, 40);
+            this.labelPrezimeKonobara.Location = new System.Drawing.Point(3, 35);
             this.labelPrezimeKonobara.Name = "labelPrezimeKonobara";
             this.labelPrezimeKonobara.Size = new System.Drawing.Size(172, 34);
             this.labelPrezimeKonobara.TabIndex = 2;
@@ -211,14 +231,14 @@
             // 
             // txtPrezime
             // 
-            this.txtPrezime.Location = new System.Drawing.Point(181, 43);
+            this.txtPrezime.Location = new System.Drawing.Point(181, 38);
             this.txtPrezime.Name = "txtPrezime";
-            this.txtPrezime.Size = new System.Drawing.Size(285, 34);
+            this.txtPrezime.Size = new System.Drawing.Size(285, 29);
             this.txtPrezime.TabIndex = 3;
             // 
             // labelUsernameKonobar
             // 
-            this.labelUsernameKonobar.Location = new System.Drawing.Point(3, 80);
+            this.labelUsernameKonobar.Location = new System.Drawing.Point(3, 70);
             this.labelUsernameKonobar.Name = "labelUsernameKonobar";
             this.labelUsernameKonobar.Size = new System.Drawing.Size(172, 34);
             this.labelUsernameKonobar.TabIndex = 4;
@@ -227,15 +247,15 @@
             // 
             // txtLozinka
             // 
-            this.txtLozinka.Location = new System.Drawing.Point(181, 83);
+            this.txtLozinka.Location = new System.Drawing.Point(181, 73);
             this.txtLozinka.Name = "txtLozinka";
-            this.txtLozinka.Size = new System.Drawing.Size(285, 34);
+            this.txtLozinka.Size = new System.Drawing.Size(285, 29);
             this.txtLozinka.TabIndex = 7;
             // 
             // labelLozinkaKonobara
             // 
             this.labelLozinkaKonobara.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelLozinkaKonobara.Location = new System.Drawing.Point(3, 120);
+            this.labelLozinkaKonobara.Location = new System.Drawing.Point(3, 105);
             this.labelLozinkaKonobara.Name = "labelLozinkaKonobara";
             this.labelLozinkaKonobara.Size = new System.Drawing.Size(172, 34);
             this.labelLozinkaKonobara.TabIndex = 6;
@@ -244,9 +264,9 @@
             // 
             // txtKorisnickoIme
             // 
-            this.txtKorisnickoIme.Location = new System.Drawing.Point(181, 123);
+            this.txtKorisnickoIme.Location = new System.Drawing.Point(181, 108);
             this.txtKorisnickoIme.Name = "txtKorisnickoIme";
-            this.txtKorisnickoIme.Size = new System.Drawing.Size(285, 34);
+            this.txtKorisnickoIme.Size = new System.Drawing.Size(285, 29);
             this.txtKorisnickoIme.TabIndex = 5;
             // 
             // btnSpremiKonobara
@@ -299,7 +319,7 @@
             // 
             this.txtOtpustiKonobara.Location = new System.Drawing.Point(212, 75);
             this.txtOtpustiKonobara.Name = "txtOtpustiKonobara";
-            this.txtOtpustiKonobara.Size = new System.Drawing.Size(284, 34);
+            this.txtOtpustiKonobara.Size = new System.Drawing.Size(284, 29);
             this.txtOtpustiKonobara.TabIndex = 7;
             // 
             // labelOtpustiKonobara
@@ -307,7 +327,7 @@
             this.labelOtpustiKonobara.AutoSize = true;
             this.labelOtpustiKonobara.Location = new System.Drawing.Point(21, 75);
             this.labelOtpustiKonobara.Name = "labelOtpustiKonobara";
-            this.labelOtpustiKonobara.Size = new System.Drawing.Size(172, 29);
+            this.labelOtpustiKonobara.Size = new System.Drawing.Size(133, 24);
             this.labelOtpustiKonobara.TabIndex = 6;
             this.labelOtpustiKonobara.Text = "Korisničko ime";
             // 
@@ -318,23 +338,23 @@
             this.dataGridViewKonobari.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dataGridViewKonobari.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dataGridViewKonobari.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewKonobari.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewKonobari.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.dataGridViewKonobari.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightGray;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewKonobari.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.LightGray;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewKonobari.DefaultCellStyle = dataGridViewCellStyle14;
             this.dataGridViewKonobari.EnableHeadersVisualStyles = false;
             this.dataGridViewKonobari.GridColor = System.Drawing.Color.Gray;
             this.dataGridViewKonobari.Location = new System.Drawing.Point(37, 115);
@@ -381,6 +401,16 @@
             this.groupBoxNovaKategorija.TabStop = false;
             this.groupBoxNovaKategorija.Text = "Dodaj novu kategoriju";
             // 
+            // btnNovaKategorija
+            // 
+            this.btnNovaKategorija.Location = new System.Drawing.Point(239, 139);
+            this.btnNovaKategorija.Name = "btnNovaKategorija";
+            this.btnNovaKategorija.Size = new System.Drawing.Size(75, 34);
+            this.btnNovaKategorija.TabIndex = 11;
+            this.btnNovaKategorija.Text = "OK";
+            this.btnNovaKategorija.UseVisualStyleBackColor = true;
+            this.btnNovaKategorija.Click += new System.EventHandler(this.btnNovaKategorija_Click);
+            // 
             // labelNazivNoveKategorije
             // 
             this.labelNazivNoveKategorije.Location = new System.Drawing.Point(25, 62);
@@ -394,7 +424,7 @@
             // 
             this.txtNovaKategorija.Location = new System.Drawing.Point(30, 99);
             this.txtNovaKategorija.Name = "txtNovaKategorija";
-            this.txtNovaKategorija.Size = new System.Drawing.Size(284, 34);
+            this.txtNovaKategorija.Size = new System.Drawing.Size(284, 29);
             this.txtNovaKategorija.TabIndex = 5;
             // 
             // groupBoxNovoPice
@@ -436,12 +466,12 @@
             // 
             this.txtNazivPica.Location = new System.Drawing.Point(399, 3);
             this.txtNazivPica.Name = "txtNazivPica";
-            this.txtNazivPica.Size = new System.Drawing.Size(284, 34);
+            this.txtNazivPica.Size = new System.Drawing.Size(284, 29);
             this.txtNazivPica.TabIndex = 3;
             // 
             // labelCijenaNovoPice
             // 
-            this.labelCijenaNovoPice.Location = new System.Drawing.Point(3, 40);
+            this.labelCijenaNovoPice.Location = new System.Drawing.Point(3, 35);
             this.labelCijenaNovoPice.Name = "labelCijenaNovoPice";
             this.labelCijenaNovoPice.Size = new System.Drawing.Size(390, 34);
             this.labelCijenaNovoPice.TabIndex = 4;
@@ -450,15 +480,15 @@
             // 
             // txtCijenaPica
             // 
-            this.txtCijenaPica.Location = new System.Drawing.Point(399, 43);
+            this.txtCijenaPica.Location = new System.Drawing.Point(399, 38);
             this.txtCijenaPica.Name = "txtCijenaPica";
-            this.txtCijenaPica.Size = new System.Drawing.Size(284, 34);
+            this.txtCijenaPica.Size = new System.Drawing.Size(284, 29);
             this.txtCijenaPica.TabIndex = 5;
             // 
             // labelKategorijaNovoPice
             // 
             this.labelKategorijaNovoPice.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelKategorijaNovoPice.Location = new System.Drawing.Point(3, 80);
+            this.labelKategorijaNovoPice.Location = new System.Drawing.Point(3, 70);
             this.labelKategorijaNovoPice.Name = "labelKategorijaNovoPice";
             this.labelKategorijaNovoPice.Size = new System.Drawing.Size(390, 34);
             this.labelKategorijaNovoPice.TabIndex = 6;
@@ -468,15 +498,15 @@
             // comboBoxNovoPiceKategorija
             // 
             this.comboBoxNovoPiceKategorija.FormattingEnabled = true;
-            this.comboBoxNovoPiceKategorija.Location = new System.Drawing.Point(399, 83);
+            this.comboBoxNovoPiceKategorija.Location = new System.Drawing.Point(399, 73);
             this.comboBoxNovoPiceKategorija.Name = "comboBoxNovoPiceKategorija";
-            this.comboBoxNovoPiceKategorija.Size = new System.Drawing.Size(284, 37);
+            this.comboBoxNovoPiceKategorija.Size = new System.Drawing.Size(284, 32);
             this.comboBoxNovoPiceKategorija.TabIndex = 11;
             // 
             // labelNajmanaKolicina
             // 
             this.labelNajmanaKolicina.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelNajmanaKolicina.Location = new System.Drawing.Point(3, 123);
+            this.labelNajmanaKolicina.Location = new System.Drawing.Point(3, 104);
             this.labelNajmanaKolicina.Name = "labelNajmanaKolicina";
             this.labelNajmanaKolicina.Size = new System.Drawing.Size(390, 34);
             this.labelNajmanaKolicina.TabIndex = 8;
@@ -485,9 +515,9 @@
             // 
             // txtUpozorenje
             // 
-            this.txtUpozorenje.Location = new System.Drawing.Point(399, 126);
+            this.txtUpozorenje.Location = new System.Drawing.Point(399, 107);
             this.txtUpozorenje.Name = "txtUpozorenje";
-            this.txtUpozorenje.Size = new System.Drawing.Size(284, 34);
+            this.txtUpozorenje.Size = new System.Drawing.Size(284, 29);
             this.txtUpozorenje.TabIndex = 9;
             // 
             // btnUnosPica
@@ -523,7 +553,6 @@
             this.groupBoxModifikacija.TabIndex = 7;
             this.groupBoxModifikacija.TabStop = false;
             this.groupBoxModifikacija.Text = "Modificiraj piće";
-            this.groupBoxModifikacija.Enter += new System.EventHandler(this.groupBoxModifikacija_Enter);
             // 
             // flowLayoutPanelOdaberiPiceModifikacija
             // 
@@ -550,7 +579,7 @@
             this.comboBoxPicaModificiraj.FormattingEnabled = true;
             this.comboBoxPicaModificiraj.Location = new System.Drawing.Point(168, 3);
             this.comboBoxPicaModificiraj.Name = "comboBoxPicaModificiraj";
-            this.comboBoxPicaModificiraj.Size = new System.Drawing.Size(277, 37);
+            this.comboBoxPicaModificiraj.Size = new System.Drawing.Size(277, 32);
             this.comboBoxPicaModificiraj.TabIndex = 1;
             // 
             // btnPiceModificiraj
@@ -592,7 +621,7 @@
             // 
             this.txtPromijeniCijenu.Location = new System.Drawing.Point(224, 3);
             this.txtPromijeniCijenu.Name = "txtPromijeniCijenu";
-            this.txtPromijeniCijenu.Size = new System.Drawing.Size(200, 34);
+            this.txtPromijeniCijenu.Size = new System.Drawing.Size(200, 29);
             this.txtPromijeniCijenu.TabIndex = 8;
             // 
             // btnPromijeniCijenu
@@ -618,7 +647,7 @@
             // 
             this.txtPromijeniNaziv.Location = new System.Drawing.Point(224, 47);
             this.txtPromijeniNaziv.Name = "txtPromijeniNaziv";
-            this.txtPromijeniNaziv.Size = new System.Drawing.Size(200, 34);
+            this.txtPromijeniNaziv.Size = new System.Drawing.Size(200, 29);
             this.txtPromijeniNaziv.TabIndex = 10;
             // 
             // btnPromijeniNaziv
@@ -644,7 +673,7 @@
             // 
             this.txtPromijeniNajmanjuKolicinu.Location = new System.Drawing.Point(224, 91);
             this.txtPromijeniNajmanjuKolicinu.Name = "txtPromijeniNajmanjuKolicinu";
-            this.txtPromijeniNajmanjuKolicinu.Size = new System.Drawing.Size(200, 34);
+            this.txtPromijeniNajmanjuKolicinu.Size = new System.Drawing.Size(200, 29);
             this.txtPromijeniNajmanjuKolicinu.TabIndex = 12;
             // 
             // btnPromijeniNajmanjuKolicinu
@@ -664,23 +693,23 @@
             this.dataGridViewPicaModificiraj.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dataGridViewPicaModificiraj.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dataGridViewPicaModificiraj.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewPicaModificiraj.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewPicaModificiraj.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle15;
             this.dataGridViewPicaModificiraj.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.LightGray;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewPicaModificiraj.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.Color.LightGray;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewPicaModificiraj.DefaultCellStyle = dataGridViewCellStyle16;
             this.dataGridViewPicaModificiraj.EnableHeadersVisualStyles = false;
             this.dataGridViewPicaModificiraj.GridColor = System.Drawing.Color.Gray;
             this.dataGridViewPicaModificiraj.Location = new System.Drawing.Point(45, 124);
@@ -694,12 +723,190 @@
             // 
             // tabAkcije
             // 
+            this.tabAkcije.Controls.Add(this.groupBoxAkcija);
             this.tabAkcije.Location = new System.Drawing.Point(4, 54);
             this.tabAkcije.Name = "tabAkcije";
             this.tabAkcije.Size = new System.Drawing.Size(1206, 559);
             this.tabAkcije.TabIndex = 4;
             this.tabAkcije.Text = "Akcije";
             this.tabAkcije.UseVisualStyleBackColor = true;
+            // 
+            // groupBoxAkcija
+            // 
+            this.groupBoxAkcija.Controls.Add(this.labelPopust);
+            this.groupBoxAkcija.Controls.Add(this.numericUpDownAkcija);
+            this.groupBoxAkcija.Controls.Add(this.buttonSveAkcije);
+            this.groupBoxAkcija.Controls.Add(this.dataGridViewAkcija);
+            this.groupBoxAkcija.Controls.Add(this.buttonAkcija);
+            this.groupBoxAkcija.Controls.Add(this.dateTimePickerAkcijaDoVrijeme);
+            this.groupBoxAkcija.Controls.Add(this.dateTimePickerAkcijaOdVrijeme);
+            this.groupBoxAkcija.Controls.Add(this.labelAkcijaDo);
+            this.groupBoxAkcija.Controls.Add(this.labelAkcijaOd);
+            this.groupBoxAkcija.Controls.Add(this.dateTimePickerAkcijaDoDatum);
+            this.groupBoxAkcija.Controls.Add(this.dateTimePickerAkcijaOdDatum);
+            this.groupBoxAkcija.Controls.Add(this.labelAkcijaPice);
+            this.groupBoxAkcija.Controls.Add(this.comboBoxAkcija);
+            this.groupBoxAkcija.Location = new System.Drawing.Point(36, 59);
+            this.groupBoxAkcija.Name = "groupBoxAkcija";
+            this.groupBoxAkcija.Size = new System.Drawing.Size(1138, 436);
+            this.groupBoxAkcija.TabIndex = 0;
+            this.groupBoxAkcija.TabStop = false;
+            this.groupBoxAkcija.Text = "Odaberi piće i period u kojem ga želiš staviti na akciju";
+            // 
+            // labelPopust
+            // 
+            this.labelPopust.AutoSize = true;
+            this.labelPopust.Location = new System.Drawing.Point(56, 329);
+            this.labelPopust.Name = "labelPopust";
+            this.labelPopust.Size = new System.Drawing.Size(100, 24);
+            this.labelPopust.TabIndex = 12;
+            this.labelPopust.Text = "Popust (%)";
+            // 
+            // numericUpDownAkcija
+            // 
+            this.numericUpDownAkcija.Location = new System.Drawing.Point(190, 327);
+            this.numericUpDownAkcija.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownAkcija.Name = "numericUpDownAkcija";
+            this.numericUpDownAkcija.Size = new System.Drawing.Size(40, 29);
+            this.numericUpDownAkcija.TabIndex = 11;
+            this.numericUpDownAkcija.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // buttonSveAkcije
+            // 
+            this.buttonSveAkcije.Location = new System.Drawing.Point(655, 40);
+            this.buttonSveAkcije.Name = "buttonSveAkcije";
+            this.buttonSveAkcije.Size = new System.Drawing.Size(254, 33);
+            this.buttonSveAkcije.TabIndex = 10;
+            this.buttonSveAkcije.Text = "Prikaži sve akcije";
+            this.buttonSveAkcije.UseVisualStyleBackColor = true;
+            this.buttonSveAkcije.Click += new System.EventHandler(this.buttonSveAkcije_Click);
+            // 
+            // dataGridViewAkcija
+            // 
+            this.dataGridViewAkcija.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewAkcija.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridViewAkcija.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dataGridViewAkcija.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dataGridViewAkcija.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle17.BackColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle17.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewAkcija.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
+            this.dataGridViewAkcija.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle18.BackColor = System.Drawing.Color.LightGray;
+            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewAkcija.DefaultCellStyle = dataGridViewCellStyle18;
+            this.dataGridViewAkcija.EnableHeadersVisualStyles = false;
+            this.dataGridViewAkcija.GridColor = System.Drawing.Color.Gray;
+            this.dataGridViewAkcija.Location = new System.Drawing.Point(484, 79);
+            this.dataGridViewAkcija.MultiSelect = false;
+            this.dataGridViewAkcija.Name = "dataGridViewAkcija";
+            this.dataGridViewAkcija.RowHeadersWidth = 51;
+            this.dataGridViewAkcija.RowTemplate.Height = 24;
+            this.dataGridViewAkcija.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewAkcija.Size = new System.Drawing.Size(648, 337);
+            this.dataGridViewAkcija.TabIndex = 9;
+            this.dataGridViewAkcija.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAkcija_CellClick);
+            // 
+            // buttonAkcija
+            // 
+            this.buttonAkcija.Location = new System.Drawing.Point(190, 383);
+            this.buttonAkcija.Name = "buttonAkcija";
+            this.buttonAkcija.Size = new System.Drawing.Size(260, 33);
+            this.buttonAkcija.TabIndex = 8;
+            this.buttonAkcija.Text = "Postavi novu akciju";
+            this.buttonAkcija.UseVisualStyleBackColor = true;
+            this.buttonAkcija.Click += new System.EventHandler(this.buttonAkcija_Click);
+            // 
+            // dateTimePickerAkcijaDoVrijeme
+            // 
+            this.dateTimePickerAkcijaDoVrijeme.CustomFormat = "hh:mm tt";
+            this.dateTimePickerAkcijaDoVrijeme.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerAkcijaDoVrijeme.Location = new System.Drawing.Point(354, 247);
+            this.dateTimePickerAkcijaDoVrijeme.Name = "dateTimePickerAkcijaDoVrijeme";
+            this.dateTimePickerAkcijaDoVrijeme.ShowUpDown = true;
+            this.dateTimePickerAkcijaDoVrijeme.Size = new System.Drawing.Size(96, 29);
+            this.dateTimePickerAkcijaDoVrijeme.TabIndex = 7;
+            // 
+            // dateTimePickerAkcijaOdVrijeme
+            // 
+            this.dateTimePickerAkcijaOdVrijeme.CustomFormat = "hh:mm tt";
+            this.dateTimePickerAkcijaOdVrijeme.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerAkcijaOdVrijeme.Location = new System.Drawing.Point(354, 180);
+            this.dateTimePickerAkcijaOdVrijeme.Name = "dateTimePickerAkcijaOdVrijeme";
+            this.dateTimePickerAkcijaOdVrijeme.ShowUpDown = true;
+            this.dateTimePickerAkcijaOdVrijeme.Size = new System.Drawing.Size(96, 29);
+            this.dateTimePickerAkcijaOdVrijeme.TabIndex = 6;
+            // 
+            // labelAkcijaDo
+            // 
+            this.labelAkcijaDo.AutoSize = true;
+            this.labelAkcijaDo.Location = new System.Drawing.Point(124, 251);
+            this.labelAkcijaDo.Name = "labelAkcijaDo";
+            this.labelAkcijaDo.Size = new System.Drawing.Size(32, 24);
+            this.labelAkcijaDo.TabIndex = 5;
+            this.labelAkcijaDo.Text = "do";
+            // 
+            // labelAkcijaOd
+            // 
+            this.labelAkcijaOd.AutoSize = true;
+            this.labelAkcijaOd.Location = new System.Drawing.Point(29, 185);
+            this.labelAkcijaOd.Name = "labelAkcijaOd";
+            this.labelAkcijaOd.Size = new System.Drawing.Size(127, 24);
+            this.labelAkcijaOd.TabIndex = 4;
+            this.labelAkcijaOd.Text = "Akcija traje od";
+            // 
+            // dateTimePickerAkcijaDoDatum
+            // 
+            this.dateTimePickerAkcijaDoDatum.CustomFormat = "dd/MM/yyyy";
+            this.dateTimePickerAkcijaDoDatum.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerAkcijaDoDatum.Location = new System.Drawing.Point(190, 246);
+            this.dateTimePickerAkcijaDoDatum.Name = "dateTimePickerAkcijaDoDatum";
+            this.dateTimePickerAkcijaDoDatum.Size = new System.Drawing.Size(147, 29);
+            this.dateTimePickerAkcijaDoDatum.TabIndex = 3;
+            // 
+            // dateTimePickerAkcijaOdDatum
+            // 
+            this.dateTimePickerAkcijaOdDatum.CustomFormat = "dd/MM/yyyy";
+            this.dateTimePickerAkcijaOdDatum.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerAkcijaOdDatum.Location = new System.Drawing.Point(190, 181);
+            this.dateTimePickerAkcijaOdDatum.Name = "dateTimePickerAkcijaOdDatum";
+            this.dateTimePickerAkcijaOdDatum.Size = new System.Drawing.Size(145, 29);
+            this.dateTimePickerAkcijaOdDatum.TabIndex = 2;
+            // 
+            // labelAkcijaPice
+            // 
+            this.labelAkcijaPice.AutoSize = true;
+            this.labelAkcijaPice.Location = new System.Drawing.Point(37, 82);
+            this.labelAkcijaPice.Name = "labelAkcijaPice";
+            this.labelAkcijaPice.Size = new System.Drawing.Size(119, 24);
+            this.labelAkcijaPice.TabIndex = 1;
+            this.labelAkcijaPice.Text = "Odaberi piće";
+            // 
+            // comboBoxAkcija
+            // 
+            this.comboBoxAkcija.FormattingEnabled = true;
+            this.comboBoxAkcija.Location = new System.Drawing.Point(190, 79);
+            this.comboBoxAkcija.Name = "comboBoxAkcija";
+            this.comboBoxAkcija.Size = new System.Drawing.Size(260, 32);
+            this.comboBoxAkcija.TabIndex = 0;
             // 
             // tabStatistika
             // 
@@ -718,18 +925,18 @@
             this.groupBoxKolicina2.Controls.Add(this.dataGridViewKolicinePica);
             this.groupBoxKolicina2.Controls.Add(this.monthCalendar2);
             this.groupBoxKolicina2.Controls.Add(this.labelOdaberiDatum2);
-            this.groupBoxKolicina2.Location = new System.Drawing.Point(460, 31);
+            this.groupBoxKolicina2.Location = new System.Drawing.Point(401, 31);
             this.groupBoxKolicina2.Name = "groupBoxKolicina2";
-            this.groupBoxKolicina2.Size = new System.Drawing.Size(734, 444);
+            this.groupBoxKolicina2.Size = new System.Drawing.Size(793, 444);
             this.groupBoxKolicina2.TabIndex = 7;
             this.groupBoxKolicina2.TabStop = false;
             this.groupBoxKolicina2.Text = "Količina svih pića u danu";
             // 
             // buttonPrikaziStatistiku1
             // 
-            this.buttonPrikaziStatistiku1.Location = new System.Drawing.Point(34, 312);
+            this.buttonPrikaziStatistiku1.Location = new System.Drawing.Point(163, 269);
             this.buttonPrikaziStatistiku1.Name = "buttonPrikaziStatistiku1";
-            this.buttonPrikaziStatistiku1.Size = new System.Drawing.Size(204, 43);
+            this.buttonPrikaziStatistiku1.Size = new System.Drawing.Size(199, 43);
             this.buttonPrikaziStatistiku1.TabIndex = 6;
             this.buttonPrikaziStatistiku1.Text = "Prikaži statistiku";
             this.buttonPrikaziStatistiku1.UseVisualStyleBackColor = true;
@@ -740,25 +947,25 @@
             this.dataGridViewKolicinePica.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridViewKolicinePica.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridViewKolicinePica.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewKolicinePica.Location = new System.Drawing.Point(278, 58);
+            this.dataGridViewKolicinePica.Location = new System.Drawing.Point(383, 28);
             this.dataGridViewKolicinePica.Name = "dataGridViewKolicinePica";
             this.dataGridViewKolicinePica.RowHeadersWidth = 51;
             this.dataGridViewKolicinePica.RowTemplate.Height = 24;
-            this.dataGridViewKolicinePica.Size = new System.Drawing.Size(447, 254);
+            this.dataGridViewKolicinePica.Size = new System.Drawing.Size(385, 384);
             this.dataGridViewKolicinePica.TabIndex = 5;
             // 
             // monthCalendar2
             // 
-            this.monthCalendar2.Location = new System.Drawing.Point(20, 78);
+            this.monthCalendar2.Location = new System.Drawing.Point(163, 89);
             this.monthCalendar2.Name = "monthCalendar2";
             this.monthCalendar2.TabIndex = 4;
             // 
             // labelOdaberiDatum2
             // 
             this.labelOdaberiDatum2.AutoSize = true;
-            this.labelOdaberiDatum2.Location = new System.Drawing.Point(15, 40);
+            this.labelOdaberiDatum2.Location = new System.Drawing.Point(11, 89);
             this.labelOdaberiDatum2.Name = "labelOdaberiDatum2";
-            this.labelOdaberiDatum2.Size = new System.Drawing.Size(179, 29);
+            this.labelOdaberiDatum2.Size = new System.Drawing.Size(140, 24);
             this.labelOdaberiDatum2.TabIndex = 3;
             this.labelOdaberiDatum2.Text = "Odaberi datum:";
             // 
@@ -772,7 +979,7 @@
             this.groupBoxKolicina1.Controls.Add(this.monthCalendar1);
             this.groupBoxKolicina1.Location = new System.Drawing.Point(20, 31);
             this.groupBoxKolicina1.Name = "groupBoxKolicina1";
-            this.groupBoxKolicina1.Size = new System.Drawing.Size(431, 445);
+            this.groupBoxKolicina1.Size = new System.Drawing.Size(361, 445);
             this.groupBoxKolicina1.TabIndex = 6;
             this.groupBoxKolicina1.TabStop = false;
             this.groupBoxKolicina1.Text = "Količina određenog pića u danu";
@@ -782,7 +989,7 @@
             this.labelOdaberiPice.AutoSize = true;
             this.labelOdaberiPice.Location = new System.Drawing.Point(6, 48);
             this.labelOdaberiPice.Name = "labelOdaberiPice";
-            this.labelOdaberiPice.Size = new System.Drawing.Size(159, 29);
+            this.labelOdaberiPice.Size = new System.Drawing.Size(124, 24);
             this.labelOdaberiPice.TabIndex = 0;
             this.labelOdaberiPice.Text = "Odaberi piće:";
             // 
@@ -791,24 +998,24 @@
             this.labelPrikaziKolicinu.AutoSize = true;
             this.labelPrikaziKolicinu.Location = new System.Drawing.Point(39, 378);
             this.labelPrikaziKolicinu.Name = "labelPrikaziKolicinu";
-            this.labelPrikaziKolicinu.Size = new System.Drawing.Size(304, 29);
+            this.labelPrikaziKolicinu.Size = new System.Drawing.Size(242, 24);
             this.labelPrikaziKolicinu.TabIndex = 5;
-            this.labelPrikaziKolicinu.Text = "Ovdje se prikazuje statitika.";
+            this.labelPrikaziKolicinu.Text = "Ovdje se prikazuje statistika.";
             // 
             // odabirPica
             // 
             this.odabirPica.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.odabirPica.FormattingEnabled = true;
-            this.odabirPica.Location = new System.Drawing.Point(171, 40);
+            this.odabirPica.Location = new System.Drawing.Point(150, 40);
             this.odabirPica.Name = "odabirPica";
-            this.odabirPica.Size = new System.Drawing.Size(224, 37);
+            this.odabirPica.Size = new System.Drawing.Size(199, 32);
             this.odabirPica.TabIndex = 1;
             // 
             // buttonPrikaziStatistiku
             // 
-            this.buttonPrikaziStatistiku.Location = new System.Drawing.Point(94, 312);
+            this.buttonPrikaziStatistiku.Location = new System.Drawing.Point(150, 269);
             this.buttonPrikaziStatistiku.Name = "buttonPrikaziStatistiku";
-            this.buttonPrikaziStatistiku.Size = new System.Drawing.Size(204, 43);
+            this.buttonPrikaziStatistiku.Size = new System.Drawing.Size(199, 43);
             this.buttonPrikaziStatistiku.TabIndex = 4;
             this.buttonPrikaziStatistiku.Text = "Prikaži statistiku";
             this.buttonPrikaziStatistiku.UseVisualStyleBackColor = true;
@@ -819,13 +1026,13 @@
             this.labelOdaberiDatum.AutoSize = true;
             this.labelOdaberiDatum.Location = new System.Drawing.Point(6, 89);
             this.labelOdaberiDatum.Name = "labelOdaberiDatum";
-            this.labelOdaberiDatum.Size = new System.Drawing.Size(179, 29);
+            this.labelOdaberiDatum.Size = new System.Drawing.Size(140, 24);
             this.labelOdaberiDatum.TabIndex = 2;
             this.labelOdaberiDatum.Text = "Odaberi datum:";
             // 
             // monthCalendar1
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(185, 89);
+            this.monthCalendar1.Location = new System.Drawing.Point(150, 89);
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 3;
             // 
@@ -850,22 +1057,13 @@
             this.bazaDataSetBindingSource.DataSource = this.bazaDataSet;
             this.bazaDataSetBindingSource.Position = 0;
             // 
-            // btnNovaKategorija
-            // 
-            this.btnNovaKategorija.Location = new System.Drawing.Point(239, 139);
-            this.btnNovaKategorija.Name = "btnNovaKategorija";
-            this.btnNovaKategorija.Size = new System.Drawing.Size(75, 34);
-            this.btnNovaKategorija.TabIndex = 11;
-            this.btnNovaKategorija.Text = "OK";
-            this.btnNovaKategorija.UseVisualStyleBackColor = true;
-            this.btnNovaKategorija.Click += new System.EventHandler(this.btnNovaKategorija_Click);
-            // 
             // VlasnikForm
             // 
             this.ClientSize = new System.Drawing.Size(1238, 630);
             this.Controls.Add(this.gumbOdjavaVlasnika);
             this.Controls.Add(this.tabKonobar);
             this.Name = "VlasnikForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.tabKonobar.ResumeLayout(false);
             this.tabZaposliKonobara.ResumeLayout(false);
             this.gBoxDodajKonobara.ResumeLayout(false);
@@ -887,6 +1085,11 @@
             this.flowLayoutPanelPromijeniCijenu.ResumeLayout(false);
             this.flowLayoutPanelPromijeniCijenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPicaModificiraj)).EndInit();
+            this.tabAkcije.ResumeLayout(false);
+            this.groupBoxAkcija.ResumeLayout(false);
+            this.groupBoxAkcija.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAkcija)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAkcija)).EndInit();
             this.tabStatistika.ResumeLayout(false);
             this.groupBoxKolicina2.ResumeLayout(false);
             this.groupBoxKolicina2.PerformLayout();
@@ -971,5 +1174,19 @@
         private System.Windows.Forms.Label labelNazivNoveKategorije;
         private System.Windows.Forms.TextBox txtNovaKategorija;
         private System.Windows.Forms.Button btnNovaKategorija;
+        private System.Windows.Forms.GroupBox groupBoxAkcija;
+        private System.Windows.Forms.Label labelAkcijaPice;
+        private System.Windows.Forms.ComboBox comboBoxAkcija;
+        private System.Windows.Forms.DateTimePicker dateTimePickerAkcijaOdDatum;
+        private System.Windows.Forms.Label labelAkcijaOd;
+        private System.Windows.Forms.DateTimePicker dateTimePickerAkcijaDoDatum;
+        private System.Windows.Forms.Label labelAkcijaDo;
+        private System.Windows.Forms.DateTimePicker dateTimePickerAkcijaOdVrijeme;
+        private System.Windows.Forms.DateTimePicker dateTimePickerAkcijaDoVrijeme;
+        private System.Windows.Forms.DataGridView dataGridViewAkcija;
+        private System.Windows.Forms.Button buttonAkcija;
+        private System.Windows.Forms.Button buttonSveAkcije;
+        private System.Windows.Forms.Label labelPopust;
+        private System.Windows.Forms.NumericUpDown numericUpDownAkcija;
     }
 }
