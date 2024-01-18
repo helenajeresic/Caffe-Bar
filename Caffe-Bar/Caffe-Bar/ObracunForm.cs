@@ -16,12 +16,21 @@ namespace CaffeBar
     {
         public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
         public int id_ulogirani;
+        /// <summary>
+        /// Konstruktor za ObracunForm prima parametar id_konobar koji mu sluzi za daljnji obracun prometa
+        /// </summary>
+        /// <param name="id_konobar"></param>
         public ObracunForm(int id_konobar)
         {
            InitializeComponent();
             id_ulogirani = id_konobar;
         }
 
+        /// <summary>
+        /// Klikom na gumb potvrde zavrssava se odjavljivanje konobara iz sustava
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonOK_Click(object sender, EventArgs e)
         {
             PrijavaForm formaPrijava = new PrijavaForm();
@@ -29,11 +38,19 @@ namespace CaffeBar
             this.Hide();
         }
 
+        /// <summary>
+        /// Prilikom otvaranja forme obracuna popunjavaju se podaci u tablicama
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ObracunForm_Load(object sender, EventArgs e)
         {
             PopuniPodatke();
         }
 
+        /// <summary>
+        /// Funkcija koja popunjava podatke u tablicama iz baze
+        /// </summary>
         private void PopuniPodatke()
         {
             using (SqlConnection veza = new SqlConnection(connectionString))
@@ -98,6 +115,5 @@ namespace CaffeBar
                 dataGridViewUkupniPromet.DataSource = dtPromet;
             }
         }
-
     }
 }

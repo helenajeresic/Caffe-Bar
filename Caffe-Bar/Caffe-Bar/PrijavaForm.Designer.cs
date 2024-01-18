@@ -89,7 +89,6 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PrijavaForm";
-            this.Load += new System.EventHandler(this.PrijavaForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

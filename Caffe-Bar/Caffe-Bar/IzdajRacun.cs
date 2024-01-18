@@ -40,7 +40,6 @@ namespace CaffeBar
             finalniRacun.AppendText("--------------------------------------\n\n");
         }
 
-
         public decimal calculateTotal(Dictionary<Pice, decimal> narucenaPica)
         {
             decimal total = 0;

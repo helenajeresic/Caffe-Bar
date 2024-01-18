@@ -18,6 +18,11 @@ namespace CaffeBar
 
         static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=\\wsl.localhost\Ubuntu-18.04\home\doriblas\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
         public string username_ulogirani;
+
+        /// <summary>
+        /// Konstruktor za VlasnikForm
+        /// </summary>
+        /// <param name="username_vlasnik"></param>
         public VlasnikForm(string username_vlasnik)
         {
             InitializeComponent();
@@ -29,6 +34,7 @@ namespace CaffeBar
             UcitajKategorijeUComboBox();
 
         }
+
         /// <summary>
         /// ResetirajForm služi nam za resetiranje određene forme nakon uspješno provedene akcije.
         /// </summary>
@@ -127,6 +133,9 @@ namespace CaffeBar
             PrikaziKonobare();
         }
 
+        /// <summary>
+        /// Funkcija koja iz baze dohvaca sve konobare
+        /// </summary>
         private void PrikaziKonobare()
         {
             using (SqlConnection veza = new SqlConnection(connectionString))
@@ -142,7 +151,6 @@ namespace CaffeBar
                 dataGridViewKonobari.DataSource = dt;
             }
         }
-
 
         private void buttonPrikaziStatistiku_Click(object sender, EventArgs e)
         {
@@ -376,6 +384,10 @@ namespace CaffeBar
         {
             PrikaziPicaModificiraj();
         }
+
+        /// <summary>
+        /// Funkcija koja u bazi radi modifikaciju
+        /// </summary>
         private void PrikaziPicaModificiraj()
         {
             if (comboBoxPicaModificiraj.SelectedIndex == -1)
@@ -658,11 +670,19 @@ namespace CaffeBar
 
         }
 
+        /// <summary>
+        /// Klikom na gumb prikazuju se sve akcije
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonSveAkcije_Click(object sender, EventArgs e)
         {
             PrikaziSveAkcije();
         }
 
+        /// <summary>
+        /// Funkcija iz baze dohvaca sve akcije
+        /// </summary>
         private void PrikaziSveAkcije()
         {
             using (SqlConnection veza = new SqlConnection(connectionString))
@@ -685,6 +705,9 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Funkcija popunjava combobox sa trenutnim picima iz ponude
+        /// </summary>
         private void UcitajPicaUComboBoxAkcija()
         {
             comboBoxAkcija.Items.Clear();
@@ -710,6 +733,11 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Klikom na gumb provjerava se jesu li svi podaci isravno unesenia ako da dodaje se u bazu nova akcija
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonAkcija_Click(object sender, EventArgs e)
         {
             if (comboBoxAkcija.SelectedItem == null)
@@ -793,6 +821,11 @@ namespace CaffeBar
             PrikaziSveAkcije();
         }
 
+        /// <summary>
+        /// Klikom na redak moguce je obrisati akciju
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridViewAkcija_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
@@ -810,6 +843,10 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Funckija za brisanje akcije iz baze
+        /// </summary>
+        /// <param name="idAkcije"></param>
         private void ObrisiAkciju(int idAkcije)
         {
             using (SqlConnection veza = new SqlConnection(connectionString))
@@ -825,6 +862,5 @@ namespace CaffeBar
                 }
             }
         }
-
     }
 }

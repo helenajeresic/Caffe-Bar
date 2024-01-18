@@ -375,7 +375,6 @@ namespace CaffeBar
             }
         }
 
-
         public decimal dohvatiDostupnuKolicinu(int idPica)
         {
             decimal dostupnaKolicina = 0;
@@ -424,6 +423,11 @@ namespace CaffeBar
             return akcija;
         }
 
+        /// <summary>
+        /// Klikom na odjavu korisniku se prikaze forma za obracun te nakon toga ga odjavljuje
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void gumbOdjavaKonobara_Click(object sender, EventArgs e)
         {
             labelUsername.Text = "";
@@ -432,11 +436,6 @@ namespace CaffeBar
             this.Hide();
         }
 
-
-        private void KonobarForm_Load(object sender, EventArgs e)
-        {
-
-        }
         /// <summary>
         /// Klikom na gumb prikazuju se podaci o svim količinama pića u skladištu
         /// Popuvanja se dropdown za odabir pića koje želimo za premještanje iz skladišta u šank
@@ -636,11 +635,19 @@ namespace CaffeBar
 
         }
 
+        /// <summary>
+        /// Klikom na gumb prikazuju se sve narudzbe
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonNarudžba_Click(object sender, EventArgs e)
         {
             PrikaziSveNarudzbe();
         }
 
+        /// <summary>
+        /// Funkcija koja iz baze dohvaca podatke o svim narudzbama
+        /// </summary>
         private void PrikaziSveNarudzbe()
         {
             using (SqlConnection veza = new SqlConnection(connectionString))
@@ -667,6 +674,9 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Funkcija ucitava sva pica koja su trenutno u ponudi u combobox narudzbe
+        /// </summary>
         private void UcitajPicaUComboBoxNarudzba()
         {
             comboBoxNarudzba.Items.Clear();
@@ -692,6 +702,11 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Klikom na gumb, ako su svi podaci dobro popunjeni, dodaje se nova narudzba u bazu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonNarudzba_Click(object sender, EventArgs e)
         {
             if (comboBoxNarudzba.SelectedItem == null)
@@ -746,6 +761,11 @@ namespace CaffeBar
             PrikaziSveNarudzbe();
         }
 
+        /// <summary>
+        /// Klikom na redak u prikazu tablice nudi se opcija mijenjanja statusa iz nedostavljeno u dostavljno
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridViewNarudzba_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
@@ -759,10 +779,15 @@ namespace CaffeBar
                     PromijeniStatusDostave(idNarudzbe);
 
                     PrikaziSveNarudzbe();
+                    AzurirajStanjeSkladista();
                 }
             }
         }
 
+        /// <summary>
+        /// Funckija koja u bazi mijenja status iz nedostavljeno u dostavljno
+        /// </summary>
+        /// <param name="idNarudzbe"></param>
         private void PromijeniStatusDostave(int idNarudzbe)
         {
             using (SqlConnection veza = new SqlConnection(connectionString))
@@ -822,11 +847,19 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Klikom na gumb prikazuju se pica koja su na malim zalihama 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonNarudzbaZaliha_Click(object sender, EventArgs e)
         {
             PrikaziNiskeZalihe();
         }
 
+        /// <summary>
+        /// Funckija koja u bazi provjerava koja su to pica na malim zalihama
+        /// </summary>
         private void PrikaziNiskeZalihe()
         {
             using (SqlConnection veza = new SqlConnection(connectionString))
@@ -854,7 +887,6 @@ namespace CaffeBar
         {
             PrikaziSveRacune();
         }
-
 
         /// <summary>
         /// funkcija koja iz baze dohvaća sve račune i sortira ih od najnovijeg do najstarijeg
@@ -894,7 +926,6 @@ namespace CaffeBar
             }
         }
 
-
         /// <summary>
         /// Klikom na ćeliju u tablici sa računima, prvo se prikažu detalji odabranog računa, a zatim i mogućnost storiranja računa
         /// </summary>
@@ -919,7 +950,6 @@ namespace CaffeBar
                 }
             }
         }
-
 
         /// <summary>
         /// Funkcija koja za odabrani račun prikazuje sve stavke tog računa u obliku MessageBoxa
@@ -976,7 +1006,6 @@ namespace CaffeBar
                 MessageBox.Show($"Greška prilikom dohvaćanja detalja računa: {ex.Message}", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         /// <summary>
         /// Funkcija koja briše račun iz tablice Racun, briše sve stavke tog računa iz tablice RacunStavke i dodaje stornirane količiine u stanje šanka
@@ -1067,7 +1096,5 @@ namespace CaffeBar
                 MessageBox.Show($"Greška prilikom storniranja računa: {ex.Message}");
             }
         }
-
-
     }
 }
