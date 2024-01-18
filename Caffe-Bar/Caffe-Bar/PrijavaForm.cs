@@ -15,16 +15,30 @@ namespace CaffeBar
     {
         public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
 
+        /// <summary>
+        /// Konstruktor za PrijavaForm
+        /// </summary>
         public PrijavaForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Klikom na gumb Odustani, odustajemo od prijave u sustav i zatvara se prozor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void gumbOdustani_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// Klikom na gumb prijave u bazi provjeravamo je li prijava dopustena 
+        /// i ovisno o ulozi biramo koju formu prikazujemo sljedece
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void gumbPrijava_Click(object sender, EventArgs e)
         {
             String korisnicko_ime, lozinka;
@@ -88,6 +102,11 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Klikom na enter mozemo iz textboxa za ime preci u textbox za lozinku
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBoxIme_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
@@ -96,17 +115,17 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Klikom na enter mozemo iz textboxa se ulogirati bez pritska na gumb za prijavu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBoxLozinka_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             { 
                 gumbPrijava_Click(sender, e);
             }
-        }
-
-        private void PrijavaForm_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

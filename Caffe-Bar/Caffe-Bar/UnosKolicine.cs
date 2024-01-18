@@ -51,6 +51,5 @@ namespace CaffeBar
         {
             DostupnaKolicina = kolicina;
         }
-
     }
 }

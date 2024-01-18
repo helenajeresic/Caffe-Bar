@@ -639,7 +639,6 @@
             this.Name = "KonobarForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "KonobarForm";
-            this.Load += new System.EventHandler(this.KonobarForm_Load);
             this.tabKonobar.ResumeLayout(false);
             this.tabIzdajRacun.ResumeLayout(false);
             this.tabIzdajRacun.PerformLayout();
