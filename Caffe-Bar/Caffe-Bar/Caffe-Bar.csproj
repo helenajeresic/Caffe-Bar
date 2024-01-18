@@ -70,6 +70,12 @@
       <DependentUpon>bazaDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="ComboboxItem.cs" />
+    <Compile Include="ObracunForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ObracunForm.Designer.cs">
+      <DependentUpon>ObracunForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="IzdajRacun.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="KonobarForm.resx">
       <DependentUpon>KonobarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ObracunForm.resx">
+      <DependentUpon>ObracunForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PrijavaForm.resx">
       <DependentUpon>PrijavaForm.cs</DependentUpon>

@@ -113,6 +113,5 @@ namespace CaffeBar
             }
             veza.Close();
         }
-            
     }
 }

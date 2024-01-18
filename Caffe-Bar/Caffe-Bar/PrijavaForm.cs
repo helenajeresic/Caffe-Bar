@@ -103,5 +103,10 @@ namespace CaffeBar
                 gumbPrijava_Click(sender, e);
             }
         }
+
+        private void PrijavaForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
