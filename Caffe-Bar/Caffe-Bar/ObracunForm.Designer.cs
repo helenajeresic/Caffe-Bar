@@ -67,10 +67,17 @@
             // 
             this.dataGridViewUkupniPromet.AllowUserToAddRows = false;
             this.dataGridViewUkupniPromet.AllowUserToDeleteRows = false;
+            this.dataGridViewUkupniPromet.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewUkupniPromet.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridViewUkupniPromet.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dataGridViewUkupniPromet.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dataGridViewUkupniPromet.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dataGridViewUkupniPromet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewUkupniPromet.GridColor = System.Drawing.Color.Gray;
             this.dataGridViewUkupniPromet.Location = new System.Drawing.Point(24, 45);
             this.dataGridViewUkupniPromet.Name = "dataGridViewUkupniPromet";
             this.dataGridViewUkupniPromet.ReadOnly = true;
+            this.dataGridViewUkupniPromet.RowHeadersWidth = 51;
             this.dataGridViewUkupniPromet.Size = new System.Drawing.Size(473, 355);
             this.dataGridViewUkupniPromet.TabIndex = 0;
             // 
@@ -89,10 +96,17 @@
             // 
             this.dataGridViewUkupniRacuni.AllowUserToAddRows = false;
             this.dataGridViewUkupniRacuni.AllowUserToDeleteRows = false;
+            this.dataGridViewUkupniRacuni.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewUkupniRacuni.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridViewUkupniRacuni.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dataGridViewUkupniRacuni.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dataGridViewUkupniRacuni.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dataGridViewUkupniRacuni.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewUkupniRacuni.GridColor = System.Drawing.Color.Gray;
             this.dataGridViewUkupniRacuni.Location = new System.Drawing.Point(17, 45);
             this.dataGridViewUkupniRacuni.Name = "dataGridViewUkupniRacuni";
             this.dataGridViewUkupniRacuni.ReadOnly = true;
+            this.dataGridViewUkupniRacuni.RowHeadersWidth = 51;
             this.dataGridViewUkupniRacuni.Size = new System.Drawing.Size(456, 355);
             this.dataGridViewUkupniRacuni.TabIndex = 0;
             // 
@@ -102,7 +116,7 @@
             this.labelUkupnaZarada.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelUkupnaZarada.Location = new System.Drawing.Point(71, 545);
             this.labelUkupnaZarada.Name = "labelUkupnaZarada";
-            this.labelUkupnaZarada.Size = new System.Drawing.Size(283, 42);
+            this.labelUkupnaZarada.Size = new System.Drawing.Size(354, 54);
             this.labelUkupnaZarada.TabIndex = 3;
             this.labelUkupnaZarada.Text = "Ukupna zarada:";
             // 
@@ -112,13 +126,13 @@
             this.labelUkupnaZaradaIznos.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelUkupnaZaradaIznos.Location = new System.Drawing.Point(373, 545);
             this.labelUkupnaZaradaIznos.Name = "labelUkupnaZaradaIznos";
-            this.labelUkupnaZaradaIznos.Size = new System.Drawing.Size(49, 42);
+            this.labelUkupnaZaradaIznos.Size = new System.Drawing.Size(61, 54);
             this.labelUkupnaZaradaIznos.TabIndex = 4;
             this.labelUkupnaZaradaIznos.Text = "0 ";
             // 
             // ObracunForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1238, 630);
             this.ControlBox = false;

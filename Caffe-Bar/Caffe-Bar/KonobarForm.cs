@@ -11,7 +11,7 @@ namespace CaffeBar
 {
     public partial class KonobarForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Elena\Desktop\Caffe-Bar-novo\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
         private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica = new Dictionary<Pice, decimal>();
         public int id_ulogirani;

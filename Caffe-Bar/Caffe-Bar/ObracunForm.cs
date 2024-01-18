@@ -14,7 +14,7 @@ namespace CaffeBar
 {
     public partial class ObracunForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Elena\Desktop\Caffe-Bar-novo\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
         public int id_ulogirani;
         public ObracunForm(int id_konobar)
         {
@@ -52,6 +52,15 @@ namespace CaffeBar
 
                 DataTable dtRacuni = new DataTable();
                 adapterRacuni.Fill(dtRacuni);
+
+                dtRacuni.Columns["Iznos računa"].DataType = typeof(decimal);
+                foreach (DataRow row in dtRacuni.Rows)
+                {
+                    if (!row.IsNull("Iznos računa"))
+                    {
+                        row["Iznos računa"] = ((decimal)row["Iznos računa"]).ToString("N2");
+                    }
+                }
 
                 dataGridViewUkupniRacuni.DataSource = dtRacuni;
 
