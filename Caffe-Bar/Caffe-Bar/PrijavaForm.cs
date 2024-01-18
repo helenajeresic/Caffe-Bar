@@ -13,7 +13,7 @@ namespace CaffeBar
 {
     public partial class PrijavaForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Elena\Desktop\Caffe-Bar-novo\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
 
         public PrijavaForm()
         {
@@ -102,6 +102,11 @@ namespace CaffeBar
             { 
                 gumbPrijava_Click(sender, e);
             }
+        }
+
+        private void PrijavaForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

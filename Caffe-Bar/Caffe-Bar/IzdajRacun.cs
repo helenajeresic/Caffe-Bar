@@ -8,7 +8,7 @@ namespace CaffeBar
 {
     public partial class IzdajRacun : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Elena\Desktop\Caffe-Bar-novo\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
         private decimal Total { get; set; }
         public DateTime VrijemeRacuna { get; private set; }
         
@@ -113,6 +113,5 @@ namespace CaffeBar
             }
             veza.Close();
         }
-            
     }
 }
