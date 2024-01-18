@@ -427,7 +427,7 @@ namespace CaffeBar
         private void gumbOdjavaKonobara_Click(object sender, EventArgs e)
         {
             labelUsername.Text = "";
-            ObracunForm forma = new ObracunForm();
+            ObracunForm forma = new ObracunForm(id_ulogirani);
             forma.Show();
             this.Hide();
         }
