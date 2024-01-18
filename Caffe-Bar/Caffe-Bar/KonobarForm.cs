@@ -4,13 +4,14 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace CaffeBar
 {
     public partial class KonobarForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Elena\Desktop\Caffe-Bar-novo\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
         private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica = new Dictionary<Pice, decimal>();
         public int id_ulogirani;
@@ -281,6 +282,7 @@ namespace CaffeBar
                 zapisRacunStavke(vrijeme);
                 //zapisKonobarPopust();
                 AzurirajStanjeSanka();
+                PrikaziSveRacune();
 
                 MessageBox.Show("Račun uspješno evidentiran!", "Obavijest");
                 textRacuna.Clear();
@@ -842,5 +844,230 @@ namespace CaffeBar
                 dataGridViewNarudzbaZaliha.DataSource = dt;
             }
         }
+
+        /// <summary>
+        /// Klikom na gumb prikazuju se svi računi
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonPrikaziRacune_Click(object sender, EventArgs e)
+        {
+            PrikaziSveRacune();
+        }
+
+
+        /// <summary>
+        /// funkcija koja iz baze dohvaća sve račune i sortira ih od najnovijeg do najstarijeg
+        /// </summary>
+        public void PrikaziSveRacune()
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string upit = "SELECT R.id_racun AS 'id_racun', K.korisnicko_ime AS 'Izdao konobar', R.datum_vrijeme AS 'Datum i vrijeme', " +
+                    "R.iznos AS 'Iznos računa' " +
+                    "FROM Racun R " +
+                    "JOIN Osobe K ON R.id_konobar = K.id_osobe " +
+                    "ORDER BY R.datum_vrijeme DESC";
+
+                SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                //zaokruzivanje iznosa računa na dvije decimale
+                dt.Columns["Iznos računa"].DataType = typeof(decimal);
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (!row.IsNull("Iznos računa"))
+                    {
+                        row["Iznos računa"] = ((decimal)row["Iznos računa"]).ToString("N2");
+                    }
+                }
+
+                dataGridViewRacuni.DataSource = dt;
+
+                if (dt.Columns.Contains("id_racun"))
+                {
+                    dataGridViewRacuni.Columns["id_racun"].Visible = false;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Klikom na ćeliju u tablici sa računima, prvo se prikažu detalji odabranog računa, a zatim i mogućnost storiranja računa
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridViewRacuni_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                int idRacuna = (int)dataGridViewRacuni.Rows[e.RowIndex].Cells["id_racun"].Value;
+
+                PrikaziDetaljeRacuna(idRacuna);
+
+                DialogResult rezultat = MessageBox.Show("Jeste li sigurni da želite stornirati odabrani račun?", "Potvrdi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (rezultat == DialogResult.Yes)
+                { 
+
+                    ObrisiRacun(idRacuna);
+
+                    PrikaziSveRacune();
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Funkcija koja za odabrani račun prikazuje sve stavke tog računa u obliku MessageBoxa
+        /// </summary>
+        /// <param name="idRacuna"></param>
+        private void PrikaziDetaljeRacuna(int idRacuna)
+        {
+            try
+            {
+                using (SqlConnection veza = new SqlConnection(connectionString))
+                {
+                    veza.Open();
+
+                    string detaljiUpit = "SELECT RS.id_pica, P.naziv_pica, RS.kolicina, P.cijena_pica " +
+                        "FROM RacunStavke RS " +
+                        "JOIN Pica P " +
+                        "ON RS.id_pica = P.id_pica " +
+                        "WHERE RS.id_racun = @idRacuna";
+
+                    using (SqlCommand detaljiNaredba = new SqlCommand(detaljiUpit, veza))
+                    {
+                        detaljiNaredba.Parameters.AddWithValue("@idRacuna", idRacuna);
+
+                        using (SqlDataReader reader = detaljiNaredba.ExecuteReader())
+                        {
+                            StringBuilder detalji = new StringBuilder();
+
+                            while (reader.Read())
+                            {
+                                int idPica = reader.GetInt32(0);
+                                string naziv = reader.GetString(1);
+                                int kolicina = reader.GetInt32(2);
+                                decimal cijena = reader.GetDecimal(3);
+
+                                detalji.AppendLine($"Naziv: {naziv}, Količina: {kolicina}, Cijena: {cijena.ToString("0.00")} EUR");
+                            }
+
+                            if (detalji.Length > 0)
+                            {
+                                MessageBox.Show(detalji.ToString(), "Detalji računa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Nema dostupnih detalja za odabrani račun.", "Detalji računa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                    }
+
+                    veza.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Greška prilikom dohvaćanja detalja računa: {ex.Message}", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+        /// <summary>
+        /// Funkcija koja briše račun iz tablice Racun, briše sve stavke tog računa iz tablice RacunStavke i dodaje stornirane količiine u stanje šanka
+        /// </summary>
+        /// <param name="idRacuna"></param>
+        private void ObrisiRacun(int idRacuna)
+        {
+            try
+            {
+                using (SqlConnection veza = new SqlConnection(connectionString))
+                {
+                    veza.Open();
+
+                    using (SqlTransaction transakcija = veza.BeginTransaction())
+                    {
+                        try
+                        {
+                            // Dohvaćanje svih stavki koje se nalaze na računu koji želimo brisati
+                            string dohvatiStavkeUpit = "SELECT id_pica, kolicina FROM RacunStavke WHERE id_racun = @idRacuna";
+
+                            List<Tuple<int, int>> stavkeZaDodati = new List<Tuple<int, int>>();
+
+                            using (SqlCommand dohvatiStavkeNaredba = new SqlCommand(dohvatiStavkeUpit, veza, transakcija))
+                            {
+                                dohvatiStavkeNaredba.Parameters.AddWithValue("@idRacuna", idRacuna);
+
+                                using (SqlDataReader reader = dohvatiStavkeNaredba.ExecuteReader())
+                                {
+                                    while (reader.Read())
+                                    {
+                                        int idPica = reader.GetInt32(0);
+                                        int kolicinaStavke = reader.GetInt32(1);
+
+                                        stavkeZaDodati.Add(new Tuple<int, int>(idPica, kolicinaStavke));
+                                    }
+                                }
+                            }
+
+                            // Brisanje iz RacunStavke
+                            string obrisiRacunStavkeUpit = "DELETE FROM RacunStavke WHERE id_racun = @idRacuna";
+
+                            using (SqlCommand naredbaObrisiStavke = new SqlCommand(obrisiRacunStavkeUpit, veza, transakcija))
+                            {
+                                naredbaObrisiStavke.Parameters.AddWithValue("@idRacuna", idRacuna);
+                                naredbaObrisiStavke.ExecuteNonQuery();
+                            }
+
+                            // Ažuriranje stanja na šanku
+                            foreach (var stavka in stavkeZaDodati)
+                            {
+                                string azurirajKolicinuUpit = "UPDATE Pica SET kolicina_kafic = kolicina_kafic + @kolicinaStavke WHERE id_pica = @idPica";
+
+                                using (SqlCommand naredbaAzurirajKolicinu = new SqlCommand(azurirajKolicinuUpit, veza, transakcija))
+                                {
+                                    naredbaAzurirajKolicinu.Parameters.AddWithValue("@kolicinaStavke", stavka.Item2);
+                                    naredbaAzurirajKolicinu.Parameters.AddWithValue("@idPica", stavka.Item1);
+
+                                    naredbaAzurirajKolicinu.ExecuteNonQuery();
+                                }
+                            }
+
+                            // Brisanje računa
+                            string obrisiRacunUpit = "DELETE FROM Racun WHERE id_racun = @idRacuna";
+
+                            using (SqlCommand naredbaObrisiRacun = new SqlCommand(obrisiRacunUpit, veza, transakcija))
+                            {
+                                naredbaObrisiRacun.Parameters.AddWithValue("@idRacuna", idRacuna);
+                                naredbaObrisiRacun.ExecuteNonQuery();
+                            }
+
+                            transakcija.Commit();
+
+                            MessageBox.Show("Račun je storniran!");
+                            AzurirajStanjeSanka();
+                        }
+                        catch (Exception ex)
+                        {
+                            transakcija.Rollback();
+                            throw; 
+                        }
+                    }
+
+                    veza.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Greška prilikom storniranja računa: {ex.Message}");
+            }
+        }
+
+
     }
 }

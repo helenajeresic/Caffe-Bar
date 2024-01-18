@@ -8,7 +8,7 @@ namespace CaffeBar
 {
     public partial class IzdajRacun : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Elena\Desktop\Caffe-Bar-novo\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
         private decimal Total { get; set; }
         public DateTime VrijemeRacuna { get; private set; }
         
