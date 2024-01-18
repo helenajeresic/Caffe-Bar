@@ -10,7 +10,7 @@ namespace CaffeBar
 {
     public partial class KonobarForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\baza.mdf;Integrated Security=True";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
         private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica = new Dictionary<Pice, decimal>();
         public int id_ulogirani;
@@ -28,8 +28,7 @@ namespace CaffeBar
 
             labelUsername.Text = "Prijavljen konobar: " + username_konobar;
             dataGridViewPica.CellFormatting += dataGridViewPica_CellFormatting;
-
-            
+            UcitajPicaUComboBoxNarudzba();
         }
 
         private List<Pice> GetPicaFromDatabase(string upit)
@@ -87,7 +86,7 @@ namespace CaffeBar
             dataGridViewPica.Columns[1].HeaderText = "Naziv pića";
             dataGridViewPica.Columns[2].HeaderText = "Cijena pića";
 
-            if(provjeraAkcije() > 0)
+            if (provjeraAkcije() > 0)
             {
                 foreach (DataGridViewRow row in dataGridViewPica.Rows)
                 {
@@ -103,7 +102,7 @@ namespace CaffeBar
         {
             List<Pice> pica = GetPicaFromDatabase("SELECT * FROM Pica");
 
-            if(provjeraAkcije() != 0)
+            if (provjeraAkcije() != 0)
             {
                 decimal popust = provjeraAkcije() / 100;
                 primjeniPopustNaPica(pica, popust);
@@ -116,7 +115,7 @@ namespace CaffeBar
         {
             List<Pice> pica = GetPicaFromDatabase("SELECT * FROM Pica");
 
-            
+
             if (textBoxTrazi.Text.Length > 0)
             {
                 pica = GetPicaFromDatabase("SELECT * FROM Pica WHERE naziv_pica LIKE @unos");
@@ -173,7 +172,7 @@ namespace CaffeBar
 
                 if (kolicina > 0)
                 {
-                    if(narucenaPica.Any(item => item.Key.naziv_pica == label))
+                    if (narucenaPica.Any(item => item.Key.naziv_pica == label))
                     {
                         Pice existingItem = narucenaPica.Keys.FirstOrDefault(item => item.naziv_pica == label);
                         narucenaPica[existingItem] += kolicina;
@@ -209,7 +208,7 @@ namespace CaffeBar
         private void initializeBill()
         {
             textRacuna.SelectionStart = 0;
-            textRacuna.SelectionLength = 0; 
+            textRacuna.SelectionLength = 0;
             textRacuna.SelectionAlignment = HorizontalAlignment.Center;
 
             textRacuna.AppendText("\n");
@@ -275,7 +274,7 @@ namespace CaffeBar
             izdajRacun.updateFinalniRacun(textRacuna.Rtf);
             izdajRacun.updateKonobarInfo(id_ulogirani, ime_ulogirani, prezime_ulogirani);
             DateTime vrijeme = izdajRacun.VrijemeRacuna;
-            
+
             if (izdajRacun.ShowDialog() == DialogResult.OK)
             {
                 updateKolicinaPica(narucenaPica);
@@ -296,11 +295,11 @@ namespace CaffeBar
 
         private void updateKolicinaPica(Dictionary<Pice, decimal> narucenaPica)
         {
-            using(SqlConnection veza = new SqlConnection(connectionString))
+            using (SqlConnection veza = new SqlConnection(connectionString))
             {
                 veza.Open();
 
-                foreach(KeyValuePair<Pice, decimal> stavkaRacuna in narucenaPica)
+                foreach (KeyValuePair<Pice, decimal> stavkaRacuna in narucenaPica)
                 {
                     Pice pice = stavkaRacuna.Key;
                     decimal novaKolicina = pice.kolicina_kafic - stavkaRacuna.Value;
@@ -400,7 +399,7 @@ namespace CaffeBar
 
         private void buttonOcistiRacun_Click(object sender, EventArgs e)
         {
-            textRacuna.Clear() ;
+            textRacuna.Clear();
             narucenaPica.Clear();
         }
 
@@ -430,7 +429,7 @@ namespace CaffeBar
             forma.Show();
             this.Hide();
         }
-        
+
 
         private void KonobarForm_Load(object sender, EventArgs e)
         {
@@ -467,11 +466,11 @@ namespace CaffeBar
             {
                 if (!comboBoxOdaberiPiceZaSank.Items.Contains(pice.naziv_pica))
                 {
-                    comboBoxOdaberiPiceZaSank.Items.Add(pice.naziv_pica);    
-                }    
+                    comboBoxOdaberiPiceZaSank.Items.Add(pice.naziv_pica);
+                }
             }
         }
-        
+
         /// <summary>
         /// Funkcija koja dohvaća količinu pića koja se nalazi u skladištu 
         /// </summary>
@@ -499,7 +498,7 @@ namespace CaffeBar
 
             return dostupnaKolicina;
         }
-        
+
         /// <summary>
         /// Klikom na gumb dodaje se odabrani proizvod i odabrana količina u šank, a miče se sa skladišta
         /// Ako je odabrana količina veća od količine u skladištu, javlja se poruka i može se početi ispočetka
@@ -511,7 +510,7 @@ namespace CaffeBar
             var lista_pica = GetPicaFromDatabase("SELECT * FROM Pica");
             lista_pica.Sort((x, y) => x.naziv_pica.CompareTo(y.naziv_pica));
 
-            if(comboBoxOdaberiPiceZaSank.SelectedIndex != -1)
+            if (comboBoxOdaberiPiceZaSank.SelectedIndex != -1)
             {
                 var odabrano_pice = comboBoxOdaberiPiceZaSank.SelectedItem.ToString();
                 int odabrano_pice_id = 0;
@@ -558,7 +557,7 @@ namespace CaffeBar
                             veza.Close();
 
                             AzurirajStanjeSanka();
-                            AzurirajStanjeSkladista();   
+                            AzurirajStanjeSkladista();
                         }
                     }
                     catch (Exception ex)
@@ -622,9 +621,9 @@ namespace CaffeBar
 
             veza.Open();
 
-            string upit =  "SELECT naziv_pica as 'Naziv pića', kolicina_kafic as 'Količina šank'" +
+            string upit = "SELECT naziv_pica as 'Naziv pića', kolicina_kafic as 'Količina šank'" +
                            " FROM Pica" +
-                           " ORDER BY naziv_pica"; 
+                           " ORDER BY naziv_pica";
             SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
@@ -633,6 +632,215 @@ namespace CaffeBar
 
             veza.Close();
 
+        }
+
+        private void buttonNarudžba_Click(object sender, EventArgs e)
+        {
+            PrikaziSveNarudzbe();
+        }
+
+        private void PrikaziSveNarudzbe()
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string upit = "SELECT N.id_narudzba AS 'id_narudzba', P.naziv_pica AS 'Naziv pića', " +
+                                      "N.datum_naruceno AS 'Datum narudžbe', N.kolicina AS 'Količina', " +
+                                      "CASE WHEN N.dostavljeno = 'D' THEN 'Da' ELSE 'Ne' END AS 'Dostavljeno'" +
+                                      "FROM Narudzba N " +
+                                      "JOIN Pica P ON N.id_pica = P.id_pica " +
+                                      "ORDER BY CASE WHEN N.dostavljeno = 'N' THEN 0 ELSE 1 END, N.datum_naruceno DESC";
+
+                SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                dataGridViewNarudzba.DataSource = dt;
+
+                if (dt.Columns.Contains("id_narudzba"))
+                {
+                    dataGridViewNarudzba.Columns["id_narudzba"].Visible = false;
+                }
+            }
+        }
+
+        private void UcitajPicaUComboBoxNarudzba()
+        {
+            comboBoxNarudzba.Items.Clear();
+
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+                string upit = "SELECT id_pica, naziv_pica FROM Pica";
+                SqlCommand cmd = new SqlCommand(upit, veza);
+
+                using (SqlDataReader citac = cmd.ExecuteReader())
+                {
+                    while (citac.Read())
+                    {
+                        ComboboxItem item = new ComboboxItem
+                        {
+                            Text = citac["naziv_pica"].ToString(),
+                            Value = citac["id_pica"]
+                        };
+                        comboBoxNarudzba.Items.Add(item);
+                    }
+                }
+            }
+        }
+
+        private void buttonNarudzba_Click(object sender, EventArgs e)
+        {
+            if (comboBoxNarudzba.SelectedItem == null)
+            {
+                MessageBox.Show("Odaberite piće za narudžbu.", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string nazivPica = ((ComboboxItem)comboBoxNarudzba.SelectedItem).Text;
+
+            int idPica;
+            int kolicina = (int)numericUpDownNarudzba.Value;
+
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string upitDohvatiIdPica = "SELECT id_pica FROM Pica WHERE naziv_pica = @nazivPica";
+
+                using (SqlCommand cmdDohvatiIdPica = new SqlCommand(upitDohvatiIdPica, veza))
+                {
+                    cmdDohvatiIdPica.Parameters.AddWithValue("@nazivPica", nazivPica);
+
+                    object rezultat = cmdDohvatiIdPica.ExecuteScalar();
+
+                    if (rezultat != null && rezultat != DBNull.Value)
+                    {
+                        idPica = Convert.ToInt32(rezultat);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nije moguće pronaći identifikator pića za odabrani naziv.", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                string dodajNarudzbu = "INSERT INTO Narudzba (id_pica, id_konobar, kolicina, datum_naruceno, dostavljeno) " +
+                                        "VALUES (@idPica, @idKonobar, @kolicina, @datumNaruceno, 'N')";
+
+                using (SqlCommand cmdDodajNarudzbu = new SqlCommand(dodajNarudzbu, veza))
+                {
+                    cmdDodajNarudzbu.Parameters.AddWithValue("@idPica", idPica);
+                    cmdDodajNarudzbu.Parameters.AddWithValue("@idKonobar", id_ulogirani);
+                    cmdDodajNarudzbu.Parameters.AddWithValue("@kolicina", kolicina);
+                    cmdDodajNarudzbu.Parameters.AddWithValue("@datumNaruceno", DateTime.Now);
+
+                    cmdDodajNarudzbu.ExecuteNonQuery();
+                    MessageBox.Show("Narudžba je uspješno dodana.", "Uspjeh", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+
+            PrikaziSveNarudzbe();
+        }
+
+        private void dataGridViewNarudzba_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DialogResult rezultat = MessageBox.Show("Jeste li sigurni da želite označiti narudžbu kao dostavljenu?", "Potvrda dostavljanja", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (rezultat == DialogResult.Yes)
+                {
+                    int idNarudzbe = (int)dataGridViewNarudzba.Rows[e.RowIndex].Cells["id_narudzba"].Value;
+
+                    PromijeniStatusDostave(idNarudzbe);
+
+                    PrikaziSveNarudzbe();
+                }
+            }
+        }
+
+        private void PromijeniStatusDostave(int idNarudzbe)
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string provjeraDostave = "SELECT dostavljeno FROM Narudzba WHERE id_narudzba = @idNarudzbe";
+
+                using (SqlCommand cmdProvjeriDostavu = new SqlCommand(provjeraDostave, veza))
+                {
+                    cmdProvjeriDostavu.Parameters.AddWithValue("@idNarudzbe", idNarudzbe);
+
+                    object rezultat = cmdProvjeriDostavu.ExecuteScalar();
+
+                    if (rezultat != null && rezultat != DBNull.Value && rezultat.ToString() == "D")
+                    {
+                        MessageBox.Show("Narudžba je već označena kao dostavljena.", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                string dohvatiNarudzbu = "SELECT id_pica, kolicina FROM Narudzba WHERE id_narudzba = @idNarudzbe";
+
+                using (SqlCommand cmdDohvatiNarudzbu = new SqlCommand(dohvatiNarudzbu, veza))
+                {
+                    cmdDohvatiNarudzbu.Parameters.AddWithValue("@idNarudzbe", idNarudzbe);
+
+                    using (SqlDataReader citac = cmdDohvatiNarudzbu.ExecuteReader())
+                    {
+                        while (citac.Read())
+                        {
+                            int idPica = citac.GetInt32(0);
+                            int kolicina = citac.GetInt32(1);
+
+                            string azurirajKolicinuSkladista = "UPDATE Pica SET kolicina_skladista = kolicina_skladista + @kolicina WHERE id_pica = @idPica";
+
+                            using (SqlCommand cmdAzurirajKolicinu = new SqlCommand(azurirajKolicinuSkladista, veza))
+                            {
+                                cmdAzurirajKolicinu.Parameters.AddWithValue("@idPica", idPica);
+                                cmdAzurirajKolicinu.Parameters.AddWithValue("@kolicina", kolicina);
+
+                                cmdAzurirajKolicinu.ExecuteNonQuery();
+                            }
+                        }
+                        citac.Close();
+                    }
+                }
+
+                string azurirajDostavu = "UPDATE Narudzba SET dostavljeno = 'D' WHERE id_narudzba = @idNarudzbe";
+
+                using (SqlCommand cmdAzurirajDostavu = new SqlCommand(azurirajDostavu, veza))
+                {
+                    cmdAzurirajDostavu.Parameters.AddWithValue("@idNarudzbe", idNarudzbe);
+
+                    cmdAzurirajDostavu.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void buttonNarudzbaZaliha_Click(object sender, EventArgs e)
+        {
+            PrikaziNiskeZalihe();
+        }
+
+        private void PrikaziNiskeZalihe()
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string upit = "SELECT naziv_pica AS 'Naziv pića', (kolicina_skladista + kolicina_kafic) AS 'Ukupne zalihe' " +
+                              "FROM Pica " +
+                              "WHERE (kolicina_skladista + kolicina_kafic) < najmanja_kolicina";
+
+                SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                dataGridViewNarudzbaZaliha.DataSource = dt;
+            }
         }
     }
 }
