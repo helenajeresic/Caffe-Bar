@@ -629,7 +629,6 @@ namespace CaffeBar
         private void UcitajPicaUComboBoxAkcija()
         {
             comboBoxAkcija.Items.Clear();
-            odabirPica.Items.Clear();
 
             using (SqlConnection veza = new SqlConnection(connectionString))
             {
@@ -647,7 +646,6 @@ namespace CaffeBar
                             Value = citac["id_pica"]
                         };
                         comboBoxAkcija.Items.Add(item);
-                        odabirPica.Items.Add(item);
                     }
                 }
             }
