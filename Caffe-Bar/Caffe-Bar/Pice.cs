@@ -15,5 +15,19 @@ namespace CaffeBar
         public decimal kolicina_kafic { get; set; }
         public decimal kolicina_skladista {  get; set; }
         public string najmanja_kolicina { get; set; }
+        public override bool Equals(object objekt)
+        {
+            if (objekt == null || GetType() != objekt.GetType())
+            {
+                return false;
+            }
+            Pice drugoPice = (Pice)objekt;
+            return id_pica == drugoPice.id_pica;
+        }
+
+        public override int GetHashCode()
+        {
+            return id_pica;
+        }
     }
 }

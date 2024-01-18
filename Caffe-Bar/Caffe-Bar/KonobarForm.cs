@@ -13,6 +13,8 @@ namespace CaffeBar
         public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
         private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica = new Dictionary<Pice, decimal>();
+        public Dictionary<int, int> konobarskiPopust = new Dictionary<int, int>();
+        public decimal popust = 0.20M;
         public int id_ulogirani;
         public string ime_ulogirani;
         public string prezime_ulogirani;
@@ -399,6 +401,7 @@ namespace CaffeBar
         {
             textRacuna.Clear() ;
             narucenaPica.Clear();
+            konobarskiPopust.Clear();
         }
 
         private decimal provjeraAkcije()
@@ -431,19 +434,47 @@ namespace CaffeBar
         private void buttonKonobarskiPopust_Click(object sender, EventArgs e)
         {
             PopustForm popustForm = new PopustForm(narucenaPica);
-            popustForm.Show();
 
-            //dodati novu listu iskoristenih ppusta
-            //treba kod ispisa statistike i prometa -- to radije upit na bazu
-            // tu radije samo zapisati manji total i zapisati popust?
-            //zarada je onda zbroj totala
-            //iskoristeni popusti se dobijju iz zapisa konobar popust
-            narucenaPica = popustForm.azurirajRacun();
-            string text = popustForm.dodajTekst();
+            string tekst = popustForm.tekstPopusta;
+            Dictionary<Pice, int> azuriraj = popustForm.besplatnaPica;
+            bool popust = popustForm.Popust;
 
-            if(DialogResult == DialogResult.OK)
+            if (popustForm.ShowDialog() == DialogResult.OK)
             {
+                //da se azuriraju cijene
+                if(tekst != null)
+                {
+                    textRacuna.AppendText(tekst);
+                }
+                azurirajBesplatneStavke(azuriraj);
+                if(popust == true)
+                {
+                    azurirajCijenePopust();
+                }
+            }
+        }
 
+        private void azurirajBesplatneStavke(Dictionary<Pice, int> besplatnaPica)
+        {
+            if(besplatnaPica != null)
+            {
+                foreach(KeyValuePair<Pice, int> besplatno in besplatnaPica)
+                {
+                    if (narucenaPica.ContainsKey(besplatno.Key))
+                    {
+                        narucenaPica[besplatno.Key] = 0;
+                    }
+                }
+            }
+        }
+
+        private void azurirajCijenePopust()
+        {
+            foreach (KeyValuePair<Pice,decimal> temp in narucenaPica)
+            {
+                Pice pice = temp.Key;
+                decimal novaCijena = temp.Value * (1 - popust);
+                narucenaPica[pice] = novaCijena;
             }
         }
     }

@@ -67,7 +67,7 @@ namespace CaffeBar
             {
                 decimal danIznos = decimal.TryParse(textDaniIznos.Text, out decimal result) ? result : 0;
                 decimal ostatak = danIznos - Total;
-                if (ostatak > 0)
+                if (ostatak >= 0)
                 {
                     labelVratitiIznos.Text = ostatak.ToString() + " €";
                 }
