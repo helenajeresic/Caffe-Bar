@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,38 +16,23 @@ namespace CaffeBar
     public partial class VlasnikForm : Form
     {
 
-        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
+        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=\\wsl.localhost\Ubuntu-18.04\home\doriblas\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
         public string username_ulogirani;
         public VlasnikForm(string username_vlasnik)
         {
             InitializeComponent();
 
             username_ulogirani = username_vlasnik;
-            
-            //inicijalno popunjavanje dropdowna kod statistike sa svim picima u kaficu
-            SqlConnection veza = new SqlConnection(connectionString);
-            veza.Open();
-            string upit = "SELECT * from Pica";
-            SqlCommand naredba = new SqlCommand(upit, veza);
-            List<string> lista_pica = new List<string>();
-            using (SqlDataReader citac = naredba.ExecuteReader())
-            {
-                while (citac.Read())
-                {
-                    lista_pica.Add(citac.GetString(1));
-                }
-            }
-            veza.Close();
-            lista_pica.Sort((x, y) => x.CompareTo(y));
-            foreach(string pica in lista_pica)
-            {
-                odabirPica.Items.Add(pica);
-                comboBoxPicaModificiraj.Items.Add(pica);
-            }
+
+            UcitajPicaUComboBox();
             UcitajPicaUComboBoxAkcija();
             UcitajKategorijeUComboBox();
 
         }
+        /// <summary>
+        /// ResetirajForm služi nam za resetiranje određene forme nakon uspješno provedene akcije.
+        /// </summary>
+        /// <param name="kontrola"></param>
         public void ResetirajFormu(Control kontrola)
         {
             foreach (Control child in kontrola.Controls)
@@ -64,7 +49,6 @@ namespace CaffeBar
                 {
                     ((CheckBox)child).Checked = false;
                 }
-                // Ovdje možete dodati više uvjeta za druge vrste kontrola
 
                 // Rekurzivno resetiranje za kontejnere koji sadrže druge kontrole
                 if (child.HasChildren)
@@ -74,6 +58,13 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Klikom na gumb 'Zaposli!' popunjeni podaci spremaju se u bazu i konobar se smatra zaposlenim.
+        /// Uloga konobara u našoj je bazi označena brojem 1
+        /// Nakon uspješno izvršenog zapošljavanja javlja se poruka i resetira se forma da bude spremna za nastavak.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSpremiKonobara_Click(object sender, EventArgs e)
         {
             foreach (Control kontrola in gBoxDodajKonobara.Controls)
@@ -89,7 +80,7 @@ namespace CaffeBar
             {
                 veza.Open();
 
-                // Provjeravamo postoji li već konobar s istim korisničkim imenom
+                // Provjeravamo postoji li već konobar s istim korisničkim imenom, ako da javljamo grešku.
                 string provjeraUpita = "SELECT COUNT(*) FROM Osobe WHERE korisnicko_ime = @korisnickoIme";
                 SqlCommand provjeraNaredba = new SqlCommand(provjeraUpita, veza);
                 provjeraNaredba.Parameters.AddWithValue("@korisnickoIme", txtKorisnickoIme.Text);
@@ -107,9 +98,9 @@ namespace CaffeBar
                 SqlCommand naredba = new SqlCommand(upit, veza);
                 naredba.Parameters.AddWithValue("@ime", txtIme.Text);
                 naredba.Parameters.AddWithValue("@prezime", txtPrezime.Text);
-                naredba.Parameters.AddWithValue("@uloga", 1); // Uloga konobara
+                naredba.Parameters.AddWithValue("@uloga", 1);
                 naredba.Parameters.AddWithValue("@korisnicko_ime", txtKorisnickoIme.Text);
-                naredba.Parameters.AddWithValue("@lozinka", txtLozinka.Text); // Trebalo bi hashirati lozinku
+                naredba.Parameters.AddWithValue("@lozinka", txtLozinka.Text);
 
                 try
                 {
@@ -125,7 +116,12 @@ namespace CaffeBar
             ResetirajFormu(gBoxDodajKonobara);
         }
 
-
+        /// <summary>
+        /// Klikom na gumb 'Prikazi konobare' dobivamo tablicu u kojoj su prikazana 
+        ///     imena, prezimena i korisnička imena svih konobara
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPrikaziKonobare_Click(object sender, EventArgs e)
         {
             PrikaziKonobare();
@@ -137,7 +133,8 @@ namespace CaffeBar
             {
                 veza.Open();
 
-                string upit = "SELECT ime as 'Ime', prezime as 'Prezime', korisnicko_ime as 'Korisničko ime' FROM Osobe WHERE uloga = 1";
+                string upit = "SELECT ime as 'Ime', prezime as 'Prezime', korisnicko_ime as 'Korisničko ime' " +
+                    "FROM Osobe WHERE uloga = 1";
                 SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -215,6 +212,12 @@ namespace CaffeBar
             veza.Close();
         }
 
+        /// <summary>
+        /// Klikom na gumb 'OK' otpuštamo konobara čije smo korisničko ime naveli.
+        /// Njegovu ulogu sada postavljamo na 3 (otpušten)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnOtpusti_Click(object sender, EventArgs e)
         {
             foreach (Control kontrola in groupBoxOtpusti.Controls)
@@ -253,10 +256,15 @@ namespace CaffeBar
                 MessageBox.Show("Došlo je do greške: " + ex.Message);
             }
 
-
             veza.Close();
             ResetirajFormu(this);
         }
+
+        /// <summary>
+        /// Funkcija provjerava postoji li u bazi konobar sa danim korisničkim imenom.
+        /// </summary>
+        /// <param name="korisnickoIme"></param>
+        /// <returns></returns>
         private bool ProvjeriPostojiLiKonobar(string korisnickoIme)
         {
             using (SqlConnection veza = new SqlConnection(connectionString))
@@ -273,6 +281,13 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Pritiskom na gumb 'OK' u bazu unosimo novo piće sa željenim atributima.
+        /// Novog pića u početku nema na zalihi niti u šanku niti u skladištu pa te vrijednosti postavimo na 0.
+        /// Nije moguće unesti dva pića sa istim imenom.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnUnosPica_Click(object sender, EventArgs e)
         {
             foreach (Control kontrola in groupBoxNovoPice.Controls)
@@ -297,7 +312,7 @@ namespace CaffeBar
                 Pice pice = new Pice()
                 {
                     naziv_pica = txtNazivPica.Text,
-                    cijena_pica = Convert.ToDecimal(txtCijenaPica.Text),
+                    cijena_pica = numericUpDownCijena.Value,
                     id_kategorija_pica = (int)odabranaKategorija.Value,
                     kolicina_kafic = 0,
                     kolicina_skladista = 0,
@@ -338,6 +353,11 @@ namespace CaffeBar
 
         }
 
+        /// <summary>
+        /// Klikom na gumb 'Odjava' vlasnik se odjavljuje i vraćamo se na Login formu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void gumbOdjavaVlasnika_Click(object sender, EventArgs e)
         {
             PrijavaForm forma = new PrijavaForm();
@@ -345,7 +365,17 @@ namespace CaffeBar
             this.Hide();
         }
 
-
+        /// <summary>
+        /// Klikom na gumb 'OK' kod modifikacije pića potvrđujemo da želimo modificirati odabrano piće.
+        /// Zatim se prikazuje naziv, cijena i najmanja količina prije upozorenja za odabrano piće.
+        /// Ovakav prikaz olakšava vlasniku promjenu željenih vrijednosti
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnPiceModificiraj_Click(object sender, EventArgs e)
+        {
+            PrikaziPicaModificiraj();
+        }
         private void PrikaziPicaModificiraj()
         {
             if (comboBoxPicaModificiraj.SelectedIndex == -1)
@@ -359,7 +389,6 @@ namespace CaffeBar
                 veza.Open();
                 var odabranoPice = comboBoxPicaModificiraj.SelectedItem.ToString();
 
-                // Parametrizirani SQL upit
                 string upit = "SELECT naziv_pica as 'Naziv', " +
                               "CAST(cijena_pica AS DECIMAL(10, 2)) as 'Cijena', " +
                               "najmanja_kolicina as 'Najmanja količina' " +
@@ -375,19 +404,15 @@ namespace CaffeBar
                 dataGridViewPicaModificiraj.DataSource = dt;
             }
         }
-
-        private void btnPiceModificiraj_Click(object sender, EventArgs e)
-        {
-            PrikaziPicaModificiraj();
-        }
-
+        
+        /// <summary>
+        /// Klikom na gumb 'Promijeni cijenu' prethodno odabranom piću mijenjamo cijenu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPromijeniCijenu_Click(object sender, EventArgs e)
         {
-            if(txtPromijeniCijenu.Text.Length == 0)
-            {
-                MessageBox.Show("Niste unijeli novu cijenu.");
-                return;
-            }
+
             if (comboBoxPicaModificiraj.SelectedIndex == -1)
             {
                 MessageBox.Show("Nije odabrano nijedno piće!");
@@ -397,7 +422,7 @@ namespace CaffeBar
             SqlConnection veza = new SqlConnection(connectionString);
             veza.Open();
             var odabrano_pice = comboBoxPicaModificiraj.SelectedItem.ToString();
-            var nova_cijena = Convert.ToDecimal(txtPromijeniCijenu.Text);
+            var nova_cijena = numericUpDownNovaCijena.Value;
 
             string upit = "UPDATE Pica SET cijena_pica = '" + nova_cijena + "'"
                 + "WHERE naziv_pica = '" + odabrano_pice + "'";
@@ -414,6 +439,12 @@ namespace CaffeBar
             dataGridViewPicaModificiraj.DataSource = null;
         }
 
+        /// <summary>
+        /// Klikom na gumb 'Promijeni naziv' prethodno odabranom piću mijenjamo naziv.
+        /// Nemmožemo imati dva pića s istim nazivom.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPromijeniNaziv_Click(object sender, EventArgs e)
         {
             if (txtPromijeniNaziv.Text.Length == 0)
@@ -442,6 +473,11 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Funkcija provjerava postoji li u bazi piće sa poslanim nazivom.
+        /// </summary>
+        /// <param name="naziv"></param>
+        /// <returns></returns>
         private bool ProvjeriPostojiLiNaziv(string naziv)
         {
             using (SqlConnection veza = new SqlConnection(connectionString))
@@ -455,7 +491,12 @@ namespace CaffeBar
             }
         }
 
-
+        /// <summary>
+        /// Klikom na gumb 'Promijeni najmanju količinu' prethodno odabranom proizvodu
+        /// mijenjamo količinu prije upozorenja.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPromijeniNajmanjuKolicinu_Click(object sender, EventArgs e)
         {
             if (txtPromijeniNajmanjuKolicinu.Text.Length == 0)
@@ -475,6 +516,13 @@ namespace CaffeBar
             IzvrsiUpdatePica("najmanja_kolicina", nova_kolicina, odabrano_pice);
         }
 
+        /// <summary>
+        /// Izvršava upit na bazu i updata je ovisno o tome što želimo promijeniti.
+        /// Ovu akciju ponavljamo u različitim dijelovima pa je ekonomičnije napraviti odvojenu funkciju.
+        /// </summary>
+        /// <param name="kolona"></param>
+        /// <param name="novaVrijednost"></param>
+        /// <param name="nazivPica"></param>
         private void IzvrsiUpdatePica(string kolona, string novaVrijednost, string nazivPica)
         {
             using (SqlConnection veza = new SqlConnection(connectionString))
@@ -507,6 +555,10 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Funkcija učitava sva pića u ComboBox.
+        /// Ovu funkciju koristimo na više mjesta, odnosno svagdje gdje pomoću istog odabiremo piće.
+        /// </summary>
         private void UcitajPicaUComboBox()
         {
             comboBoxPicaModificiraj.Items.Clear();
@@ -534,6 +586,9 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Funkcija učitava sve kategorije iz baze Kategorija u ComboBox.
+        /// </summary>
         private void UcitajKategorijeUComboBox()
         {
             comboBoxNovoPiceKategorija.Items.Clear();
@@ -559,6 +614,11 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Klikom na gumb dodajemo novu kategoriju u našu bazu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnNovaKategorija_Click(object sender, EventArgs e)
         {
             foreach (Control kontrola in groupBoxNovaKategorija.Controls)
