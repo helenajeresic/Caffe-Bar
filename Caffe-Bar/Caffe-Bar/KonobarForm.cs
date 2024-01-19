@@ -11,7 +11,8 @@ namespace CaffeBar
 {
     public partial class KonobarForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;"; private SqlCommand naredba;
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;"; 
+        private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica;
         public Dictionary<Pice, int> konobarskiPopust;
         public string infoPopust;
@@ -655,17 +656,17 @@ namespace CaffeBar
             using (SqlConnection veza = new SqlConnection(connectionString))
             {
                 veza.Open();
-                string upit = "SELECT id_akcija, popust FROM Akcija WHERE GETDATE() BETWEEN [od] AND [do];";
+                string upit = "SELECT id_pica, popust FROM Akcija WHERE GETDATE() BETWEEN od AND do;";
                 using (SqlCommand naredba = new SqlCommand(upit, veza))
                 {
                     using (SqlDataReader čitač = naredba.ExecuteReader())
                     {
                         while (čitač.Read())
                         {
-                            int idAkcije = čitač.GetInt32(0);
+                            int idPice = čitač.GetInt32(0);
                             decimal popust = čitač.GetDecimal(1);
 
-                            akcije.Add(idAkcije, popust);
+                            akcije.Add(idPice, popust);
                         }
                     }
                 }

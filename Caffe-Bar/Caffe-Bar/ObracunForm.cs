@@ -14,7 +14,8 @@ namespace CaffeBar
 {
     public partial class ObracunForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;"; public int id_ulogirani;
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
+        public int id_ulogirani;
         /// <summary>
         /// Konstruktor za ObracunForm prima parametar id_konobar koji mu sluzi za daljnji obracun prometa
         /// </summary>

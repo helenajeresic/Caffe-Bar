@@ -16,7 +16,7 @@ namespace CaffeBar
     public partial class VlasnikForm : Form
     {
 
-        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=\\wsl.localhost\Ubuntu-18.04\home\doriblas\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
         public string username_ulogirani;
 
         /// <summary>
@@ -426,7 +426,7 @@ namespace CaffeBar
                 dataGridViewPicaModificiraj.DataSource = dt;
             }
         }
-        
+
         /// <summary>
         /// Klikom na gumb 'Promijeni cijenu' prethodno odabranom piću mijenjamo cijenu.
         /// </summary>
@@ -434,29 +434,40 @@ namespace CaffeBar
         /// <param name="e"></param>
         private void btnPromijeniCijenu_Click(object sender, EventArgs e)
         {
-
             if (comboBoxPicaModificiraj.SelectedIndex == -1)
             {
                 MessageBox.Show("Nije odabrano nijedno piće!");
                 return;
             }
 
-            SqlConnection veza = new SqlConnection(connectionString);
-            veza.Open();
-            var odabrano_pice = comboBoxPicaModificiraj.SelectedItem.ToString();
-            var nova_cijena = numericUpDownNovaCijena.Value;
-
-            string upit = "UPDATE Pica SET cijena_pica = '" + nova_cijena + "'"
-                + "WHERE naziv_pica = '" + odabrano_pice + "'";
-
-            SqlCommand naredba = new SqlCommand(upit, veza);
-            if (naredba.ExecuteNonQuery() > 0) 
+            try
             {
-                MessageBox.Show("Nova cijena unesena!");
+                using (SqlConnection veza = new SqlConnection(connectionString))
+                {
+                    veza.Open();
+                    var odabranoPice = comboBoxPicaModificiraj.SelectedItem.ToString();
+                    var novaCijena = numericUpDownNovaCijena.Value;
+
+                    string upit = "UPDATE Pica SET cijena_pica = @novaCijena WHERE naziv_pica = @nazivPica";
+                    SqlCommand naredba = new SqlCommand(upit, veza);
+                    naredba.Parameters.AddWithValue("@novaCijena", novaCijena);
+                    naredba.Parameters.AddWithValue("@nazivPica", odabranoPice);
+
+                    if (naredba.ExecuteNonQuery() > 0)
+                    {
+                        MessageBox.Show("Nova cijena unesena!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nije uspjelo!");
+                    }
+                }
             }
-            else
-                MessageBox.Show("Nije uspjelo!");
-            veza.Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show("Došlo je do greške: " + ex.Message);
+            }
+
             ResetirajFormu(groupBoxModifikacija);
             dataGridViewPicaModificiraj.DataSource = null;
         }
