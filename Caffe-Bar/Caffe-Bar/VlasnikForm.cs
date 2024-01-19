@@ -765,6 +765,10 @@ namespace CaffeBar
             DateTime datumOd = dateTimePickerAkcijaOdDatum.Value.Date + dateTimePickerAkcijaOdVrijeme.Value.TimeOfDay;
             DateTime datumDo = dateTimePickerAkcijaDoDatum.Value.Date + dateTimePickerAkcijaDoVrijeme.Value.TimeOfDay;
 
+            string formatDatuma = "yyyy-MM-dd HH:mm:ss";
+            string datumodFormatted = datumOd.ToString(formatDatuma);
+            string datumdoFormatted = datumDo.ToString(formatDatuma);
+
             if (datumOd > datumDo)
             {
                 MessageBox.Show("Datum početka akcije mora biti prije datuma završetka akcije.", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -801,8 +805,8 @@ namespace CaffeBar
                 using (SqlCommand cmdProvjeriPreklapanje = new SqlCommand(provjeraPreklapanja, veza))
                 {
                     cmdProvjeriPreklapanje.Parameters.AddWithValue("@idPica", idPica);
-                    cmdProvjeriPreklapanje.Parameters.AddWithValue("@datumOd", datumOd);
-                    cmdProvjeriPreklapanje.Parameters.AddWithValue("@datumDo", datumDo);
+                    cmdProvjeriPreklapanje.Parameters.AddWithValue("@datumOd", datumodFormatted);
+                    cmdProvjeriPreklapanje.Parameters.AddWithValue("@datumDo", datumdoFormatted);
 
                     int brojPreklapanja = (int)cmdProvjeriPreklapanje.ExecuteScalar();
 
@@ -819,8 +823,8 @@ namespace CaffeBar
                 using (SqlCommand cmdDodajAkciju = new SqlCommand(dodajAkciju, veza))
                 {
                     cmdDodajAkciju.Parameters.AddWithValue("@idPica", idPica);
-                    cmdDodajAkciju.Parameters.AddWithValue("@datumOd", datumOd);
-                    cmdDodajAkciju.Parameters.AddWithValue("@datumDo", datumDo);
+                    cmdDodajAkciju.Parameters.AddWithValue("@datumOd", datumodFormatted);
+                    cmdDodajAkciju.Parameters.AddWithValue("@datumDo", datumdoFormatted);
                     cmdDodajAkciju.Parameters.AddWithValue("@popust", popust); 
 
                     cmdDodajAkciju.ExecuteNonQuery();
