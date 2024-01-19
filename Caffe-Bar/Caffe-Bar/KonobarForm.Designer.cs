@@ -120,9 +120,9 @@
             this.tabIzdajRacun.Controls.Add(this.buttonPrikazPica);
             this.tabIzdajRacun.ForeColor = System.Drawing.SystemColors.ControlText;
             this.tabIzdajRacun.Location = new System.Drawing.Point(4, 54);
-            this.tabIzdajRacun.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.tabIzdajRacun.Margin = new System.Windows.Forms.Padding(5);
             this.tabIzdajRacun.Name = "tabIzdajRacun";
-            this.tabIzdajRacun.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabIzdajRacun.Padding = new System.Windows.Forms.Padding(4);
             this.tabIzdajRacun.Size = new System.Drawing.Size(1186, 554);
             this.tabIzdajRacun.TabIndex = 0;
             this.tabIzdajRacun.Text = "Izdaj račun";
@@ -132,7 +132,7 @@
             // 
             this.labelUsername.AutoSize = true;
             this.labelUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelUsername.Location = new System.Drawing.Point(844, 35);
+            this.labelUsername.Location = new System.Drawing.Point(827, 35);
             this.labelUsername.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelUsername.Name = "labelUsername";
             this.labelUsername.Size = new System.Drawing.Size(0, 25);
@@ -143,7 +143,7 @@
             this.labelAkcijaUTijeku.AutoSize = true;
             this.labelAkcijaUTijeku.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.labelAkcijaUTijeku.ForeColor = System.Drawing.Color.Blue;
-            this.labelAkcijaUTijeku.Location = new System.Drawing.Point(413, 35);
+            this.labelAkcijaUTijeku.Location = new System.Drawing.Point(448, 35);
             this.labelAkcijaUTijeku.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelAkcijaUTijeku.Name = "labelAkcijaUTijeku";
             this.labelAkcijaUTijeku.Size = new System.Drawing.Size(0, 25);
@@ -164,7 +164,7 @@
             // 
             this.buttonKonobarskiPopust.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.buttonKonobarskiPopust.Location = new System.Drawing.Point(999, 401);
-            this.buttonKonobarskiPopust.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonKonobarskiPopust.Margin = new System.Windows.Forms.Padding(2);
             this.buttonKonobarskiPopust.Name = "buttonKonobarskiPopust";
             this.buttonKonobarskiPopust.Size = new System.Drawing.Size(155, 48);
             this.buttonKonobarskiPopust.TabIndex = 7;
@@ -176,7 +176,7 @@
             // 
             this.gumbIzdajRacun.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gumbIzdajRacun.Location = new System.Drawing.Point(999, 488);
-            this.gumbIzdajRacun.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gumbIzdajRacun.Margin = new System.Windows.Forms.Padding(2);
             this.gumbIzdajRacun.Name = "gumbIzdajRacun";
             this.gumbIzdajRacun.Size = new System.Drawing.Size(155, 48);
             this.gumbIzdajRacun.TabIndex = 6;
@@ -186,7 +186,7 @@
             // 
             // textRacuna
             // 
-            this.textRacuna.Location = new System.Drawing.Point(418, 93);
+            this.textRacuna.Location = new System.Drawing.Point(453, 93);
             this.textRacuna.Name = "textRacuna";
             this.textRacuna.ReadOnly = true;
             this.textRacuna.Size = new System.Drawing.Size(527, 443);
@@ -217,7 +217,7 @@
             this.dataGridViewPica.Name = "dataGridViewPica";
             this.dataGridViewPica.ReadOnly = true;
             this.dataGridViewPica.RowHeadersWidth = 51;
-            this.dataGridViewPica.Size = new System.Drawing.Size(364, 443);
+            this.dataGridViewPica.Size = new System.Drawing.Size(413, 443);
             this.dataGridViewPica.TabIndex = 1;
             this.dataGridViewPica.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPica_CellClick);
             this.dataGridViewPica.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewPica_CellFormatting);
@@ -239,9 +239,9 @@
             this.tabSkladiste.Controls.Add(this.groupBox1);
             this.tabSkladiste.Controls.Add(this.labelSkladiste);
             this.tabSkladiste.Location = new System.Drawing.Point(4, 54);
-            this.tabSkladiste.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.tabSkladiste.Margin = new System.Windows.Forms.Padding(5);
             this.tabSkladiste.Name = "tabSkladiste";
-            this.tabSkladiste.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabSkladiste.Padding = new System.Windows.Forms.Padding(4);
             this.tabSkladiste.Size = new System.Drawing.Size(1186, 554);
             this.tabSkladiste.TabIndex = 1;
             this.tabSkladiste.Text = "Zalihe";
@@ -255,9 +255,9 @@
             this.groupBox3.Controls.Add(this.buttonDodajUSank);
             this.groupBox3.Controls.Add(this.numericUpDownOdaberiKolicinuZaSank);
             this.groupBox3.Location = new System.Drawing.Point(92, 392);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox3.Size = new System.Drawing.Size(932, 151);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
@@ -277,7 +277,7 @@
             // 
             this.comboBoxOdaberiPiceZaSank.FormattingEnabled = true;
             this.comboBoxOdaberiPiceZaSank.Location = new System.Drawing.Point(232, 31);
-            this.comboBoxOdaberiPiceZaSank.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxOdaberiPiceZaSank.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxOdaberiPiceZaSank.Name = "comboBoxOdaberiPiceZaSank";
             this.comboBoxOdaberiPiceZaSank.Size = new System.Drawing.Size(184, 32);
             this.comboBoxOdaberiPiceZaSank.TabIndex = 5;
@@ -295,7 +295,7 @@
             // buttonDodajUSank
             // 
             this.buttonDodajUSank.Location = new System.Drawing.Point(232, 116);
-            this.buttonDodajUSank.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonDodajUSank.Margin = new System.Windows.Forms.Padding(2);
             this.buttonDodajUSank.Name = "buttonDodajUSank";
             this.buttonDodajUSank.Size = new System.Drawing.Size(184, 31);
             this.buttonDodajUSank.TabIndex = 6;
@@ -306,7 +306,7 @@
             // numericUpDownOdaberiKolicinuZaSank
             // 
             this.numericUpDownOdaberiKolicinuZaSank.Location = new System.Drawing.Point(232, 67);
-            this.numericUpDownOdaberiKolicinuZaSank.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDownOdaberiKolicinuZaSank.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDownOdaberiKolicinuZaSank.Maximum = new decimal(new int[] {
             500,
             0,
@@ -321,9 +321,9 @@
             this.groupBox2.Controls.Add(this.buttonPrikaziStanjeSank);
             this.groupBox2.Controls.Add(this.dataGridViewStanjeSank);
             this.groupBox2.Location = new System.Drawing.Point(574, 26);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(450, 349);
             this.groupBox2.TabIndex = 13;
             this.groupBox2.TabStop = false;
@@ -332,7 +332,7 @@
             // buttonPrikaziStanjeSank
             // 
             this.buttonPrikaziStanjeSank.Location = new System.Drawing.Point(321, 26);
-            this.buttonPrikaziStanjeSank.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonPrikaziStanjeSank.Margin = new System.Windows.Forms.Padding(2);
             this.buttonPrikaziStanjeSank.Name = "buttonPrikaziStanjeSank";
             this.buttonPrikaziStanjeSank.Size = new System.Drawing.Size(112, 41);
             this.buttonPrikaziStanjeSank.TabIndex = 10;
@@ -353,7 +353,7 @@
             this.dataGridViewStanjeSank.EnableHeadersVisualStyles = false;
             this.dataGridViewStanjeSank.GridColor = System.Drawing.Color.Gray;
             this.dataGridViewStanjeSank.Location = new System.Drawing.Point(21, 81);
-            this.dataGridViewStanjeSank.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridViewStanjeSank.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewStanjeSank.Name = "dataGridViewStanjeSank";
             this.dataGridViewStanjeSank.ReadOnly = true;
             this.dataGridViewStanjeSank.RowHeadersWidth = 51;
@@ -367,9 +367,9 @@
             this.groupBox1.Controls.Add(this.buttonStanjeSkladista);
             this.groupBox1.Controls.Add(this.dataGridViewStanjeSkladista);
             this.groupBox1.Location = new System.Drawing.Point(91, 26);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(450, 349);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
@@ -378,7 +378,7 @@
             // buttonStanjeSkladista
             // 
             this.buttonStanjeSkladista.Location = new System.Drawing.Point(322, 27);
-            this.buttonStanjeSkladista.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonStanjeSkladista.Margin = new System.Windows.Forms.Padding(2);
             this.buttonStanjeSkladista.Name = "buttonStanjeSkladista";
             this.buttonStanjeSkladista.Size = new System.Drawing.Size(112, 41);
             this.buttonStanjeSkladista.TabIndex = 1;
@@ -399,7 +399,7 @@
             this.dataGridViewStanjeSkladista.EnableHeadersVisualStyles = false;
             this.dataGridViewStanjeSkladista.GridColor = System.Drawing.Color.Gray;
             this.dataGridViewStanjeSkladista.Location = new System.Drawing.Point(22, 81);
-            this.dataGridViewStanjeSkladista.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridViewStanjeSkladista.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewStanjeSkladista.Name = "dataGridViewStanjeSkladista";
             this.dataGridViewStanjeSkladista.ReadOnly = true;
             this.dataGridViewStanjeSkladista.RowHeadersWidth = 51;
@@ -422,9 +422,9 @@
             // 
             this.tabRacuni.Controls.Add(this.groupBoxPregledRacuna);
             this.tabRacuni.Location = new System.Drawing.Point(4, 54);
-            this.tabRacuni.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.tabRacuni.Margin = new System.Windows.Forms.Padding(5);
             this.tabRacuni.Name = "tabRacuni";
-            this.tabRacuni.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabRacuni.Padding = new System.Windows.Forms.Padding(4);
             this.tabRacuni.Size = new System.Drawing.Size(1186, 554);
             this.tabRacuni.TabIndex = 2;
             this.tabRacuni.Text = "Računi";
@@ -435,9 +435,9 @@
             this.groupBoxPregledRacuna.Controls.Add(this.dataGridViewRacuni);
             this.groupBoxPregledRacuna.Controls.Add(this.buttonPrikaziRacune);
             this.groupBoxPregledRacuna.Location = new System.Drawing.Point(22, 25);
-            this.groupBoxPregledRacuna.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxPregledRacuna.Margin = new System.Windows.Forms.Padding(2);
             this.groupBoxPregledRacuna.Name = "groupBoxPregledRacuna";
-            this.groupBoxPregledRacuna.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxPregledRacuna.Padding = new System.Windows.Forms.Padding(2);
             this.groupBoxPregledRacuna.Size = new System.Drawing.Size(1125, 502);
             this.groupBoxPregledRacuna.TabIndex = 0;
             this.groupBoxPregledRacuna.TabStop = false;
@@ -453,7 +453,7 @@
             this.dataGridViewRacuni.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewRacuni.GridColor = System.Drawing.Color.Gray;
             this.dataGridViewRacuni.Location = new System.Drawing.Point(20, 101);
-            this.dataGridViewRacuni.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridViewRacuni.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewRacuni.Name = "dataGridViewRacuni";
             this.dataGridViewRacuni.RowHeadersWidth = 51;
             this.dataGridViewRacuni.RowTemplate.Height = 24;
@@ -464,7 +464,7 @@
             // buttonPrikaziRacune
             // 
             this.buttonPrikaziRacune.Location = new System.Drawing.Point(20, 41);
-            this.buttonPrikaziRacune.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonPrikaziRacune.Margin = new System.Windows.Forms.Padding(2);
             this.buttonPrikaziRacune.Name = "buttonPrikaziRacune";
             this.buttonPrikaziRacune.Size = new System.Drawing.Size(158, 43);
             this.buttonPrikaziRacune.TabIndex = 0;
@@ -476,9 +476,9 @@
             // 
             this.tabNarudžba.Controls.Add(this.groupBoxNarudzba);
             this.tabNarudžba.Location = new System.Drawing.Point(4, 54);
-            this.tabNarudžba.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.tabNarudžba.Margin = new System.Windows.Forms.Padding(5);
             this.tabNarudžba.Name = "tabNarudžba";
-            this.tabNarudžba.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabNarudžba.Padding = new System.Windows.Forms.Padding(4);
             this.tabNarudžba.Size = new System.Drawing.Size(1186, 554);
             this.tabNarudžba.TabIndex = 3;
             this.tabNarudžba.Text = "Narudžba";
@@ -634,7 +634,7 @@
             this.Controls.Add(this.gumbOdjavaKonobara);
             this.Controls.Add(this.tabKonobar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "KonobarForm";
