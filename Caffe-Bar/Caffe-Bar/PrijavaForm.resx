@@ -126,7 +126,7 @@
     <value>NoControl</value>
   </data>
   <data name="labelUpisiIme.Location" type="System.Drawing.Point, System.Drawing">
-    <value>202, 112</value>
+    <value>384, 227</value>
   </data>
   <data name="labelUpisiIme.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -157,7 +157,7 @@
     <value>Microsoft Sans Serif, 14.25pt</value>
   </data>
   <data name="textBoxIme.Location" type="System.Drawing.Point, System.Drawing">
-    <value>365, 109</value>
+    <value>558, 227</value>
   </data>
   <data name="textBoxIme.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -184,7 +184,7 @@
     <value>Microsoft Sans Serif, 14.25pt</value>
   </data>
   <data name="textBoxLozinka.Location" type="System.Drawing.Point, System.Drawing">
-    <value>365, 199</value>
+    <value>558, 314</value>
   </data>
   <data name="textBoxLozinka.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -214,7 +214,7 @@
     <value>Microsoft Sans Serif, 14.25pt</value>
   </data>
   <data name="labelUpisiLozinku.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 199</value>
+    <value>435, 314</value>
   </data>
   <data name="labelUpisiLozinku.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -244,7 +244,7 @@
     <value>Microsoft Sans Serif, 14.25pt</value>
   </data>
   <data name="gumbPrijava.Location" type="System.Drawing.Point, System.Drawing">
-    <value>479, 335</value>
+    <value>672, 413</value>
   </data>
   <data name="gumbPrijava.Size" type="System.Drawing.Size, System.Drawing">
     <value>112, 34</value>
@@ -274,7 +274,7 @@
     <value>NoControl</value>
   </data>
   <data name="gumbOdustani.Location" type="System.Drawing.Point, System.Drawing">
-    <value>243, 335</value>
+    <value>470, 413</value>
   </data>
   <data name="gumbOdustani.Size" type="System.Drawing.Size, System.Drawing">
     <value>112, 34</value>
@@ -304,7 +304,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>825, 442</value>
+    <value>1254, 669</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>

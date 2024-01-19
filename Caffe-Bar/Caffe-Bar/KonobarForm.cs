@@ -4,13 +4,14 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace CaffeBar
 {
     public partial class KonobarForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
         private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica;
         public Dictionary<Pice, int> konobarskiPopust;
@@ -36,6 +37,7 @@ namespace CaffeBar
             konobarskiPopust = new Dictionary<Pice, int>();
             labelUsername.Text = "Prijavljen konobar: " + username_konobar;
             dataGridViewPica.CellFormatting += dataGridViewPica_CellFormatting;
+            UcitajPicaUComboBoxNarudzba();
         }
 
         private List<Pice> GetPicaFromDatabase(string upit)
@@ -93,7 +95,7 @@ namespace CaffeBar
         {
             List<Pice> pica = GetPicaFromDatabase("SELECT * FROM Pica");
 
-            if(provjeraAkcije() != 0)
+            if (provjeraAkcije() != 0)
             {
                 labelAkcijaUTijeku.Text = "U tijeku je akcija - " + provjeraAkcije().ToString() + "%";
                 infoPopust += "U tijeku je akcija - " + provjeraAkcije().ToString() + "%\n";
@@ -125,8 +127,8 @@ namespace CaffeBar
                     if (decimal.TryParse(stringValue, out decimal originalValue))
                     {
                         decimal roundedValue = Math.Round(originalValue, 2);
-                        e.Value = roundedValue.ToString(".00");
-                        e.CellStyle.Format = ".00";
+                        e.Value = roundedValue.ToString("0.00");
+                        e.CellStyle.Format = "0.00";
                         e.FormattingApplied = true;
                     }
                     else
@@ -161,7 +163,7 @@ namespace CaffeBar
 
                 if (kolicina > 0)
                 {
-                    if(narucenaPica.Any(item => item.Key.naziv_pica == label))
+                    if (narucenaPica.Any(item => item.Key.naziv_pica == label))
                     {
                         Pice existingItem = narucenaPica.Keys.FirstOrDefault(item => item.naziv_pica == label);
                         narucenaPica[existingItem] += kolicina;
@@ -197,7 +199,7 @@ namespace CaffeBar
         private void initializeBill()
         {
             textRacuna.SelectionStart = 0;
-            textRacuna.SelectionLength = 0; 
+            textRacuna.SelectionLength = 0;
             textRacuna.SelectionAlignment = HorizontalAlignment.Center;
 
             textRacuna.AppendText("\n");
@@ -277,7 +279,9 @@ namespace CaffeBar
                 updateKolicinaPica(narucenaPica);
                 zapisRacunStavke(vrijeme);
                 zapisiKonobarPopust(popustUsername, konobarskiPopust, vrijeme);
-        
+                AzurirajStanjeSanka();
+                PrikaziSveRacune();
+
                 MessageBox.Show("Račun uspješno evidentiran!", "Obavijest");
                 textRacuna.Clear();
                 narucenaPica.Clear();
@@ -292,13 +296,66 @@ namespace CaffeBar
             }
         }
 
+        private void buttonKonobarskiPopust_Click(object sender, EventArgs e)
+        {
+            PopustForm popustForm = new PopustForm(narucenaPica);
+
+            DialogResult result = popustForm.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                konobarskiPopust = popustForm.besplatnaPica;
+                popustUsername = popustForm.UsernameKonobara;
+                Popust = popustForm.Popust;
+                if (popustForm.tekstPopusta != null)
+                {
+                    infoPopust += popustForm.tekstPopusta;
+                    buttonKonobarskiPopust.Enabled = false;
+                }
+            }
+        }
+
+        private decimal izracunajTotal()
+        {
+            decimal total = 0;
+
+            if (narucenaPica != null)
+            {
+                foreach (KeyValuePair<Pice, decimal> keyValuePair in narucenaPica)
+                {
+                    total += keyValuePair.Value * keyValuePair.Key.cijena_pica;
+                }
+            }
+            if (konobarskiPopust != null)
+            {
+                foreach (KeyValuePair<Pice, int> keyValuePair in konobarskiPopust)
+                {
+                    total -= (keyValuePair.Key.cijena_pica * keyValuePair.Value);
+                }
+            }
+            if (total == 0) return 0;
+            if (provjeraAkcije() != 0)
+            {
+                decimal akcija = provjeraAkcije() / 100;
+                if (Popust == true) akcija += popust;
+                total -= total * akcija;
+                Popust = false;
+            }
+            if (Popust == true)
+            {
+                total -= total * popust;
+            }
+            return total;
+
+        }
+
         private void updateKolicinaPica(Dictionary<Pice, decimal> narucenaPica)
         {
-            using(SqlConnection veza = new SqlConnection(connectionString))
+            using (SqlConnection veza = new SqlConnection(connectionString))
             {
                 veza.Open();
 
-                foreach(KeyValuePair<Pice, decimal> stavkaRacuna in narucenaPica)
+                foreach (KeyValuePair<Pice, decimal> stavkaRacuna in narucenaPica)
                 {
                     Pice pice = stavkaRacuna.Key;
                     decimal novaKolicina = pice.kolicina_kafic - stavkaRacuna.Value;
@@ -451,7 +508,7 @@ namespace CaffeBar
 
         private void buttonOcistiRacun_Click(object sender, EventArgs e)
         {
-            textRacuna.Clear() ;
+            textRacuna.Clear();
             narucenaPica.Clear();
             konobarskiPopust.Clear();
             Popust = false;
@@ -478,65 +535,678 @@ namespace CaffeBar
             return akcija;
         }
 
+        /// <summary>
+        /// Klikom na odjavu korisniku se prikaze forma za obracun te nakon toga ga odjavljuje
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void gumbOdjavaKonobara_Click(object sender, EventArgs e)
         {
             labelUsername.Text = "";
-            PrijavaForm forma = new PrijavaForm();
+            ObracunForm forma = new ObracunForm(id_ulogirani);
             forma.Show();
             this.Hide();
         }
 
-        private void buttonKonobarskiPopust_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Klikom na gumb prikazuju se podaci o svim količinama pića u skladištu
+        /// Popuvanja se dropdown za odabir pića koje želimo za premještanje iz skladišta u šank
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonStanjeSkladista_Click(object sender, EventArgs e)
         {
-            PopustForm popustForm = new PopustForm(narucenaPica);
+            SqlConnection veza = new SqlConnection(connectionString);
 
-            DialogResult result = popustForm.ShowDialog();
+            veza.Open();
 
-            if (result == DialogResult.OK)
+            string upit = "SELECT naziv_pica as 'Naziv pića', kolicina_skladista as 'Količina na skladištu'" +
+                " FROM Pica" +
+                " ORDER BY naziv_pica";
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridViewStanjeSkladista.DataSource = dt;
+
+            var lista_pica = GetPicaFromDatabase("SELECT * FROM Pica");
+
+            veza.Close();
+
+            lista_pica.Sort((x, y) => x.naziv_pica.CompareTo(y.naziv_pica));
+
+            foreach (var pice in lista_pica)
             {
-                konobarskiPopust = popustForm.besplatnaPica;
-                popustUsername = popustForm.UsernameKonobara;
-                Popust = popustForm.Popust;
-                if (popustForm.tekstPopusta != null)
+                if (!comboBoxOdaberiPiceZaSank.Items.Contains(pice.naziv_pica))
                 {
-                    infoPopust += popustForm.tekstPopusta;
-                    buttonKonobarskiPopust.Enabled = false;
+                    comboBoxOdaberiPiceZaSank.Items.Add(pice.naziv_pica);
                 }
             }
         }
 
-        private decimal izracunajTotal() 
+        /// <summary>
+        /// Funkcija koja dohvaća količinu pića koja se nalazi u skladištu 
+        /// </summary>
+        /// <param name="idPica"></param>
+        /// <returns>dostupna_kolicina</returns>
+        public decimal dohvatiDostupnuKolicinuSkladista(int idPica)
         {
-            decimal total = 0; 
+            decimal dostupnaKolicina = 0;
 
-            if (narucenaPica != null)
+            SqlConnection veza = new SqlConnection(connectionString);
+            veza.Open();
+            string upit = "SELECT kolicina_skladista FROM Pica WHERE id_pica = @idPica";
+            SqlCommand naredba = new SqlCommand(upit, veza);
+
+            naredba.Parameters.AddWithValue("@IdPica", idPica);
+
+            using (SqlDataReader čitač = naredba.ExecuteReader())
             {
-                foreach (KeyValuePair<Pice, decimal> keyValuePair in narucenaPica)
+                if (čitač.Read())
                 {
-                    total += keyValuePair.Value * keyValuePair.Key.cijena_pica;
+                    dostupnaKolicina = čitač.GetDecimal(0);
                 }
             }
-            if (konobarskiPopust != null)
+            veza.Close();
+
+            return dostupnaKolicina;
+        }
+
+        /// <summary>
+        /// Klikom na gumb dodaje se odabrani proizvod i odabrana količina u šank, a miče se sa skladišta
+        /// Ako je odabrana količina veća od količine u skladištu, javlja se poruka i može se početi ispočetka
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonDodajUSank_Click(object sender, EventArgs e)
+        {
+            var lista_pica = GetPicaFromDatabase("SELECT * FROM Pica");
+            lista_pica.Sort((x, y) => x.naziv_pica.CompareTo(y.naziv_pica));
+
+            if (comboBoxOdaberiPiceZaSank.SelectedIndex != -1)
             {
-                foreach (KeyValuePair<Pice, int> keyValuePair in konobarskiPopust)
+                var odabrano_pice = comboBoxOdaberiPiceZaSank.SelectedItem.ToString();
+                int odabrano_pice_id = 0;
+                Pice odabrano = new Pice();
+                foreach (var pice in lista_pica)
                 {
-                    total -= (keyValuePair.Key.cijena_pica * keyValuePair.Value);
+                    if (pice.naziv_pica == odabrano_pice)
+                    {
+                        odabrano_pice_id = pice.id_pica;
+                        odabrano = pice;
+                        break;
+                    }
+                }
+                var dostupno_na_skladistu = dohvatiDostupnuKolicinuSkladista(odabrano_pice_id);
+
+                var odabrana_kolicina = numericUpDownOdaberiKolicinuZaSank.Value;
+                if (odabrana_kolicina > dostupno_na_skladistu)
+                {
+                    MessageBox.Show("Prevelika količina! Nema toliko na skladištu!", "Dodavanje nije uspjelo");
+                }
+                else
+                {
+                    try
+                    {
+                        using (SqlConnection veza = new SqlConnection(connectionString))
+                        {
+                            veza.Open();
+
+                            var nova_kolicina = odabrano.kolicina_kafic + odabrana_kolicina;
+                            var nova_kolicina1 = odabrano.kolicina_skladista - odabrana_kolicina;
+
+                            string azuriraj = "UPDATE Pica SET kolicina_kafic = @nova_kolicina, kolicina_skladista = @nova_kolicina1 WHERE id_pica = @odabrano_pice_id";
+
+                            using (SqlCommand naredba = new SqlCommand(azuriraj, veza))
+                            {
+                                naredba.Parameters.AddWithValue("@nova_kolicina", nova_kolicina);
+                                naredba.Parameters.AddWithValue("@nova_kolicina1", nova_kolicina1);
+                                naredba.Parameters.AddWithValue("@odabrano_pice_id", odabrano.id_pica);
+
+                                naredba.ExecuteNonQuery();
+
+                                MessageBox.Show($"Dodano {odabrana_kolicina}x {odabrano_pice} u šank!", "Uspješno dodano");
+                            }
+                            veza.Close();
+
+                            AzurirajStanjeSanka();
+                            AzurirajStanjeSkladista();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Greška: {ex.Message}");
+                    }
                 }
             }
-            if (total == 0) return 0;
-            if (provjeraAkcije() != 0)
-            {
-                decimal akcija = provjeraAkcije() / 100;
-                if (Popust == true) akcija += popust;
-                total -= total * akcija;
-                Popust = false;
-            }
-            if (Popust == true)
-            {
-                total -= total * popust;
-            }
-            return total;
+        }
 
+        /// <summary>
+        /// Klikom na gumb prikazuju se podaci o svim količinama pića u šanku
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonPrikaziStanjeSank_Click(object sender, EventArgs e)
+        {
+            SqlConnection veza = new SqlConnection(connectionString);
+
+            veza.Open();
+
+            string upit = "SELECT naziv_pica as 'Naziv pića', kolicina_kafic as 'Količina šank'" +
+                " FROM Pica" +
+                " ORDER BY naziv_pica";
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridViewStanjeSank.DataSource = dt;
+            veza.Close();
+        }
+
+        /// <summary>
+        /// Funkcija koja ažurira količine pića u skladištu
+        /// </summary>
+        public void AzurirajStanjeSkladista()
+        {
+            SqlConnection veza = new SqlConnection(connectionString);
+
+            veza.Open();
+
+            string upit = "SELECT naziv_pica as 'Naziv pića', kolicina_skladista as 'Količina na skladištu'" +
+                                " FROM Pica" +
+                                " ORDER BY naziv_pica";
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridViewStanjeSkladista.DataSource = dt;
+
+            veza.Close();
+
+        }
+
+        /// <summary>
+        /// Funkcija koja ažurira količine pića u šanku
+        /// </summary>
+        public void AzurirajStanjeSanka()
+        {
+            SqlConnection veza = new SqlConnection(connectionString);
+
+            veza.Open();
+
+            string upit = "SELECT naziv_pica as 'Naziv pića', kolicina_kafic as 'Količina šank'" +
+                           " FROM Pica" +
+                           " ORDER BY naziv_pica";
+            SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            dataGridViewStanjeSank.DataSource = dt;
+
+            veza.Close();
+
+        }
+
+        /// <summary>
+        /// Klikom na gumb prikazuju se sve narudzbe
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonNarudžba_Click(object sender, EventArgs e)
+        {
+            PrikaziSveNarudzbe();
+        }
+
+        /// <summary>
+        /// Funkcija koja iz baze dohvaca podatke o svim narudzbama
+        /// </summary>
+        private void PrikaziSveNarudzbe()
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string upit = "SELECT N.id_narudzba AS 'id_narudzba', P.naziv_pica AS 'Naziv pića', " +
+                                      "N.datum_naruceno AS 'Datum narudžbe', N.kolicina AS 'Količina', " +
+                                      "CASE WHEN N.dostavljeno = 'D' THEN 'Da' ELSE 'Ne' END AS 'Dostavljeno'" +
+                                      "FROM Narudzba N " +
+                                      "JOIN Pica P ON N.id_pica = P.id_pica " +
+                                      "ORDER BY CASE WHEN N.dostavljeno = 'N' THEN 0 ELSE 1 END, N.datum_naruceno DESC";
+
+                SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                dataGridViewNarudzba.DataSource = dt;
+
+                if (dt.Columns.Contains("id_narudzba"))
+                {
+                    dataGridViewNarudzba.Columns["id_narudzba"].Visible = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Funkcija ucitava sva pica koja su trenutno u ponudi u combobox narudzbe
+        /// </summary>
+        private void UcitajPicaUComboBoxNarudzba()
+        {
+            comboBoxNarudzba.Items.Clear();
+
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+                string upit = "SELECT id_pica, naziv_pica FROM Pica";
+                SqlCommand cmd = new SqlCommand(upit, veza);
+
+                using (SqlDataReader citac = cmd.ExecuteReader())
+                {
+                    while (citac.Read())
+                    {
+                        ComboboxItem item = new ComboboxItem
+                        {
+                            Text = citac["naziv_pica"].ToString(),
+                            Value = citac["id_pica"]
+                        };
+                        comboBoxNarudzba.Items.Add(item);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Klikom na gumb, ako su svi podaci dobro popunjeni, dodaje se nova narudzba u bazu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonNarudzba_Click(object sender, EventArgs e)
+        {
+            if (comboBoxNarudzba.SelectedItem == null)
+            {
+                MessageBox.Show("Odaberite piće za narudžbu.", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string nazivPica = ((ComboboxItem)comboBoxNarudzba.SelectedItem).Text;
+
+            int idPica;
+            int kolicina = (int)numericUpDownNarudzba.Value;
+
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string upitDohvatiIdPica = "SELECT id_pica FROM Pica WHERE naziv_pica = @nazivPica";
+
+                using (SqlCommand cmdDohvatiIdPica = new SqlCommand(upitDohvatiIdPica, veza))
+                {
+                    cmdDohvatiIdPica.Parameters.AddWithValue("@nazivPica", nazivPica);
+
+                    object rezultat = cmdDohvatiIdPica.ExecuteScalar();
+
+                    if (rezultat != null && rezultat != DBNull.Value)
+                    {
+                        idPica = Convert.ToInt32(rezultat);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nije moguće pronaći identifikator pića za odabrani naziv.", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                string dodajNarudzbu = "INSERT INTO Narudzba (id_pica, id_konobar, kolicina, datum_naruceno, dostavljeno) " +
+                                        "VALUES (@idPica, @idKonobar, @kolicina, @datumNaruceno, 'N')";
+
+                using (SqlCommand cmdDodajNarudzbu = new SqlCommand(dodajNarudzbu, veza))
+                {
+                    cmdDodajNarudzbu.Parameters.AddWithValue("@idPica", idPica);
+                    cmdDodajNarudzbu.Parameters.AddWithValue("@idKonobar", id_ulogirani);
+                    cmdDodajNarudzbu.Parameters.AddWithValue("@kolicina", kolicina);
+                    cmdDodajNarudzbu.Parameters.AddWithValue("@datumNaruceno", DateTime.Now);
+
+                    cmdDodajNarudzbu.ExecuteNonQuery();
+                    MessageBox.Show("Narudžba je uspješno dodana.", "Uspjeh", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+
+            PrikaziSveNarudzbe();
+        }
+
+        /// <summary>
+        /// Klikom na redak u prikazu tablice nudi se opcija mijenjanja statusa iz nedostavljeno u dostavljno
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridViewNarudzba_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DialogResult rezultat = MessageBox.Show("Jeste li sigurni da želite označiti narudžbu kao dostavljenu?", "Potvrda dostavljanja", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (rezultat == DialogResult.Yes)
+                {
+                    int idNarudzbe = (int)dataGridViewNarudzba.Rows[e.RowIndex].Cells["id_narudzba"].Value;
+
+                    PromijeniStatusDostave(idNarudzbe);
+
+                    PrikaziSveNarudzbe();
+                    AzurirajStanjeSkladista();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Funckija koja u bazi mijenja status iz nedostavljeno u dostavljno
+        /// </summary>
+        /// <param name="idNarudzbe"></param>
+        private void PromijeniStatusDostave(int idNarudzbe)
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string provjeraDostave = "SELECT dostavljeno FROM Narudzba WHERE id_narudzba = @idNarudzbe";
+
+                using (SqlCommand cmdProvjeriDostavu = new SqlCommand(provjeraDostave, veza))
+                {
+                    cmdProvjeriDostavu.Parameters.AddWithValue("@idNarudzbe", idNarudzbe);
+
+                    object rezultat = cmdProvjeriDostavu.ExecuteScalar();
+
+                    if (rezultat != null && rezultat != DBNull.Value && rezultat.ToString() == "D")
+                    {
+                        MessageBox.Show("Narudžba je već označena kao dostavljena.", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                string dohvatiNarudzbu = "SELECT id_pica, kolicina FROM Narudzba WHERE id_narudzba = @idNarudzbe";
+
+                using (SqlCommand cmdDohvatiNarudzbu = new SqlCommand(dohvatiNarudzbu, veza))
+                {
+                    cmdDohvatiNarudzbu.Parameters.AddWithValue("@idNarudzbe", idNarudzbe);
+
+                    using (SqlDataReader citac = cmdDohvatiNarudzbu.ExecuteReader())
+                    {
+                        while (citac.Read())
+                        {
+                            int idPica = citac.GetInt32(0);
+                            int kolicina = citac.GetInt32(1);
+
+                            string azurirajKolicinuSkladista = "UPDATE Pica SET kolicina_skladista = kolicina_skladista + @kolicina WHERE id_pica = @idPica";
+
+                            using (SqlCommand cmdAzurirajKolicinu = new SqlCommand(azurirajKolicinuSkladista, veza))
+                            {
+                                cmdAzurirajKolicinu.Parameters.AddWithValue("@idPica", idPica);
+                                cmdAzurirajKolicinu.Parameters.AddWithValue("@kolicina", kolicina);
+
+                                cmdAzurirajKolicinu.ExecuteNonQuery();
+                            }
+                        }
+                        citac.Close();
+                    }
+                }
+
+                string azurirajDostavu = "UPDATE Narudzba SET dostavljeno = 'D' WHERE id_narudzba = @idNarudzbe";
+
+                using (SqlCommand cmdAzurirajDostavu = new SqlCommand(azurirajDostavu, veza))
+                {
+                    cmdAzurirajDostavu.Parameters.AddWithValue("@idNarudzbe", idNarudzbe);
+
+                    cmdAzurirajDostavu.ExecuteNonQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Klikom na gumb prikazuju se pica koja su na malim zalihama 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonNarudzbaZaliha_Click(object sender, EventArgs e)
+        {
+            PrikaziNiskeZalihe();
+        }
+
+        /// <summary>
+        /// Funckija koja u bazi provjerava koja su to pica na malim zalihama
+        /// </summary>
+        private void PrikaziNiskeZalihe()
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string upit = "SELECT naziv_pica AS 'Naziv pića', (kolicina_skladista + kolicina_kafic) AS 'Ukupne zalihe' " +
+                              "FROM Pica " +
+                              "WHERE (kolicina_skladista + kolicina_kafic) < najmanja_kolicina";
+
+                SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                dataGridViewNarudzbaZaliha.DataSource = dt;
+            }
+        }
+
+        /// <summary>
+        /// Klikom na gumb prikazuju se svi računi
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonPrikaziRacune_Click(object sender, EventArgs e)
+        {
+            PrikaziSveRacune();
+        }
+
+        /// <summary>
+        /// funkcija koja iz baze dohvaća sve račune i sortira ih od najnovijeg do najstarijeg
+        /// </summary>
+        public void PrikaziSveRacune()
+        {
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string upit = "SELECT R.id_racun AS 'id_racun', K.korisnicko_ime AS 'Izdao konobar', R.datum_vrijeme AS 'Datum i vrijeme', " +
+                    "R.iznos AS 'Iznos računa' " +
+                    "FROM Racun R " +
+                    "JOIN Osobe K ON R.id_konobar = K.id_osobe " +
+                    "ORDER BY R.datum_vrijeme DESC";
+
+                SqlDataAdapter adapter = new SqlDataAdapter(upit, veza);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                //zaokruzivanje iznosa računa na dvije decimale
+                dt.Columns["Iznos računa"].DataType = typeof(decimal);
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (!row.IsNull("Iznos računa"))
+                    {
+                        row["Iznos računa"] = ((decimal)row["Iznos računa"]).ToString("N2");
+                    }
+                }
+
+                dataGridViewRacuni.DataSource = dt;
+
+                if (dt.Columns.Contains("id_racun"))
+                {
+                    dataGridViewRacuni.Columns["id_racun"].Visible = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Klikom na ćeliju u tablici sa računima, prvo se prikažu detalji odabranog računa, a zatim i mogućnost storiranja računa
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridViewRacuni_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                int idRacuna = (int)dataGridViewRacuni.Rows[e.RowIndex].Cells["id_racun"].Value;
+
+                PrikaziDetaljeRacuna(idRacuna);
+
+                DialogResult rezultat = MessageBox.Show("Jeste li sigurni da želite stornirati odabrani račun?", "Potvrdi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (rezultat == DialogResult.Yes)
+                { 
+
+                    ObrisiRacun(idRacuna);
+
+                    PrikaziSveRacune();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Funkcija koja za odabrani račun prikazuje sve stavke tog računa u obliku MessageBoxa
+        /// </summary>
+        /// <param name="idRacuna"></param>
+        private void PrikaziDetaljeRacuna(int idRacuna)
+        {
+            try
+            {
+                using (SqlConnection veza = new SqlConnection(connectionString))
+                {
+                    veza.Open();
+
+                    string detaljiUpit = "SELECT RS.id_pica, P.naziv_pica, RS.kolicina, P.cijena_pica " +
+                        "FROM RacunStavke RS " +
+                        "JOIN Pica P " +
+                        "ON RS.id_pica = P.id_pica " +
+                        "WHERE RS.id_racun = @idRacuna";
+
+                    using (SqlCommand detaljiNaredba = new SqlCommand(detaljiUpit, veza))
+                    {
+                        detaljiNaredba.Parameters.AddWithValue("@idRacuna", idRacuna);
+
+                        using (SqlDataReader reader = detaljiNaredba.ExecuteReader())
+                        {
+                            StringBuilder detalji = new StringBuilder();
+
+                            while (reader.Read())
+                            {
+                                int idPica = reader.GetInt32(0);
+                                string naziv = reader.GetString(1);
+                                int kolicina = reader.GetInt32(2);
+                                decimal cijena = reader.GetDecimal(3);
+
+                                detalji.AppendLine($"Naziv: {naziv}, Količina: {kolicina}, Cijena: {cijena.ToString("0.00")} EUR");
+                            }
+
+                            if (detalji.Length > 0)
+                            {
+                                MessageBox.Show(detalji.ToString(), "Detalji računa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Nema dostupnih detalja za odabrani račun.", "Detalji računa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                    }
+
+                    veza.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Greška prilikom dohvaćanja detalja računa: {ex.Message}", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Funkcija koja briše račun iz tablice Racun, briše sve stavke tog računa iz tablice RacunStavke i dodaje stornirane količiine u stanje šanka
+        /// </summary>
+        /// <param name="idRacuna"></param>
+        private void ObrisiRacun(int idRacuna)
+        {
+            try
+            {
+                using (SqlConnection veza = new SqlConnection(connectionString))
+                {
+                    veza.Open();
+
+                    using (SqlTransaction transakcija = veza.BeginTransaction())
+                    {
+                        try
+                        {
+                            // Dohvaćanje svih stavki koje se nalaze na računu koji želimo brisati
+                            string dohvatiStavkeUpit = "SELECT id_pica, kolicina FROM RacunStavke WHERE id_racun = @idRacuna";
+
+                            List<Tuple<int, int>> stavkeZaDodati = new List<Tuple<int, int>>();
+
+                            using (SqlCommand dohvatiStavkeNaredba = new SqlCommand(dohvatiStavkeUpit, veza, transakcija))
+                            {
+                                dohvatiStavkeNaredba.Parameters.AddWithValue("@idRacuna", idRacuna);
+
+                                using (SqlDataReader reader = dohvatiStavkeNaredba.ExecuteReader())
+                                {
+                                    while (reader.Read())
+                                    {
+                                        int idPica = reader.GetInt32(0);
+                                        int kolicinaStavke = reader.GetInt32(1);
+
+                                        stavkeZaDodati.Add(new Tuple<int, int>(idPica, kolicinaStavke));
+                                    }
+                                }
+                            }
+
+                            // Brisanje iz RacunStavke
+                            string obrisiRacunStavkeUpit = "DELETE FROM RacunStavke WHERE id_racun = @idRacuna";
+
+                            using (SqlCommand naredbaObrisiStavke = new SqlCommand(obrisiRacunStavkeUpit, veza, transakcija))
+                            {
+                                naredbaObrisiStavke.Parameters.AddWithValue("@idRacuna", idRacuna);
+                                naredbaObrisiStavke.ExecuteNonQuery();
+                            }
+
+                            // Ažuriranje stanja na šanku
+                            foreach (var stavka in stavkeZaDodati)
+                            {
+                                string azurirajKolicinuUpit = "UPDATE Pica SET kolicina_kafic = kolicina_kafic + @kolicinaStavke WHERE id_pica = @idPica";
+
+                                using (SqlCommand naredbaAzurirajKolicinu = new SqlCommand(azurirajKolicinuUpit, veza, transakcija))
+                                {
+                                    naredbaAzurirajKolicinu.Parameters.AddWithValue("@kolicinaStavke", stavka.Item2);
+                                    naredbaAzurirajKolicinu.Parameters.AddWithValue("@idPica", stavka.Item1);
+
+                                    naredbaAzurirajKolicinu.ExecuteNonQuery();
+                                }
+                            }
+
+                            // Brisanje računa
+                            string obrisiRacunUpit = "DELETE FROM Racun WHERE id_racun = @idRacuna";
+
+                            using (SqlCommand naredbaObrisiRacun = new SqlCommand(obrisiRacunUpit, veza, transakcija))
+                            {
+                                naredbaObrisiRacun.Parameters.AddWithValue("@idRacuna", idRacuna);
+                                naredbaObrisiRacun.ExecuteNonQuery();
+                            }
+
+                            transakcija.Commit();
+
+                            MessageBox.Show("Račun je storniran!");
+                            AzurirajStanjeSanka();
+                        }
+                        catch (Exception ex)
+                        {
+                            transakcija.Rollback();
+                            throw; 
+                        }
+                    }
+
+                    veza.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Greška prilikom storniranja računa: {ex.Message}");
+            }
         }
     }
 }
