@@ -11,8 +11,7 @@ namespace CaffeBar
 {
     public partial class KonobarForm : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Elena\Desktop\Caffe-Bar-novo\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
-        private SqlCommand naredba;
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;"; private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica;
         public Dictionary<Pice, int> konobarskiPopust;
         public string infoPopust;
@@ -50,6 +49,7 @@ namespace CaffeBar
             dataGridViewPica.CellFormatting += dataGridViewPica_CellFormatting;
             UcitajPicaUComboBoxNarudzba();
             UcitajPicaUComboBoxSkladiste();
+            prikaziPicaDataGridView();
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace CaffeBar
         /// Prikaz pića u data grid viewu. Postavlja se nazivi i vidljivost stupaca.
         /// </summary>
         /// <param name="pica"></param>
-        private void prikaziPicaDataGridView(List<Pice> pica)
+        private void prikaziPicaDataGridView()
         {
-            dataGridViewPica.DataSource = pica;
+            dataGridViewPica.DataSource = GetPicaFromDatabase("SELECT * FROM Pica");
             dataGridViewPica.Columns[0].Visible = false;
             dataGridViewPica.Columns[3].Visible = false;
             //dataGridViewPica.Columns[4].Visible = false;
@@ -127,7 +127,7 @@ namespace CaffeBar
             {
                 labelAkcijaUTijeku.Text = "U tijeku je akcija!";
             }
-            prikaziPicaDataGridView(pica);
+            prikaziPicaDataGridView();
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace CaffeBar
             {
                 pica = GetPicaFromDatabase("SELECT * FROM Pica WHERE naziv_pica LIKE @unos");
             }
-            prikaziPicaDataGridView(pica);
+            prikaziPicaDataGridView();
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace CaffeBar
                     Popust = false;
                     infoPopust = "";
                     //buttonKonobarskiPopust.Enabled = true;
-                    dataGridViewPica.Refresh();
+                    prikaziPicaDataGridView();
                 }
                 else
                 {
