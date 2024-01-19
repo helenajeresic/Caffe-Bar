@@ -16,7 +16,7 @@ namespace CaffeBar
     public partial class VlasnikForm : Form
     {
 
-        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
+        static string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Elena\Desktop\Caffe-Bar-novo\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
         public string username_ulogirani;
 
         /// <summary>
@@ -152,6 +152,11 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Klikom na gumb, za odabrano piće, prikazuje se količina koja je prodana u odabranom danu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonPrikaziStatistiku_Click(object sender, EventArgs e)
         {
             //prvo provjerim jel odabrano pice, datum ne treba, on je po defaultu danasnji
@@ -198,6 +203,11 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// klikom na gumb prikazuje se količina svih pića koja su prodana u silaznom poretku za odabrani dan
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonPrikaziStatistiku1_Click(object sender, EventArgs e)
         {
             SqlConnection veza = new SqlConnection(connectionString);
