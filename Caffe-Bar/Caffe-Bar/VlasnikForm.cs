@@ -334,7 +334,7 @@ namespace CaffeBar
                     id_kategorija_pica = (int)odabranaKategorija.Value,
                     kolicina_kafic = 0,
                     kolicina_skladista = 0,
-                    najmanja_kolicina = txtUpozorenje.Text
+                    najmanja_kolicina = numericUpDownKolicina.Value.ToString()
                 };
 
                 SqlConnection veza = new SqlConnection(connectionString);
@@ -521,11 +521,6 @@ namespace CaffeBar
         /// <param name="e"></param>
         private void btnPromijeniNajmanjuKolicinu_Click(object sender, EventArgs e)
         {
-            if (txtPromijeniNajmanjuKolicinu.Text.Length == 0)
-            {
-                MessageBox.Show("Niste unijeli novu najmanju količinu.");
-                return;
-            }
             if (comboBoxPicaModificiraj.SelectedIndex == -1)
             {
                 MessageBox.Show("Nije odabrano nijedno piće!");
@@ -533,7 +528,7 @@ namespace CaffeBar
             }
 
             var odabrano_pice = comboBoxPicaModificiraj.SelectedItem.ToString();
-            var nova_kolicina = txtPromijeniNajmanjuKolicinu.Text;
+            var nova_kolicina = numericUpDownKolicinaMod.Value.ToString();
 
             IzvrsiUpdatePica("najmanja_kolicina", nova_kolicina, odabrano_pice);
         }

@@ -69,7 +69,6 @@
             this.labelKategorijaNovoPice = new System.Windows.Forms.Label();
             this.comboBoxNovoPiceKategorija = new System.Windows.Forms.ComboBox();
             this.labelNajmanaKolicina = new System.Windows.Forms.Label();
-            this.txtUpozorenje = new System.Windows.Forms.TextBox();
             this.btnUnosPica = new System.Windows.Forms.Button();
             this.tabModifikacijaPića = new System.Windows.Forms.TabPage();
             this.groupBoxModifikacija = new System.Windows.Forms.GroupBox();
@@ -85,7 +84,6 @@
             this.txtPromijeniNaziv = new System.Windows.Forms.TextBox();
             this.btnPromijeniNaziv = new System.Windows.Forms.Button();
             this.labelPromijeniNajmanjuKolicinu = new System.Windows.Forms.Label();
-            this.txtPromijeniNajmanjuKolicinu = new System.Windows.Forms.TextBox();
             this.btnPromijeniNajmanjuKolicinu = new System.Windows.Forms.Button();
             this.dataGridViewPicaModificiraj = new System.Windows.Forms.DataGridView();
             this.tabAkcije = new System.Windows.Forms.TabPage();
@@ -119,6 +117,8 @@
             this.gumbOdjavaVlasnika = new System.Windows.Forms.Button();
             this.bazaDataSet = new Caffe_Bar.bazaDataSet();
             this.bazaDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.numericUpDownKolicina = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownKolicinaMod = new System.Windows.Forms.NumericUpDown();
             this.tabKonobar.SuspendLayout();
             this.tabZaposliKonobara.SuspendLayout();
             this.gBoxDodajKonobara.SuspendLayout();
@@ -147,6 +147,8 @@
             this.groupBoxKolicina1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bazaDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bazaDataSetBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownKolicina)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownKolicinaMod)).BeginInit();
             this.SuspendLayout();
             // 
             // tabKonobar
@@ -452,7 +454,7 @@
             this.flowLayoutPanel1.Controls.Add(this.labelKategorijaNovoPice);
             this.flowLayoutPanel1.Controls.Add(this.comboBoxNovoPiceKategorija);
             this.flowLayoutPanel1.Controls.Add(this.labelNajmanaKolicina);
-            this.flowLayoutPanel1.Controls.Add(this.txtUpozorenje);
+            this.flowLayoutPanel1.Controls.Add(this.numericUpDownKolicina);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(6, 94);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(722, 174);
@@ -517,19 +519,12 @@
             // labelNajmanaKolicina
             // 
             this.labelNajmanaKolicina.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelNajmanaKolicina.Location = new System.Drawing.Point(3, 114);
+            this.labelNajmanaKolicina.Location = new System.Drawing.Point(3, 123);
             this.labelNajmanaKolicina.Name = "labelNajmanaKolicina";
             this.labelNajmanaKolicina.Size = new System.Drawing.Size(390, 34);
             this.labelNajmanaKolicina.TabIndex = 8;
             this.labelNajmanaKolicina.Text = "Najmanja količina prije upozorenja:";
             this.labelNajmanaKolicina.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtUpozorenje
-            // 
-            this.txtUpozorenje.Location = new System.Drawing.Point(399, 117);
-            this.txtUpozorenje.Name = "txtUpozorenje";
-            this.txtUpozorenje.Size = new System.Drawing.Size(284, 34);
-            this.txtUpozorenje.TabIndex = 9;
             // 
             // btnUnosPica
             // 
@@ -612,7 +607,7 @@
             this.flowLayoutPanelPromijeniCijenu.Controls.Add(this.txtPromijeniNaziv);
             this.flowLayoutPanelPromijeniCijenu.Controls.Add(this.btnPromijeniNaziv);
             this.flowLayoutPanelPromijeniCijenu.Controls.Add(this.labelPromijeniNajmanjuKolicinu);
-            this.flowLayoutPanelPromijeniCijenu.Controls.Add(this.txtPromijeniNajmanjuKolicinu);
+            this.flowLayoutPanelPromijeniCijenu.Controls.Add(this.numericUpDownKolicinaMod);
             this.flowLayoutPanelPromijeniCijenu.Controls.Add(this.btnPromijeniNajmanjuKolicinu);
             this.flowLayoutPanelPromijeniCijenu.Location = new System.Drawing.Point(210, 289);
             this.flowLayoutPanelPromijeniCijenu.Name = "flowLayoutPanelPromijeniCijenu";
@@ -687,13 +682,6 @@
             this.labelPromijeniNajmanjuKolicinu.TabIndex = 11;
             this.labelPromijeniNajmanjuKolicinu.Text = "Najmanja količina:";
             this.labelPromijeniNajmanjuKolicinu.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtPromijeniNajmanjuKolicinu
-            // 
-            this.txtPromijeniNajmanjuKolicinu.Location = new System.Drawing.Point(224, 83);
-            this.txtPromijeniNajmanjuKolicinu.Name = "txtPromijeniNajmanjuKolicinu";
-            this.txtPromijeniNajmanjuKolicinu.Size = new System.Drawing.Size(200, 34);
-            this.txtPromijeniNajmanjuKolicinu.TabIndex = 12;
             // 
             // btnPromijeniNajmanjuKolicinu
             // 
@@ -1090,6 +1078,30 @@
             this.bazaDataSetBindingSource.DataSource = this.bazaDataSet;
             this.bazaDataSetBindingSource.Position = 0;
             // 
+            // numericUpDownKolicina
+            // 
+            this.numericUpDownKolicina.Location = new System.Drawing.Point(399, 126);
+            this.numericUpDownKolicina.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownKolicina.Name = "numericUpDownKolicina";
+            this.numericUpDownKolicina.Size = new System.Drawing.Size(284, 34);
+            this.numericUpDownKolicina.TabIndex = 13;
+            // 
+            // numericUpDownKolicinaMod
+            // 
+            this.numericUpDownKolicinaMod.Location = new System.Drawing.Point(224, 83);
+            this.numericUpDownKolicinaMod.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownKolicinaMod.Name = "numericUpDownKolicinaMod";
+            this.numericUpDownKolicinaMod.Size = new System.Drawing.Size(200, 34);
+            this.numericUpDownKolicinaMod.TabIndex = 15;
+            // 
             // VlasnikForm
             // 
             this.ClientSize = new System.Drawing.Size(1238, 630);
@@ -1134,6 +1146,8 @@
             this.groupBoxKolicina1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bazaDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bazaDataSetBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownKolicina)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownKolicinaMod)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1181,7 +1195,6 @@
         private System.Windows.Forms.Label labelNazivPica;
         private System.Windows.Forms.TextBox txtNazivPica;
         private System.Windows.Forms.Label labelNajmanaKolicina;
-        private System.Windows.Forms.TextBox txtUpozorenje;
         private System.Windows.Forms.Label labelKategorijaNovoPice;
         private System.Windows.Forms.Button btnUnosPica;
         private System.Windows.Forms.GroupBox groupBoxModifikacija;
@@ -1195,7 +1208,6 @@
         private Caffe_Bar.bazaDataSet bazaDataSet;
         private System.Windows.Forms.BindingSource bazaDataSetBindingSource;
         private System.Windows.Forms.Label labelPromijeniCijenu;
-        private System.Windows.Forms.TextBox txtPromijeniNajmanjuKolicinu;
         private System.Windows.Forms.Label labelPromijeniNajmanjuKolicinu;
         private System.Windows.Forms.TextBox txtPromijeniNaziv;
         private System.Windows.Forms.Label labelPromijeniNaziv;
@@ -1224,5 +1236,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDownAkcija;
         private System.Windows.Forms.NumericUpDown numericUpDownCijena;
         private System.Windows.Forms.NumericUpDown numericUpDownNovaCijena;
+        private System.Windows.Forms.NumericUpDown numericUpDownKolicina;
+        private System.Windows.Forms.NumericUpDown numericUpDownKolicinaMod;
     }
 }
