@@ -1213,6 +1213,7 @@ namespace CaffeBar
                         }
                         catch (Exception ex)
                         {
+                            MessageBox.Show(ex.Message, "Greška prilikom brisanja računa!");
                             transakcija.Rollback();
                             throw; 
                         }
