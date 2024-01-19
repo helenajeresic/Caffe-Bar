@@ -208,6 +208,7 @@ namespace CaffeBar
                     tekstPopusta += "Iskorišten popust: Besplatna kava\n";
                     labelStanjeNakonAkcije.Text += "Iskorišten popust: Besplatna kava\n";
                     checkBoxIskoristiBesplatnuKavu.Checked = false;
+                    checkBoxIskoristiBesplatnuKavu.Enabled = false;
                 }
                 else
                 {

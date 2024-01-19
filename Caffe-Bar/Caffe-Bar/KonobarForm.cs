@@ -15,7 +15,7 @@ namespace CaffeBar
         private SqlCommand naredba;
         public Dictionary<Pice, decimal> narucenaPica;
         public Dictionary<Pice, int> konobarskiPopust;
-        public string infoPopust = "";
+        public string infoPopust;
         public decimal popust = 0.20M;
         public bool Popust;
         public int id_ulogirani;
@@ -32,6 +32,7 @@ namespace CaffeBar
             prezime_ulogirani = prezime_konobar;
             username_ulogirani = username_konobar;
             Popust = false;
+            infoPopust = "";
 
             narucenaPica = new Dictionary<Pice, decimal>();
             konobarskiPopust = new Dictionary<Pice, int>();
@@ -95,10 +96,9 @@ namespace CaffeBar
         {
             List<Pice> pica = GetPicaFromDatabase("SELECT * FROM Pica");
 
-            if (provjeraAkcije() != 0)
+            if (provjeraAkcije().Count > 0)
             {
-                labelAkcijaUTijeku.Text = "U tijeku je akcija - " + provjeraAkcije().ToString() + "%";
-                infoPopust += "U tijeku je akcija - " + provjeraAkcije().ToString() + "%\n";
+                labelAkcijaUTijeku.Text = "U tijeku je akcija!";
             }
             prikaziPicaDataGridView(pica);
         }
@@ -334,11 +334,23 @@ namespace CaffeBar
                 }
             }
             if (total == 0) return 0;
-            if (provjeraAkcije() != 0)
+            if (provjeraAkcije().Count > 0)
             {
-                decimal akcija = provjeraAkcije() / 100;
-                if (Popust == true) akcija += popust;
-                total -= total * akcija;
+                Dictionary<int, decimal> akcije = provjeraAkcije();
+                foreach(KeyValuePair<Pice, decimal> kupljenaPica in narucenaPica)
+                {
+                    foreach (var akcija in akcije)
+                    {
+                        if (akcija.Key ==  kupljenaPica.Key.id_pica) 
+                        {
+                            decimal iznos = akcija.Value / 100;
+                            infoPopust += "Akcija " + akcija.Value + "% na " + kupljenaPica.Key.naziv_pica + "\n";
+                            if (Popust == true) iznos += popust;
+
+                            total -= total * iznos;
+                        }
+                    }
+                }
                 Popust = false;
             }
             if (Popust == true)
@@ -346,7 +358,6 @@ namespace CaffeBar
                 total -= total * popust;
             }
             return total;
-
         }
 
         private void updateKolicinaPica(Dictionary<Pice, decimal> narucenaPica)
@@ -516,24 +527,31 @@ namespace CaffeBar
             buttonKonobarskiPopust.Enabled = true;
         }
 
-        private decimal provjeraAkcije()
+        private Dictionary<int, decimal> provjeraAkcije()
         {
-            decimal akcija = 0;
+            Dictionary<int, decimal> akcije = new Dictionary<int, decimal>();
 
-            SqlConnection veza = new SqlConnection(connectionString);
-            veza.Open();
-            string upit = "SELECT * FROM Akcija WHERE GETDATE() BETWEEN [od] AND [do];";
-            SqlCommand naredba = new SqlCommand(upit, veza);
-            using (SqlDataReader čitač = naredba.ExecuteReader())
+            using (SqlConnection veza = new SqlConnection(connectionString))
             {
-                if (čitač.Read())
+                veza.Open();
+                string upit = "SELECT id_akcija, popust FROM Akcija WHERE GETDATE() BETWEEN [od] AND [do];";
+                using (SqlCommand naredba = new SqlCommand(upit, veza))
                 {
-                    akcija = čitač.GetDecimal(4);
+                    using (SqlDataReader čitač = naredba.ExecuteReader())
+                    {
+                        while (čitač.Read())
+                        {
+                            int idAkcije = čitač.GetInt32(0);
+                            decimal popust = čitač.GetDecimal(1);
+
+                            akcije.Add(idAkcije, popust);
+                        }
+                    }
                 }
             }
-            veza.Close();
-            return akcija;
+            return akcije;
         }
+
 
         /// <summary>
         /// Klikom na odjavu korisniku se prikaze forma za obracun te nakon toga ga odjavljuje
