@@ -49,6 +49,7 @@ namespace CaffeBar
             labelUsername.Text = "Prijavljen konobar: " + username_konobar;
             dataGridViewPica.CellFormatting += dataGridViewPica_CellFormatting;
             UcitajPicaUComboBoxNarudzba();
+            UcitajPicaUComboBoxSkladiste();
         }
 
         /// <summary>
@@ -691,7 +692,17 @@ namespace CaffeBar
             adapter.Fill(dt);
 
             dataGridViewStanjeSkladista.DataSource = dt;
+            veza.Close();
+        }
 
+        /// <summary>
+        /// Funkcija ucitava sva pica koja su trenutno u ponudi u combobox za premještanje iz skladišta u šank
+        /// </summary>
+        public void UcitajPicaUComboBoxSkladiste()
+        {
+            SqlConnection veza = new SqlConnection(connectionString);
+
+            veza.Open();
             var lista_pica = GetPicaFromDatabase("SELECT * FROM Pica");
 
             veza.Close();
