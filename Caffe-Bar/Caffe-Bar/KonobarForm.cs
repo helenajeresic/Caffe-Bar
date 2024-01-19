@@ -23,6 +23,15 @@ namespace CaffeBar
         public string prezime_ulogirani;
         public string username_ulogirani;
         public string popustUsername;
+
+        /// <summary>
+        /// Konstrktor za KonobarForm. Primaju se podaci o prijavljenom konobaru,
+        /// inicijaliziraju svi potrebni objekti.
+        /// </summary>
+        /// <param name="id_konobar"></param>
+        /// <param name="ime_konobar"></param>
+        /// <param name="prezime_konobar"></param>
+        /// <param name="username_konobar"></param>
         public KonobarForm(int id_konobar, string ime_konobar, string prezime_konobar, string username_konobar)
         {
             InitializeComponent();
@@ -32,6 +41,7 @@ namespace CaffeBar
             prezime_ulogirani = prezime_konobar;
             username_ulogirani = username_konobar;
             Popust = false;
+            buttonKonobarskiPopust.Enabled = false;
             infoPopust = "";
 
             narucenaPica = new Dictionary<Pice, decimal>();
@@ -41,6 +51,11 @@ namespace CaffeBar
             UcitajPicaUComboBoxNarudzba();
         }
 
+        /// <summary>
+        /// Metoda koja u listu sprema sva piće u bazi iz tablice Pica.
+        /// </summary>
+        /// <param name="upit"> Upit prema kojem se dohvaćaju pića. </param>
+        /// <returns></returns>
         private List<Pice> GetPicaFromDatabase(string upit)
         {
             SqlConnection veza = new SqlConnection(connectionString);
@@ -71,12 +86,16 @@ namespace CaffeBar
             return pica;
         }
 
+        /// <summary>
+        /// Prikaz pića u data grid viewu. Postavlja se nazivi i vidljivost stupaca.
+        /// </summary>
+        /// <param name="pica"></param>
         private void prikaziPicaDataGridView(List<Pice> pica)
         {
             dataGridViewPica.DataSource = pica;
             dataGridViewPica.Columns[0].Visible = false;
             dataGridViewPica.Columns[3].Visible = false;
-            dataGridViewPica.Columns[4].Visible = false;
+            //dataGridViewPica.Columns[4].Visible = false;
             dataGridViewPica.Columns[5].Visible = false;
             dataGridViewPica.Columns[6].Visible = false;
 
@@ -90,8 +109,15 @@ namespace CaffeBar
 
             dataGridViewPica.Columns[1].HeaderText = "Naziv pića";
             dataGridViewPica.Columns[2].HeaderText = "Cijena pića";
+            dataGridViewPica.Columns[4].HeaderText = "Stanje šank";
         }
 
+        /// <summary>
+        /// Klikom na gumb 'Prikaži pića' prikazuje se ime, cijena i količina dostupnog
+        /// na šanku. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonPrikaziPica_Click(object sender, EventArgs e)
         {
             List<Pice> pica = GetPicaFromDatabase("SELECT * FROM Pica");
@@ -103,6 +129,12 @@ namespace CaffeBar
             prikaziPicaDataGridView(pica);
         }
 
+        /// <summary>
+        /// Promjenom u text boxu za pretraživanje, šalje se upit na bazu
+        /// i ažurira tablica pića.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBoxTrazi_TextChanged(object sender, EventArgs e)
         {
             List<Pice> pica = GetPicaFromDatabase("SELECT * FROM Pica");
@@ -114,6 +146,11 @@ namespace CaffeBar
             prikaziPicaDataGridView(pica);
         }
 
+        /// <summary>
+        /// Formatiranje cijene na dvije decimale.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridViewPica_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.ColumnIndex == 2 && e.RowIndex >= 0)
@@ -140,11 +177,19 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Klikom na redak tablice pića, sprema se piće, dohvaća se količina pomoću
+        /// UnosKolicineForm, te se piće zajedno sa količinom sprema u Dictionary 
+        /// naručenih pića. Generira se tekst koji se prikazuje na računu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void dataGridViewPica_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (narucenaPica.Count == 0)
             {
                 initializeBill();
+                buttonKonobarskiPopust.Enabled = true;
             }
             if (sender is DataGridView d && e.RowIndex >= 0)
             {
@@ -196,6 +241,9 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Inicijalizacija računa. 
+        /// </summary>
         private void initializeBill()
         {
             textRacuna.SelectionStart = 0;
@@ -203,7 +251,7 @@ namespace CaffeBar
             textRacuna.SelectionAlignment = HorizontalAlignment.Center;
 
             textRacuna.AppendText("\n");
-            textRacuna.AppendText("Caffe-Bar Naziv \n\n");
+            textRacuna.AppendText("Caffe-Bar CAFE \n\n");
             textRacuna.AppendText("Bijenička cesta 30\n");
             textRacuna.AppendText("10000 Zagreb\n");
             textRacuna.AppendText("--------------------------------------\n\n");
@@ -215,6 +263,13 @@ namespace CaffeBar
             textRacuna.ScrollToCaret();
         }
 
+        /// <summary>
+        /// Dohvaćanje unesene količine pomoću UnosKoličineForm, te
+        /// provjer dostupnosti.
+        /// </summary>
+        /// <param name="label"> Label koji se prikazuje na UnosKolicineForm. </param>
+        /// <param name="idPica"> Id odabranog pića za račun. </param>
+        /// <returns></returns>
         public decimal dohvatiUnesenuKolicinu(string label, int idPica)
         {
             UnosKolicine unosKolicine = new UnosKolicine();
@@ -257,45 +312,64 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Kliknom na gumb 'Izdaj račun' poziva se forma IzdajRacun, šalju se potrebni podaci.
+        /// Ako je rezultat forme OK zapisuje se račun u bazu, u tablice Racun, RacunStavke i 
+        /// KonobarskiPopust ako ga je bilo.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void gumbIzdajRacun_Click(object sender, EventArgs e)
         {
             if(narucenaPica.Count == 0)
             {
                 MessageBox.Show("Odaberite pića", "Upozorenje!");
             }
-
-            decimal total = izracunajTotal();
-            DateTime vrijeme = DateTime.Now;
-            IzdajRacun izdajRacun = new IzdajRacun(textRacuna.Rtf, id_ulogirani, ime_ulogirani, prezime_ulogirani, infoPopust, total, vrijeme);
-
-            izdajRacun.updateFinalniRacun();
-            izdajRacun.updateKonobarInfo();
-
-            DialogResult result = izdajRacun.ShowDialog();
-
-
-            if (result == DialogResult.OK)
-            {
-                updateKolicinaPica(narucenaPica);
-                zapisRacunStavke(vrijeme);
-                zapisiKonobarPopust(popustUsername, konobarskiPopust, vrijeme);
-                AzurirajStanjeSanka();
-                PrikaziSveRacune();
-
-                MessageBox.Show("Račun uspješno evidentiran!", "Obavijest");
-                textRacuna.Clear();
-                narucenaPica.Clear();
-                konobarskiPopust.Clear();
-                Popust = false;
-                infoPopust = "";
-                buttonKonobarskiPopust.Enabled = true;
-            }
             else
             {
-                MessageBox.Show("Račun nije evidentiran!", "Obavijest");
+                decimal total = izracunajTotal();
+                DateTime vrijeme = DateTime.Now;
+                IzdajRacun izdajRacun = new IzdajRacun(textRacuna.Rtf, id_ulogirani, ime_ulogirani, prezime_ulogirani, infoPopust, total, vrijeme);
+
+                izdajRacun.updateFinalniRacun();
+                izdajRacun.updateKonobarInfo();
+
+                DialogResult result = izdajRacun.ShowDialog();
+
+
+                if (result == DialogResult.OK)
+                {
+                    updateKolicinaPica(narucenaPica);
+                    zapisRacunStavke(vrijeme);
+                    if(konobarskiPopust.Count > 0)
+                    {
+                        zapisiKonobarPopust(popustUsername, konobarskiPopust, vrijeme);
+                    }
+                    AzurirajStanjeSanka();
+                    PrikaziSveRacune();
+
+                    MessageBox.Show("Račun uspješno evidentiran!", "Obavijest");
+                    textRacuna.Clear();
+                    narucenaPica.Clear();
+                    konobarskiPopust.Clear();
+                    Popust = false;
+                    infoPopust = "";
+                    //buttonKonobarskiPopust.Enabled = true;
+                    dataGridViewPica.Refresh();
+                }
+                else
+                {
+                    MessageBox.Show("Račun nije evidentiran!", "Obavijest");
+                }
             }
         }
 
+        /// <summary>
+        /// Klikom na gumb 'Konobarski popust' otvara se forma PopustForm 
+        /// koja omogućava konobaru korištenje popusta.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonKonobarskiPopust_Click(object sender, EventArgs e)
         {
             PopustForm popustForm = new PopustForm(narucenaPica);
@@ -315,6 +389,11 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Metoda koja računa ukupan iznos računa. Uzimaju se u obzir akcije i 
+        /// konobarski popust.
+        /// </summary>
+        /// <returns></returns>
         private decimal izracunajTotal()
         {
             decimal total = 0;
@@ -345,13 +424,10 @@ namespace CaffeBar
                         {
                             decimal iznos = akcija.Value / 100;
                             infoPopust += "Akcija " + akcija.Value + "% na " + kupljenaPica.Key.naziv_pica + "\n";
-                            if (Popust == true) iznos += popust;
-
-                            total -= total * iznos;
+                            total -= kupljenaPica.Key.cijena_pica * iznos;
                         }
                     }
                 }
-                Popust = false;
             }
             if (Popust == true)
             {
@@ -360,6 +436,10 @@ namespace CaffeBar
             return total;
         }
 
+        /// <summary>
+        /// Metoda koja ažurira količinu dostupnih pića na šanku nakon izdavanja računa.
+        /// </summary>
+        /// <param name="narucenaPica"> Dictionary liste prodanih pića zajedno s količinama. </param>
         private void updateKolicinaPica(Dictionary<Pice, decimal> narucenaPica)
         {
             using (SqlConnection veza = new SqlConnection(connectionString))
@@ -385,6 +465,10 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Metoda koja zapisuje stavke računa u bazu u tablicu RacunStavke.
+        /// </summary>
+        /// <param name="vrijeme"></param>
         private void zapisRacunStavke(DateTime vrijeme)
         {
             int id_racuna = -1;
@@ -440,6 +524,12 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Metoda koja zapisuje korištenje konobarskog popusta u bazu u tablicu KonobarPopust.
+        /// </summary>
+        /// <param name="username"> Usernam konobara koji je koristio popust. </param>
+        /// <param name="popust"> Dictionary pića i količina iskorištenog popusta. </param>
+        /// <param name="vrijeme"> Vrijeme korištenja popusta. </param>
         private void zapisiKonobarPopust(string username, Dictionary<Pice, int> popust, DateTime vrijeme)
         {
             int id_osobe = -1;
@@ -494,6 +584,12 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Metoda koja dohvaća dostupnu količinu pića na šanku iz baze podataka, tablice
+        /// pića.
+        /// </summary>
+        /// <param name="idPica"> Id pića za koje se dohvaća količina. </param>
+        /// <returns></returns>
         public decimal dohvatiDostupnuKolicinu(int idPica)
         {
             decimal dostupnaKolicina = 0;
@@ -517,6 +613,12 @@ namespace CaffeBar
             return dostupnaKolicina;
         }
 
+        /// <summary>
+        /// Kliknom na gumb 'Očisti račun' briše se odabir naručenih pića, popusta, 
+        /// te se brišu tekstovi računa i popusta.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonOcistiRacun_Click(object sender, EventArgs e)
         {
             textRacuna.Clear();
@@ -524,9 +626,13 @@ namespace CaffeBar
             konobarskiPopust.Clear();
             Popust = false;
             infoPopust = "";
-            buttonKonobarskiPopust.Enabled = true;
+            buttonKonobarskiPopust.Enabled = false;
         }
 
+        /// <summary>
+        /// Metoda koja provjerava ima li trenutačnih akcija u tijeku.
+        /// </summary>
+        /// <returns> Dictionary id pića i količina popusta na ta pića. </returns>
         private Dictionary<int, decimal> provjeraAkcije()
         {
             Dictionary<int, decimal> akcije = new Dictionary<int, decimal>();
@@ -551,7 +657,6 @@ namespace CaffeBar
             }
             return akcije;
         }
-
 
         /// <summary>
         /// Klikom na odjavu korisniku se prikaze forma za obracun te nakon toga ga odjavljuje
