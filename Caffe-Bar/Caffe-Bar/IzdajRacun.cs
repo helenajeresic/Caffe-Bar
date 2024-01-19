@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
@@ -18,6 +16,16 @@ namespace CaffeBar
         private decimal total;
         private DateTime vrijeme;
 
+        /// <summary>
+        /// Konstruktor za IzdajRacunForm.
+        /// </summary>
+        /// <param name="tekstRacuna"></param>
+        /// <param name="id_konobar"> Id prijavljenog konobara.</param>
+        /// <param name="ime_konobar"> Ime prijavljenog konobara. </param>
+        /// <param name="prezime_konobar"> Prezime prijavljenog konobara. </param>
+        /// <param name="infoPopust"> Podaci o popustu koji se dodaju na kraj računa. </param>
+        /// <param name="total"> Ukupan iznos računa. </param>
+        /// <param name="vrijeme"> Vrijeme izdavanja računa. </param>
         public IzdajRacun(string tekstRacuna, int id_konobar, string ime_konobar, string prezime_konobar, string infoPopust, decimal total, DateTime vrijeme)
         {
             this.tekstRacuna = tekstRacuna;
@@ -30,6 +38,10 @@ namespace CaffeBar
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Metoda koja na tekst finalnog računa dodaje podatke 
+        /// o cijeni, vremenu i wifi lozinci.
+        /// </summary>
         public void updateFinalniRacun()
         {
             finalniRacun.Clear();
@@ -43,6 +55,10 @@ namespace CaffeBar
             finalniRacun.AppendText("Wifi password: caffebar123\n\n");
         }
 
+        /// <summary>
+        /// Metoda koja na kraj finalnog računa dodaje tekst o iskorištenim popustima
+        /// i podatke o konobaru koji je izdao račun.
+        /// </summary>
         public void updateKonobarInfo()
         {
             finalniRacun.AppendText("--------------------------------------\n\n");
@@ -52,6 +68,13 @@ namespace CaffeBar
             finalniRacun.AppendText("--------------------------------------\n\n");
         }
 
+        /// <summary>
+        /// Metoda koja klikom na gumb 'Izračunaj ostatak' računa koliko treba konobar vratiti
+        /// klijentu, te ažurira label s dobivenim iznosom. 
+        /// Dobiveni iznos od klijenta, konobar unosi u tekstualni box.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonIzracunajOstatak_Click(object sender, EventArgs e)
         {
             if (textDaniIznos == null)
@@ -76,6 +99,12 @@ namespace CaffeBar
             }
         }
 
+        /// <summary>
+        /// Klikom na gumb 'Izdaj račun' se u bazu podataka dodaje zapis o računu, id konobara
+        /// kojiga je izdao, ukupan iznos računa i vrijeme izdavanja računa.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void gumbIzdajRacun_Click(object sender, EventArgs e)
         {
             SqlConnection veza = new SqlConnection(connectionString);
