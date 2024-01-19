@@ -65,6 +65,7 @@
             this.labelNazivPica = new System.Windows.Forms.Label();
             this.txtNazivPica = new System.Windows.Forms.TextBox();
             this.labelCijenaNovoPice = new System.Windows.Forms.Label();
+            this.numericUpDownCijena = new System.Windows.Forms.NumericUpDown();
             this.labelKategorijaNovoPice = new System.Windows.Forms.Label();
             this.comboBoxNovoPiceKategorija = new System.Windows.Forms.ComboBox();
             this.labelNajmanaKolicina = new System.Windows.Forms.Label();
@@ -78,6 +79,7 @@
             this.btnPiceModificiraj = new System.Windows.Forms.Button();
             this.flowLayoutPanelPromijeniCijenu = new System.Windows.Forms.FlowLayoutPanel();
             this.labelPromijeniCijenu = new System.Windows.Forms.Label();
+            this.numericUpDownNovaCijena = new System.Windows.Forms.NumericUpDown();
             this.btnPromijeniCijenu = new System.Windows.Forms.Button();
             this.labelPromijeniNaziv = new System.Windows.Forms.Label();
             this.txtPromijeniNaziv = new System.Windows.Forms.TextBox();
@@ -117,8 +119,6 @@
             this.gumbOdjavaVlasnika = new System.Windows.Forms.Button();
             this.bazaDataSet = new Caffe_Bar.bazaDataSet();
             this.bazaDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.numericUpDownCijena = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownNovaCijena = new System.Windows.Forms.NumericUpDown();
             this.tabKonobar.SuspendLayout();
             this.tabZaposliKonobara.SuspendLayout();
             this.gBoxDodajKonobara.SuspendLayout();
@@ -130,10 +130,12 @@
             this.groupBoxNovaKategorija.SuspendLayout();
             this.groupBoxNovoPice.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCijena)).BeginInit();
             this.tabModifikacijaPića.SuspendLayout();
             this.groupBoxModifikacija.SuspendLayout();
             this.flowLayoutPanelOdaberiPiceModifikacija.SuspendLayout();
             this.flowLayoutPanelPromijeniCijenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNovaCijena)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPicaModificiraj)).BeginInit();
             this.tabAkcije.SuspendLayout();
             this.groupBoxAkcija.SuspendLayout();
@@ -145,8 +147,6 @@
             this.groupBoxKolicina1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bazaDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bazaDataSetBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCijena)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNovaCijena)).BeginInit();
             this.SuspendLayout();
             // 
             // tabKonobar
@@ -483,6 +483,19 @@
             this.labelCijenaNovoPice.Text = "Cijena:";
             this.labelCijenaNovoPice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // numericUpDownCijena
+            // 
+            this.numericUpDownCijena.DecimalPlaces = 2;
+            this.numericUpDownCijena.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numericUpDownCijena.Location = new System.Drawing.Point(399, 43);
+            this.numericUpDownCijena.Name = "numericUpDownCijena";
+            this.numericUpDownCijena.Size = new System.Drawing.Size(284, 34);
+            this.numericUpDownCijena.TabIndex = 12;
+            // 
             // labelKategorijaNovoPice
             // 
             this.labelKategorijaNovoPice.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -504,7 +517,7 @@
             // labelNajmanaKolicina
             // 
             this.labelNajmanaKolicina.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.labelNajmanaKolicina.Location = new System.Drawing.Point(3, 123);
+            this.labelNajmanaKolicina.Location = new System.Drawing.Point(3, 114);
             this.labelNajmanaKolicina.Name = "labelNajmanaKolicina";
             this.labelNajmanaKolicina.Size = new System.Drawing.Size(390, 34);
             this.labelNajmanaKolicina.TabIndex = 8;
@@ -513,7 +526,7 @@
             // 
             // txtUpozorenje
             // 
-            this.txtUpozorenje.Location = new System.Drawing.Point(399, 126);
+            this.txtUpozorenje.Location = new System.Drawing.Point(399, 117);
             this.txtUpozorenje.Name = "txtUpozorenje";
             this.txtUpozorenje.Size = new System.Drawing.Size(284, 34);
             this.txtUpozorenje.TabIndex = 9;
@@ -614,6 +627,19 @@
             this.labelPromijeniCijenu.TabIndex = 7;
             this.labelPromijeniCijenu.Text = "Nova cijena:";
             this.labelPromijeniCijenu.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // numericUpDownNovaCijena
+            // 
+            this.numericUpDownNovaCijena.DecimalPlaces = 2;
+            this.numericUpDownNovaCijena.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numericUpDownNovaCijena.Location = new System.Drawing.Point(224, 3);
+            this.numericUpDownNovaCijena.Name = "numericUpDownNovaCijena";
+            this.numericUpDownNovaCijena.Size = new System.Drawing.Size(200, 34);
+            this.numericUpDownNovaCijena.TabIndex = 13;
             // 
             // btnPromijeniCijenu
             // 
@@ -784,6 +810,7 @@
             this.buttonSveAkcije.TabIndex = 10;
             this.buttonSveAkcije.Text = "Prikaži sve akcije";
             this.buttonSveAkcije.UseVisualStyleBackColor = true;
+            this.buttonSveAkcije.Click += new System.EventHandler(this.buttonSveAkcije_Click);
             // 
             // dataGridViewAkcija
             // 
@@ -1063,32 +1090,6 @@
             this.bazaDataSetBindingSource.DataSource = this.bazaDataSet;
             this.bazaDataSetBindingSource.Position = 0;
             // 
-            // numericUpDownCijena
-            // 
-            this.numericUpDownCijena.DecimalPlaces = 2;
-            this.numericUpDownCijena.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownCijena.Location = new System.Drawing.Point(399, 43);
-            this.numericUpDownCijena.Name = "numericUpDownCijena";
-            this.numericUpDownCijena.Size = new System.Drawing.Size(284, 34);
-            this.numericUpDownCijena.TabIndex = 12;
-            // 
-            // numericUpDownNovaCijena
-            // 
-            this.numericUpDownNovaCijena.DecimalPlaces = 2;
-            this.numericUpDownNovaCijena.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownNovaCijena.Location = new System.Drawing.Point(224, 3);
-            this.numericUpDownNovaCijena.Name = "numericUpDownNovaCijena";
-            this.numericUpDownNovaCijena.Size = new System.Drawing.Size(200, 34);
-            this.numericUpDownNovaCijena.TabIndex = 13;
-            // 
             // VlasnikForm
             // 
             this.ClientSize = new System.Drawing.Size(1238, 630);
@@ -1112,11 +1113,13 @@
             this.groupBoxNovoPice.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCijena)).EndInit();
             this.tabModifikacijaPića.ResumeLayout(false);
             this.groupBoxModifikacija.ResumeLayout(false);
             this.flowLayoutPanelOdaberiPiceModifikacija.ResumeLayout(false);
             this.flowLayoutPanelPromijeniCijenu.ResumeLayout(false);
             this.flowLayoutPanelPromijeniCijenu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNovaCijena)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPicaModificiraj)).EndInit();
             this.tabAkcije.ResumeLayout(false);
             this.groupBoxAkcija.ResumeLayout(false);
@@ -1131,8 +1134,6 @@
             this.groupBoxKolicina1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bazaDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bazaDataSetBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCijena)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNovaCijena)).EndInit();
             this.ResumeLayout(false);
 
         }
