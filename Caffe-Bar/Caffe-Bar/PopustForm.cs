@@ -11,9 +11,11 @@ namespace CaffeBar
         public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
 
         private Dictionary<Pice, decimal> narucenaPica;
-        public Dictionary<Pice, int> besplatnaPica {  get; private set; }
+        public Dictionary<Pice, int> besplatnaPica {  get; set; }
         public string tekstPopusta { get; private set; }
         public bool Popust {  get; private set; }
+        public int Id_konobara { get; private set; }
+        public string UsernameKonobara { get; private set; }
 
         private SqlCommand naredba;
 
@@ -22,6 +24,7 @@ namespace CaffeBar
             InitializeComponent();
             this.narucenaPica = narucenaPica;
             Popust = false;
+            tekstPopusta = "";
             besplatnaPica = new Dictionary<Pice, int>();
 
             checkBoxIskoristiBespalatanSok.Enabled = false;
@@ -73,7 +76,7 @@ namespace CaffeBar
             veza.Close();
             if (dohvat.id_pica >= 0)
             {
-                MessageBox.Show("Dohvacen id.", "Obavijest");
+                //MessageBox.Show("Dohvacen id.", "Obavijest");
                 return dohvat;
             }
             else
@@ -122,11 +125,6 @@ namespace CaffeBar
                 }
             }
             veza.Close();
-            foreach(int i in kolicina)
-            {
-                MessageBox.Show($"Kolicina: {i}", "Kolicina");
-            }
-            MessageBox.Show($"Kolicina: {kolicina.Count}", "Kolicina");
             if (kolicina.Count == 1 && dohvatiPiceKava().id_pica == pice.id_pica)
                 return 1;
             else if (kolicina.Count == 0 && dohvatiPiceKava().id_pica == pice.id_pica)
@@ -171,24 +169,22 @@ namespace CaffeBar
             }
             else
             {
-                tekstPopusta = " ";
                 string odabraniKonobar = odabirKonobara.SelectedItem.ToString();
+                UsernameKonobara = odabirKonobara.SelectedItem.ToString();
                 Pice kava = dohvatiPiceKava();
                 Pice sok = dohvatiPiceCijedeniSok();
 
                 int rezultatKava = provjeraDostupnihPopusta(odabraniKonobar, kava);
                 int rezultatSok = provjeraDostupnihPopusta(odabraniKonobar, sok);
 
-                MessageBox.Show($" {odabraniKonobar} Result for Kava: {rezultatKava}, Result for Sok: {rezultatSok}");
+                //MessageBox.Show($" {odabraniKonobar} Result for Kava: {rezultatKava}, Result for Sok: {rezultatSok}");
                 if (rezultatKava > 0 && narucenaPica.ContainsKey(kava))
                 {
                     checkBoxIskoristiBesplatnuKavu.Enabled = true;
-                    MessageBox.Show("moze kava");
                 } 
                 if(rezultatSok > 0 && narucenaPica.ContainsKey(sok))
                 {
                     checkBoxIskoristiBespalatanSok.Enabled = true;
-                    MessageBox.Show("moze sok");
                 }
                 checkBoxIskoristiPopust.Enabled = true;
             }
@@ -201,7 +197,7 @@ namespace CaffeBar
                 besplatnaPica.Add(dohvatiPiceCijedeniSok(), 1);
                 tekstPopusta += "Iskorišten popust: Besplatni sok\n";
                 labelStanjeNakonAkcije.Text += "Iskorišten popust: Besplatni sok\n";
-                checkBoxIskoristiBespalatanSok.Checked = false;
+                checkBoxIskoristiBespalatanSok.Enabled = false;
             }
             if (checkBoxIskoristiBesplatnuKavu.Checked == true)
             {
@@ -218,7 +214,7 @@ namespace CaffeBar
                     besplatnaPica[kava] += 1;
                     tekstPopusta += "Iskorišten popust: Besplatna kava\n";
                     labelStanjeNakonAkcije.Text += "Iskorišten popust: Besplatna kava\n";
-                    checkBoxIskoristiBesplatnuKavu.Checked = false;
+                    checkBoxIskoristiBesplatnuKavu.Enabled = false;
                 }
             }
             
@@ -227,8 +223,9 @@ namespace CaffeBar
                 Popust = true;
                 tekstPopusta += "Iskorišten popust: 20%\n";
                 labelStanjeNakonAkcije.Text += "Iskorišten popust: 20%\n";
-                checkBoxIskoristiPopust.Checked = false;
+                checkBoxIskoristiPopust.Enabled = false;
             }
+            odabirKonobara.Enabled = false;
         }
 
         private void gumbOdustaniPopust_Click(object sender, System.EventArgs e)
@@ -244,7 +241,6 @@ namespace CaffeBar
         private void gumbPopustIzdajRacun_Click(object sender, System.EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            Close();
         }
     }
 }

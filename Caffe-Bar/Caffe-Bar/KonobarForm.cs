@@ -12,13 +12,16 @@ namespace CaffeBar
     {
         public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True";
         private SqlCommand naredba;
-        public Dictionary<Pice, decimal> narucenaPica = new Dictionary<Pice, decimal>();
-        public Dictionary<int, int> konobarskiPopust = new Dictionary<int, int>();
+        public Dictionary<Pice, decimal> narucenaPica;
+        public Dictionary<Pice, int> konobarskiPopust;
+        public string infoPopust = "";
         public decimal popust = 0.20M;
+        public bool Popust;
         public int id_ulogirani;
         public string ime_ulogirani;
         public string prezime_ulogirani;
         public string username_ulogirani;
+        public string popustUsername;
         public KonobarForm(int id_konobar, string ime_konobar, string prezime_konobar, string username_konobar)
         {
             InitializeComponent();
@@ -27,7 +30,10 @@ namespace CaffeBar
             ime_ulogirani = ime_konobar;
             prezime_ulogirani = prezime_konobar;
             username_ulogirani = username_konobar;
+            Popust = false;
 
+            narucenaPica = new Dictionary<Pice, decimal>();
+            konobarskiPopust = new Dictionary<Pice, int>();
             labelUsername.Text = "Prijavljen konobar: " + username_konobar;
             dataGridViewPica.CellFormatting += dataGridViewPica_CellFormatting;
         }
@@ -62,11 +68,6 @@ namespace CaffeBar
             return pica;
         }
 
-        private void primjeniPopustNaPica(List<Pice> pica, decimal popust)
-        {
-            pica.ForEach(x => x.cijena_pica -= popust * x.cijena_pica);
-        }
-
         private void prikaziPicaDataGridView(List<Pice> pica)
         {
             dataGridViewPica.DataSource = pica;
@@ -86,17 +87,6 @@ namespace CaffeBar
 
             dataGridViewPica.Columns[1].HeaderText = "Naziv pića";
             dataGridViewPica.Columns[2].HeaderText = "Cijena pića";
-
-            if(provjeraAkcije() > 0)
-            {
-                foreach (DataGridViewRow row in dataGridViewPica.Rows)
-                {
-                    if (row.Cells["cijena_pica"].Value != null)
-                    {
-                        row.Cells["cijena_pica"].Style.ForeColor = Color.Blue;
-                    }
-                }
-            }
         }
 
         private void buttonPrikaziPica_Click(object sender, EventArgs e)
@@ -105,9 +95,8 @@ namespace CaffeBar
 
             if(provjeraAkcije() != 0)
             {
-                decimal popust = provjeraAkcije() / 100;
-                primjeniPopustNaPica(pica, popust);
                 labelAkcijaUTijeku.Text = "U tijeku je akcija - " + provjeraAkcije().ToString() + "%";
+                infoPopust += "U tijeku je akcija - " + provjeraAkcije().ToString() + "%\n";
             }
             prikaziPicaDataGridView(pica);
         }
@@ -115,7 +104,6 @@ namespace CaffeBar
         private void textBoxTrazi_TextChanged(object sender, EventArgs e)
         {
             List<Pice> pica = GetPicaFromDatabase("SELECT * FROM Pica");
-
             
             if (textBoxTrazi.Text.Length > 0)
             {
@@ -179,7 +167,7 @@ namespace CaffeBar
                         narucenaPica[existingItem] += kolicina;
                         decimal ukupna_cijena = Math.Round(existingItem.cijena_pica * kolicina, 2);
                         string info = $"{existingItem.naziv_pica,-20}{Math.Round(existingItem.cijena_pica, 2),-10} x {kolicina,-5} = {ukupna_cijena,-5}";
-                        MessageBox.Show("Dodano na račun: " + info, "Obavijest");
+                        //MessageBox.Show("Dodano na račun: " + info, "Obavijest");
                         textRacuna.AppendText(info + "\n\n");
                     }
                     else
@@ -198,7 +186,7 @@ namespace CaffeBar
 
                         decimal ukupnaCijena = Math.Round(cijenaPica * kolicina, 2);
                         string piceInfo = $"{nazivPica,-20}{Math.Round(cijenaPica, 2),-10} x {kolicina,-5} = {ukupnaCijena,-5}";
-                        MessageBox.Show("Dodano na račun: " + piceInfo, "Obavijest");
+                        //MessageBox.Show("Dodano na račun: " + piceInfo, "Obavijest");
                         textRacuna.AppendText(piceInfo + "\n\n");
                     }
 
@@ -258,7 +246,6 @@ namespace CaffeBar
                 }
                 else
                 {
-                    MessageBox.Show("Ne dodajemo proizvod na račun!", "Upozorenje");
                     if (narucenaPica.Count == 0)
                     {
                         textRacuna.Clear();
@@ -270,27 +257,39 @@ namespace CaffeBar
 
         public void gumbIzdajRacun_Click(object sender, EventArgs e)
         {
-            IzdajRacun izdajRacun = new IzdajRacun();
-            decimal total = izdajRacun.calculateTotal(narucenaPica);
-            izdajRacun.updateFinalniRacun(textRacuna.Rtf);
-            izdajRacun.updateKonobarInfo(id_ulogirani, ime_ulogirani, prezime_ulogirani);
-            DateTime vrijeme = izdajRacun.VrijemeRacuna;
-            
-            if (izdajRacun.ShowDialog() == DialogResult.OK)
+            if(narucenaPica.Count == 0)
+            {
+                MessageBox.Show("Odaberite pića", "Upozorenje!");
+            }
+
+            decimal total = izracunajTotal();
+            DateTime vrijeme = DateTime.Now;
+            IzdajRacun izdajRacun = new IzdajRacun(textRacuna.Rtf, id_ulogirani, ime_ulogirani, prezime_ulogirani, infoPopust, total, vrijeme);
+
+            izdajRacun.updateFinalniRacun();
+            izdajRacun.updateKonobarInfo();
+
+            DialogResult result = izdajRacun.ShowDialog();
+
+
+            if (result == DialogResult.OK)
             {
                 updateKolicinaPica(narucenaPica);
                 zapisRacunStavke(vrijeme);
-                //zapisKonobarPopust();
-
+                zapisiKonobarPopust(popustUsername, konobarskiPopust, vrijeme);
+        
                 MessageBox.Show("Račun uspješno evidentiran!", "Obavijest");
                 textRacuna.Clear();
                 narucenaPica.Clear();
+                konobarskiPopust.Clear();
+                Popust = false;
+                infoPopust = "";
+                buttonKonobarskiPopust.Enabled = true;
             }
             else
             {
                 MessageBox.Show("Račun nije evidentiran!", "Obavijest");
             }
-
         }
 
         private void updateKolicinaPica(Dictionary<Pice, decimal> narucenaPica)
@@ -320,7 +319,7 @@ namespace CaffeBar
 
         private void zapisRacunStavke(DateTime vrijeme)
         {
-            int id_racuna = 0;
+            int id_racuna = -1;
 
             using (SqlConnection veza = new SqlConnection(connectionString))
             {
@@ -338,7 +337,7 @@ namespace CaffeBar
                     }
                 }
 
-                if (id_racuna == 0)
+                if (id_racuna == -1)
                 {
                     MessageBox.Show("Greška u dohvatu id_racuna", "Greška");
                 }
@@ -373,6 +372,59 @@ namespace CaffeBar
             }
         }
 
+        private void zapisiKonobarPopust(string username, Dictionary<Pice, int> popust, DateTime vrijeme)
+        {
+            int id_osobe = -1;
+            List<Pice> pica = popust.Keys.ToList();
+            using (SqlConnection veza = new SqlConnection(connectionString))
+            {
+                veza.Open();
+
+                string selectQuery = "SELECT id_osobe FROM Osobe WHERE korisnicko_ime = @username";
+                SqlCommand selectCommand = new SqlCommand(selectQuery, veza);
+                selectCommand.Parameters.AddWithValue("@username", username);
+
+                using (SqlDataReader čitač = selectCommand.ExecuteReader())
+                {
+                    if (čitač.Read())
+                    {
+                        id_osobe = čitač.GetInt32(0);
+                    }
+                }
+
+                if (id_osobe == -1)
+                {
+                    MessageBox.Show("Greška u dohvatu id_racuna", "Greška");
+                }
+                else
+                {
+                    foreach (KeyValuePair<Pice, int> pice in konobarskiPopust)
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            string insertQuery = "INSERT INTO KonobarPopust (id_konobara, id_pica, datum) " +
+                                "VALUES (@id_racun, @id_pica, @datum)";
+                            SqlCommand insertCommand = new SqlCommand(insertQuery, connection);
+
+                            insertCommand.Parameters.AddWithValue("@id_racun", id_osobe);
+                            insertCommand.Parameters.AddWithValue("@id_pica", pice.Key.id_pica);
+                            insertCommand.Parameters.Add("@datum", SqlDbType.Date).Value = vrijeme;
+                    
+                            try
+                            {
+                                insertCommand.ExecuteNonQuery();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Greška prilikom upisa u KonobarPopust: " + ex.Message, "Greška");
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         public decimal dohvatiDostupnuKolicinu(int idPica)
         {
@@ -402,6 +454,9 @@ namespace CaffeBar
             textRacuna.Clear() ;
             narucenaPica.Clear();
             konobarskiPopust.Clear();
+            Popust = false;
+            infoPopust = "";
+            buttonKonobarskiPopust.Enabled = true;
         }
 
         private decimal provjeraAkcije()
@@ -435,47 +490,53 @@ namespace CaffeBar
         {
             PopustForm popustForm = new PopustForm(narucenaPica);
 
-            string tekst = popustForm.tekstPopusta;
-            Dictionary<Pice, int> azuriraj = popustForm.besplatnaPica;
-            bool popust = popustForm.Popust;
+            DialogResult result = popustForm.ShowDialog();
 
-            if (popustForm.ShowDialog() == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
-                //da se azuriraju cijene
-                if(tekst != null)
+                konobarskiPopust = popustForm.besplatnaPica;
+                popustUsername = popustForm.UsernameKonobara;
+                Popust = popustForm.Popust;
+                if (popustForm.tekstPopusta != null)
                 {
-                    textRacuna.AppendText(tekst);
-                }
-                azurirajBesplatneStavke(azuriraj);
-                if(popust == true)
-                {
-                    azurirajCijenePopust();
+                    infoPopust += popustForm.tekstPopusta;
+                    buttonKonobarskiPopust.Enabled = false;
                 }
             }
         }
 
-        private void azurirajBesplatneStavke(Dictionary<Pice, int> besplatnaPica)
+        private decimal izracunajTotal() 
         {
-            if(besplatnaPica != null)
+            decimal total = 0; 
+
+            if (narucenaPica != null)
             {
-                foreach(KeyValuePair<Pice, int> besplatno in besplatnaPica)
+                foreach (KeyValuePair<Pice, decimal> keyValuePair in narucenaPica)
                 {
-                    if (narucenaPica.ContainsKey(besplatno.Key))
-                    {
-                        narucenaPica[besplatno.Key] = 0;
-                    }
+                    total += keyValuePair.Value * keyValuePair.Key.cijena_pica;
                 }
             }
-        }
-
-        private void azurirajCijenePopust()
-        {
-            foreach (KeyValuePair<Pice,decimal> temp in narucenaPica)
+            if (konobarskiPopust != null)
             {
-                Pice pice = temp.Key;
-                decimal novaCijena = temp.Value * (1 - popust);
-                narucenaPica[pice] = novaCijena;
+                foreach (KeyValuePair<Pice, int> keyValuePair in konobarskiPopust)
+                {
+                    total -= (keyValuePair.Key.cijena_pica * keyValuePair.Value);
+                }
             }
+            if (total == 0) return 0;
+            if (provjeraAkcije() != 0)
+            {
+                decimal akcija = provjeraAkcije() / 100;
+                if (Popust == true) akcija += popust;
+                total -= total * akcija;
+                Popust = false;
+            }
+            if (Popust == true)
+            {
+                total -= total * popust;
+            }
+            return total;
+
         }
     }
 }
