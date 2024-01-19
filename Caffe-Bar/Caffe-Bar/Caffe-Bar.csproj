@@ -91,6 +91,12 @@
     </Compile>
     <Compile Include="Osoba.cs" />
     <Compile Include="Pice.cs" />
+    <Compile Include="PopustForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PopustForm.Designer.cs">
+      <DependentUpon>PopustForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PrijavaForm.cs">
       <SubType>Form</SubType>
     </Compile>

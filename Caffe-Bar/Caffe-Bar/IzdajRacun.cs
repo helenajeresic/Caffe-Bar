@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -8,52 +8,48 @@ namespace CaffeBar
 {
     public partial class IzdajRacun : Form
     {
-        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Helena\Desktop\moje\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
-        private decimal Total { get; set; }
-        public DateTime VrijemeRacuna { get; private set; }
-        
-        public int Id_konobar { get; private set; }
+        public string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Ivana\Desktop\RP\Caffe-Bar\Caffe-Bar\Caffe-Bar\baza.mdf;Integrated Security=True;MultipleActiveResultSets=True;";
+       
+        private string tekstRacuna;
+        private int id_konobar;
+        private string ime_konobar;
+        private string prezime_konobar;
+        private string infoPopust;
+        private decimal total;
+        private DateTime vrijeme;
 
-        public IzdajRacun()
+        public IzdajRacun(string tekstRacuna, int id_konobar, string ime_konobar, string prezime_konobar, string infoPopust, decimal total, DateTime vrijeme)
         {
+            this.tekstRacuna = tekstRacuna;
+            this.id_konobar = id_konobar;
+            this.ime_konobar = ime_konobar;
+            this.prezime_konobar = prezime_konobar;
+            this.infoPopust = infoPopust;
+            this.total = Math.Round(total, 2);
+            this.vrijeme = vrijeme;
             InitializeComponent();
         }
 
-        public void updateFinalniRacun(string text)
+        public void updateFinalniRacun()
         {
             finalniRacun.Clear();
-            finalniRacun.Rtf = text;
+            finalniRacun.Rtf = tekstRacuna;
             finalniRacun.SelectionAlignment = HorizontalAlignment.Right;
             finalniRacun.AppendText("\n\n");
             finalniRacun.AppendText("-------------------------------------\n\n");
-            finalniRacun.AppendText("Ukupna cijena: " + Total.ToString() + "\n\n");
+            finalniRacun.AppendText("Ukupna cijena: " + total.ToString() + " €\n\n");
             finalniRacun.AppendText("--------------------------------------\n\n");
-            finalniRacun.AppendText(VrijemeRacuna + "\n\n");
+            finalniRacun.AppendText(vrijeme + "\n\n");
             finalniRacun.AppendText("Wifi password: caffebar123\n\n");
         }
 
-        public void updateKonobarInfo(int id_konobara, string ime, string prezime)
+        public void updateKonobarInfo()
         {
-            Id_konobar = id_konobara;
-            string racunPotpis = "Konobar: " + ime + " " + prezime + "\n\n";
+            finalniRacun.AppendText("--------------------------------------\n\n");
+            finalniRacun.AppendText(infoPopust);
+            string racunPotpis = "Konobar: " + ime_konobar + " " + prezime_konobar + "\n\n";
             finalniRacun.AppendText(racunPotpis);
             finalniRacun.AppendText("--------------------------------------\n\n");
-        }
-
-        public decimal calculateTotal(Dictionary<Pice, decimal> narucenaPica)
-        {
-            decimal total = 0;
-            foreach (KeyValuePair<Pice, decimal> pica in narucenaPica)
-            {
-                Pice pice = pica.Key;
-                decimal quantity = pica.Value;
-
-                total += pice.cijena_pica * quantity;
-            }
-            Total = Math.Round(total,2);
-            VrijemeRacuna = DateTime.Now;
-            finalniRacun.AppendText("Ukupna cijena " + Total.ToString());
-            return total;
         }
 
         private void buttonIzracunajOstatak_Click(object sender, EventArgs e)
@@ -65,8 +61,8 @@ namespace CaffeBar
             else
             {
                 decimal danIznos = decimal.TryParse(textDaniIznos.Text, out decimal result) ? result : 0;
-                decimal ostatak = danIznos - Total;
-                if (ostatak > 0)
+                decimal ostatak = danIznos - total;
+                if (ostatak >= 0)
                 {
                     labelVratitiIznos.Text = ostatak.ToString() + " €";
                 }
@@ -89,9 +85,9 @@ namespace CaffeBar
                 + "Racun (id_konobar, iznos, datum_vrijeme) "
                 + "VALUES (@id_konobar, @iznos, @datum_vrijeme)";
             SqlCommand naredba = new SqlCommand(upit, veza);
-            naredba.Parameters.AddWithValue("@id_konobar", Id_konobar);
-            naredba.Parameters.AddWithValue("@iznos", Total);
-            naredba.Parameters.AddWithValue("@datum_vrijeme", VrijemeRacuna);
+            naredba.Parameters.AddWithValue("@id_konobar", id_konobar);
+            naredba.Parameters.AddWithValue("@iznos", total);
+            naredba.Parameters.AddWithValue("@datum_vrijeme", vrijeme);
 
             try
             {
@@ -112,5 +108,6 @@ namespace CaffeBar
             }
             veza.Close();
         }
+            
     }
 }
