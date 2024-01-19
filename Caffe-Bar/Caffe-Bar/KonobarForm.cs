@@ -49,7 +49,6 @@ namespace CaffeBar
             dataGridViewPica.CellFormatting += dataGridViewPica_CellFormatting;
             UcitajPicaUComboBoxNarudzba();
             UcitajPicaUComboBoxSkladiste();
-            prikaziPicaDataGridView();
         }
 
         /// <summary>
@@ -88,17 +87,30 @@ namespace CaffeBar
         }
 
         /// <summary>
-        /// Prikaz pića u data grid viewu. Postavlja se nazivi i vidljivost stupaca.
+        /// Prikaz pića u data grid viewu. Postavlja se nazivi i vidljivost stupaca,
+        /// te boja snizenih pića.
         /// </summary>
         /// <param name="pica"></param>
-        private void prikaziPicaDataGridView()
+        private void prikaziPicaDataGridView(string upit)
         {
-            dataGridViewPica.DataSource = GetPicaFromDatabase("SELECT * FROM Pica");
+            dataGridViewPica.DataSource = GetPicaFromDatabase(upit);
             dataGridViewPica.Columns[0].Visible = false;
             dataGridViewPica.Columns[3].Visible = false;
             //dataGridViewPica.Columns[4].Visible = false;
             dataGridViewPica.Columns[5].Visible = false;
             dataGridViewPica.Columns[6].Visible = false;
+
+            if (provjeraAkcije().Count > 0)
+            {
+                List<int> listaSnizenih = provjeraAkcije().Keys.ToList();
+                foreach (DataGridViewRow row in dataGridViewPica.Rows)
+                {
+                    if (listaSnizenih.Contains((int)row.Cells["id_pica"].Value))
+                    {
+                        row.DefaultCellStyle.ForeColor = Color.Blue;
+                    }
+                }
+            }
 
             foreach (DataGridViewColumn column in dataGridViewPica.Columns)
             {
@@ -127,7 +139,7 @@ namespace CaffeBar
             {
                 labelAkcijaUTijeku.Text = "U tijeku je akcija!";
             }
-            prikaziPicaDataGridView();
+            prikaziPicaDataGridView("SELECT * FROM Pica");
         }
 
         /// <summary>
@@ -138,13 +150,15 @@ namespace CaffeBar
         /// <param name="e"></param>
         private void textBoxTrazi_TextChanged(object sender, EventArgs e)
         {
-            List<Pice> pica = GetPicaFromDatabase("SELECT * FROM Pica");
+            //List<Pice> pica = GetPicaFromDatabase("SELECT * FROM Pica");
+            string upit = "SELECT * FROM Pica";
             
             if (textBoxTrazi.Text.Length > 0)
             {
-                pica = GetPicaFromDatabase("SELECT * FROM Pica WHERE naziv_pica LIKE @unos");
+                //pica = GetPicaFromDatabase("SELECT * FROM Pica WHERE naziv_pica LIKE @unos");
+                upit = "SELECT * FROM Pica WHERE naziv_pica LIKE @unos";
             }
-            prikaziPicaDataGridView();
+            prikaziPicaDataGridView(upit);
         }
 
         /// <summary>
@@ -356,7 +370,7 @@ namespace CaffeBar
                     Popust = false;
                     infoPopust = "";
                     //buttonKonobarskiPopust.Enabled = true;
-                    prikaziPicaDataGridView();
+                    prikaziPicaDataGridView("SELECT * FROM Pica");
                 }
                 else
                 {
